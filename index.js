@@ -2,18 +2,13 @@
 (function(global) {
 
 	const _CAMERA   = new THREE.PerspectiveCamera(45, global.innerWidth / global.innerHeight, 1, 10000);
-	const _CONTROLS = new THREE.OrbitControls(_CAMERA);
 	const _SCENE    = new THREE.Scene();
 	const _RENDERER = new THREE.WebGLRenderer({
 		antialias: true
 	});
-
-	const _PLAYER = new Player();
-
+	const _CONTROLS = new THREE.OrbitControls(_CAMERA, _RENDERER.domElement);
 	const _STATIC_OBJECTS  = {};
 	const _DYNAMIC_OBJECTS = [];
-
-
 
 	/*
 	 * INITIALIZATION
@@ -28,7 +23,7 @@
 		global.document.body.appendChild(_RENDERER.domElement);
 
 
-		let ambient_light = new THREE.AmbientLight(0xffffff, 0.4);
+		let ambient_light = new THREE.AmbientLight(0xcccccc, 0.4);
 		let point_light   = new THREE.PointLight(0xffffff, 0.8);
 
 
@@ -41,17 +36,9 @@
 
 		let object = new THREE.Mesh(new THREE.PlaneBufferGeometry(100, 100, 4, 4), material);
 		object.position.set(0, -75, 0);
+
 		_STATIC_OBJECTS.plane = object;
 		_SCENE.add(object);
-
-
-		let ship = new Ship({}, _SCENE, _CAMERA);
-		_SCENE.add(ship.object);
-		_SCENE.add(_PLAYER.object);
-
-		let axesHelper = new THREE.AxesHelper(250);
-		axesHelper.position.y = 0.1;
-		_SCENE.add(axesHelper);
 
 		_CAMERA.position.x = 800;
 		_CAMERA.position.y = 200;
@@ -64,7 +51,15 @@
 
 		// TESTING CODE AREA
 
-        new Particles(_SCENE);
+		new Particles(_SCENE);
+
+		new Wormhole({
+			position: {
+				x: 0,
+				y: 0,
+				z: 0
+			}
+		}, _SCENE, _CAMERA, _RENDERER);
 
 		// TESTING CODE AREA
 
@@ -75,18 +70,16 @@
 		global.render();
 		global.requestAnimationFrame(_render_loop);
 
-        _SCENE.traverse(object => {
+		_SCENE.traverse(object => {
 
-            if (object.userData.entity) {
-                object.userData.entity.update();
-            }
-        });
+			if (object.userData.entity) {
+				object.userData.entity.update();
+			}
+		});
 
 	};
 
 	global.render = _ => {
-
-		_CONTROLS.update();
 
 		// _CAMERA.position.x = Math.cos(timer) * 800;
 		// _CAMERA.position.y = Math.sin(timer) * 800;
@@ -117,7 +110,6 @@
 
 	}, false);
 
-
 	(function() {
 		_init();
 		_render_loop();
@@ -128,4 +120,3 @@
 	global._SCENE  = _SCENE;
 
 })(typeof window !== 'undefined' ? window : this);
-
