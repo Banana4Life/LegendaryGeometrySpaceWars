@@ -32,7 +32,7 @@
 
 		let grid = new Grid({
 			size: 1000,
-			divisions: 200
+			divisions: 100
 		}, _SCENE, _CAMERA);
 
 
@@ -46,6 +46,11 @@
 		let axesHelper = new THREE.AxesHelper(250);
 		axesHelper.position.y = 0.1;
 		_SCENE.add(axesHelper);
+
+		let plane = new THREE.GridHelper(1000, 100);
+		plane.name = 'Plane';
+		_SCENE.add(plane);
+
 
 		_CAMERA.position.x = 800;
 		_CAMERA.position.y = 200;
@@ -62,6 +67,7 @@
 				z: -150
 			}
 		}, _SCENE, _CAMERA, _RENDERER);
+
 
 		new Particles(_SCENE, wormhole);
 
@@ -123,9 +129,9 @@
 
 		_GAME_START = Date.now();
 
-		setTimeout(_ => {
-			_GAME_BEAT.play();
-		}, 1000);
+		// setTimeout(_ => {
+		// 	_GAME_BEAT.play();
+		// }, 1000);
 
 		_init();
 		_render_loop();
