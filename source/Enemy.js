@@ -1,8 +1,9 @@
 (function (global) {
 
-	const Enemy = function (scene) {
+	const Enemy = function (scene, player) {
 
-		switch (Math.floor(Math.random() * 2)) {
+		this.player = player;
+		switch (Math.floor(Math.random() * 3)) {
 			case 0:
 				let material1 = new THREE.MeshBasicMaterial({
 					color: 0x4400ff,
@@ -24,7 +25,7 @@
 				break;
 			case 1:
 				let material2 = new THREE.MeshBasicMaterial({
-					color: 0x4400ff,
+					color: 0x33ff00,
 					wireframe: true,
 					wireframeLinewidth: 2.5
 				});
@@ -49,12 +50,36 @@
 				};
 
 				this.object.rotateY(THREE.Math.degToRad(-90));
+				break;
+			default:
+				let material3 = new THREE.MeshBasicMaterial({
+					color: 0xaaaa00,
+					wireframe: true,
+					wireframeLinewidth: 2.5
+				});
+				let geometry3 = new THREE.CircleGeometry(25, 5);
+				this.object = new THREE.Mesh(geometry3, material3);
 
+				this.movementType = () => {
+					this.object.rotation.z += 0.07 * this.direction;
+
+					let delta = this.player.object.position.clone().sub(this.object.position);
+					let distance = delta.lengthSq()
+					delta.normalize();
+
+					this.object.position.add(delta.multiplyScalar(Math.max(Math.min(distance / 15000, 5), 0.7)));
+
+					if (Math.abs(this.object.position.z) > 500) {
+						this.direction = -this.direction;
+						this.object.rotateY(THREE.Math.degToRad(180));
+					}
+				};
+
+				this.object.rotateY(THREE.Math.degToRad(-90));
 				break;
 		}
 
 
-		scene.add(this.object);
 		this.object.rotateX(THREE.Math.degToRad(-90));
 
 		this.object.userData = {entity: this}
@@ -62,6 +87,9 @@
 		this.object.position.z = Math.random() * 1000 - 500;
 
 		this.direction = 1;
+
+		scene.add(this.object);
+
 	};
 
 	Enemy.prototype = {
