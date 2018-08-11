@@ -66,7 +66,7 @@
 			renderer.setPixelRatio(window.devicePixelRatio);
 			document.body.appendChild(renderer.domElement);
 
-			this.refractor.material.uniforms.time.value += clock.getDelta();
+			refractor.material.uniforms.time.value += clock.getDelta();
 			renderer.render(scene, camera);
 		};
 	};
