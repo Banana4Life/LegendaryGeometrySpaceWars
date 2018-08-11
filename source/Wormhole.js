@@ -6,54 +6,40 @@
 		let states = Object.assign({}, data);
 		let clock = new THREE.Clock();
 		console.log('new Wormhole!', states);
-		let wormholeGroup = new THREE.Group();
 
 		let material  = new THREE.MeshPhysicalMaterial({
 			map: null,
 			color: 0x0000ff,
-			metalness: 0.0,
+			metalness: 1.0,
 			roughness: 0,
-			opacity: 0.15,
-			side: THREE.FrontSide,
-			transwormholeGroup: true,
+			opacity: 0.95,
+			transparent: true,
 			envMapIntensity: 5,
 			premultipliedAlpha: true
 		});
 
-		let geometry  = new THREE.SphereGeometry(100, 50, 25);
+		let geometryHole  = new THREE.SphereGeometry(49, 20, 20);
+		let geometryWater = new THREE.SphereGeometry(50, 20, 20);
 
-		let refractor = new THREE.Refractor(geometry, {
-			color: 0x999999,
-			textureWidth: 1024,
-			textureHeight: 1024,
-			shader: THREE.WaterRefractionShader
+		let water = new THREE.Water(geometryWater, {
+			color: 0xffffff,
+			scale: 4,
+			flowDirection: new THREE.Vector2(1, 1),
+			textureWidth: 2048,
+			textureHeight: 2048
 		});
 
-		refractor.position.set(states.position.x, states.position.y, states.position.z);
+		water.rotation.x = Math.PI * -0.5;
+		water.rotation.y = Math.PI * -0.5;
+		water.rotation.z = Math.PI * -0.5;
 
-		let dudvMap = new THREE.TextureLoader().load('source/Wormhole.jpg', function () {
-			animate();
-		});
-
-		dudvMap.wrapS = dudvMap.wrapT = THREE.RepeatWrapping;
-		refractor.material.uniforms.tDudv.value = dudvMap;
-
-		this.object = new THREE.Mesh(geometry, material);
+		this.object = new THREE.Mesh(geometryHole, material);
 		this.object.position.set(states.position.x, states.position.y, states.position.z);
-		this.object.traverse(function (child) {
-			if (child instanceof THREE.Mesh) {
-				child.material = material;
-				let second = child.clone();
-				second.material = material;
-				wormholeGroup.add(second);
-				wormholeGroup.add(child);
-				scene.add(wormholeGroup);
-			}
-		});
-		scene.add(this.object);
-		//scene.add(refractor);
 
-		this.object.userData = { entity:this };
+		scene.add(this.object);
+		scene.add(water);
+
+		water.position.set(states.position.x, states.position.y, states.position.z);
 
 		let animate = function() {
 			requestAnimationFrame(animate);
@@ -66,7 +52,7 @@
 			renderer.setPixelRatio(window.devicePixelRatio);
 			document.body.appendChild(renderer.domElement);
 
-			refractor.material.uniforms.time.value += clock.getDelta();
+			water.material.uniforms.time.value += clock.getDelta() * 2;
 			renderer.render(scene, camera);
 		};
 	};
