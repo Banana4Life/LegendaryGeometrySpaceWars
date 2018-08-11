@@ -7,9 +7,9 @@
 		this.plane = plane;
 
 		let listener = new THREE.AudioListener();
-		camera.add( listener );
+		camera.add(listener);
 
-		let soundSource = new THREE.Audio( listener );
+		let soundSource = new THREE.Audio(listener);
 
 		this.weaponParticle = new WeaponParticle(scene, wormhole, soundSource);
 
@@ -43,7 +43,7 @@
 		this.raycaster = new THREE.Raycaster();
 		this.mouse = new THREE.Vector2();
 
-		this.lastDeltaVector = new THREE.Vector3(0,0,0);
+		this.lastDeltaVector = new THREE.Vector3(0, 0, 0);
 
 		scene.add(this.object);
 
@@ -116,7 +116,6 @@
 		},
 
 		onKey: function (ev, key, pressed) {
-
 			switch (key) {
 				case 'w':
 					this.input.up = pressed;
@@ -132,6 +131,10 @@
 					break;
 				case 'd':
 					this.input.right = pressed;
+					ev.preventDefault();
+					break;
+				case ' ':
+					this.input.fire = pressed;
 					ev.preventDefault();
 					break;
 			}
