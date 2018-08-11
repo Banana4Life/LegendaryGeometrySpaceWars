@@ -1,10 +1,14 @@
 
 (function(global) {
 
-	const _CAMERA   = new THREE.PerspectiveCamera(45, global.innerWidth / global.innerHeight, 1, 10000);
-	const _CONTROLS = new THREE.OrbitControls(_CAMERA);
-	const _SCENE    = new THREE.Scene();
-	const _RENDERER = new THREE.WebGLRenderer({
+	const _CAMERA    = new THREE.PerspectiveCamera(45, global.innerWidth / global.innerHeight, 1, 10000);
+	const _CONTROLS  = new THREE.OrbitControls(_CAMERA);
+	const _GAME_BEAT = new Beat({
+		url: './asset/street-dancing.mp3'
+	});
+	let _GAME_START  = Date.now();
+	const _SCENE     = new THREE.Scene();
+	const _RENDERER  = new THREE.WebGLRenderer({
 		antialias: true
 	});
 
@@ -21,7 +25,6 @@
 
 	const _init = _ => {
 
-
 		_RENDERER.setPixelRatio(global.devicePixelRatio);
 		_RENDERER.setSize(global.innerWidth, global.innerHeight);
 
@@ -32,20 +35,16 @@
 		let point_light   = new THREE.PointLight(0xffffff, 0.8);
 
 
-		let material = new THREE.MeshBasicMaterial({
-			color: 0xffaa00,
-			transparent:
-			true,
-			blending: THREE.AdditiveBlending
-		});
+		let grid = new Grid({
+			size: 1000,
+			divisions: 200
+		}, _SCENE, _CAMERA);
 
-		let object = new THREE.Mesh(new THREE.PlaneBufferGeometry(100, 100, 4, 4), material);
-		object.position.set(0, -75, 0);
-		_STATIC_OBJECTS.plane = object;
-		_SCENE.add(object);
-
+		_STATIC_OBJECTS.grid = grid;
+		_SCENE.add(grid.object);
 
 		let ship = new Ship({}, _SCENE, _CAMERA);
+		_STATIC_OBJECTS.ship = ship;
 		_SCENE.add(ship.object);
 		_SCENE.add(_PLAYER.object);
 
@@ -54,23 +53,28 @@
 		_CAMERA.add(point_light);
 		_CAMERA.lookAt(_SCENE.position);
 
-		_SCENE.add(new THREE.GridHelper(1000, 100));
+		// _SCENE.add(new THREE.GridHelper(1000, 100));
 		_SCENE.add(ambient_light);
 		_SCENE.add(_CAMERA);
 
 	};
 
 
+
 	const _render_loop = _ => {
+
 		global.render();
 		_PLAYER.update();
+
 		global.requestAnimationFrame(_render_loop);
 
 	};
 
 	global.render = _ => {
 
+
 		_CONTROLS.update();
+		_STATIC_OBJECTS.grid.update();
 
 		// _CAMERA.position.x = Math.cos(timer) * 800;
 		// _CAMERA.position.y = Math.sin(timer) * 800;
@@ -103,8 +107,16 @@
 
 
 	(function() {
+
+		_GAME_START = Date.now();
+
+		setTimeout(_ => {
+			_GAME_BEAT.play();
+		}, 1000);
+
 		_init();
 		_render_loop();
+
 	})();
 
 

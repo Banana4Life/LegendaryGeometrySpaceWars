@@ -6,23 +6,56 @@
 		let states = Object.assign({}, data);
 
 
-		let geometry = new THREE.SphereGeometry(100, 50, 50);
-		let material = new THREE.MeshPhongMaterial({
-			color: 0x00ff33
+		let geometry = new THREE.Geometry();
+
+		geometry.vertices = [
+			new THREE.Vector3(0, 0, -5),
+			new THREE.Vector3(0, 0, 5),
+			new THREE.Vector3(0, 10, 5),
+			new THREE.Vector3(0, 10, -5),
+			new THREE.Vector3(-25, 5, 0)
+		];
+
+		geometry.faces = [
+			new THREE.Face3(0, 1, 2),
+			new THREE.Face3(0, 2, 3),
+			new THREE.Face3(1, 0, 4),
+			new THREE.Face3(2, 1, 4),
+			new THREE.Face3(3, 2, 4),
+			new THREE.Face3(0, 3, 4)
+		];
+
+		let material = new THREE.MeshBasicMaterial({
+			color: 0xffffff,
+			wireframe: true,
+			wireframeLinewidth: 2
 		});
 
 		this.object = new THREE.Mesh(geometry, material);
+		this.glow   = new THREE.Vector3(0, 1, 0);
 
 
-		let glow_geometry = new THREE.SphereGeometry(120, 50, 50);
+		let glow_geometry = new THREE.CylinderGeometry(1, 10, 20, 32);
+
+		// let glow_geometry  = geometry.clone();
+		// let glow_transform = new THREE.Matrix4().makeScale(1.5, 1, 1);
+
+		// glow_geometry.applyMatrix(glow_transform);
+
+
 		let glow_material = new THREE.ShaderMaterial({
 			uniforms: {
+				glowVector: {
+					type: 'v3',
+					value: this.glow
+				},
 				viewVector: {
 					type: 'v3',
 					value: camera.position
 				}
 			},
-			vertexShader: `uniform vec3 viewVector;
+			vertexShader: `
+				uniform vec3 viewVector;
 				varying float intensity;
 				void main() {
 					gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4( position, 1.0 );
@@ -31,9 +64,10 @@
 				}
 			`,
 			fragmentShader: `
+				uniform vec3 glowVector;
 				varying float intensity;
 				void main() {
-					vec3 glow = vec3(0, 1, 0) * intensity;
+					vec3 glow = glowVector * intensity;
 					gl_FragColor = vec4( glow, 1.0 );
 				}
 			`,

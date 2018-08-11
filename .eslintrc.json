@@ -13,6 +13,8 @@
 	},
 	"globals": {
 		"THREE": true,
+		"Beat": true,
+		"Grid": true,
 		"Player": true,
 		"Ship": true,
 		"Wormhole": true,
