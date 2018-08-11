@@ -34,11 +34,6 @@
 			blending: THREE.AdditiveBlending
 		});
 
-		let object = new THREE.Mesh(new THREE.PlaneBufferGeometry(100, 100, 4, 4), material);
-		object.position.set(0, -75, 0);
-
-		_STATIC_OBJECTS.plane = object;
-		_SCENE.add(object);
 
 
 		let ship = new Ship({}, _SCENE, _CAMERA);
@@ -64,9 +59,9 @@
 
 		new Wormhole({
 			position: {
-				x: 0,
+				x: -150,
 				y: 0,
-				z: 0
+				z: -150
 			}
 		}, _SCENE, _CAMERA, _RENDERER);
 
