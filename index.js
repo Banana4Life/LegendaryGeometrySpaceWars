@@ -2,6 +2,7 @@
 (function(global) {
 
 	const _CAMERA   = new THREE.PerspectiveCamera(45, global.innerWidth / global.innerHeight, 1, 10000);
+	const _CONTROLS = new THREE.OrbitControls(_CAMERA);
 	const _SCENE    = new THREE.Scene();
 	const _RENDERER = new THREE.WebGLRenderer({
 		antialias: true
@@ -25,7 +26,7 @@
 		global.document.body.appendChild(_RENDERER.domElement);
 
 
-		let ambient_light = new THREE.AmbientLight(0xcccccc, 0.4);
+		let ambient_light = new THREE.AmbientLight(0xffffff, 0.4);
 		let point_light   = new THREE.PointLight(0xffffff, 0.8);
 
 
@@ -41,6 +42,9 @@
 		_STATIC_OBJECTS.plane = object;
 		_SCENE.add(object);
 
+
+		let ship = new Ship({}, _SCENE, _CAMERA);
+		_SCENE.add(ship.object);
 
 
 		_CAMERA.position.x = 800;
@@ -61,6 +65,8 @@
 	};
 
 	global.render = _ => {
+
+		_CONTROLS.update();
 
 		// _CAMERA.position.x = Math.cos(timer) * 800;
 		// _CAMERA.position.y = Math.sin(timer) * 800;

@@ -13,13 +13,8 @@
 	},
 	"globals": {
 		"THREE": true,
-		"Buffer": true,
-		"Config": true,
-		"Font": true,
-		"Music": true,
-		"Sound": true,
-		"Stuff": true,
-		"Texture": true,
+		"Ship": true,
+		"Wormhole": true,
 		"global": true,
 		"lychee": true
 	},
