@@ -33,18 +33,27 @@
             let delta = (now - this.lastUpdate) / 1000;
             this.lastUpdate = now;
 
+            let dX = 0;
+            let dZ = 0;
+
             if (this.input.left) {
-                this.object.position.z += this.speed * delta;
+                dZ += 1
             }
             if (this.input.right) {
-                this.object.position.z -= this.speed * delta;
+                dZ -= 1
             }
             if (this.input.up) {
-                this.object.position.x -= this.speed * delta;
+                dX -= 1;
             }
             if (this.input.down) {
-                this.object.position.x += this.speed * delta;
+                dX += 1;
             }
+
+            let direction = new THREE.Vector3(dX, 0, dZ).normalize();
+
+            this.object.position.x += direction.x * this.speed * delta;
+            this.object.position.z += direction.z * this.speed * delta;
+
         },
 
         render: function () {
