@@ -4,7 +4,7 @@
     const Particles = function (scene, wormhole) {
 
     	this.wormhole = wormhole;
-        let particleCount = 2000,
+        let particleCount = 3000,
             pMaterial = new THREE.PointsMaterial({
                 color: 0x00FFFF,
                 size: 20,
@@ -20,9 +20,9 @@
 
         for (let p = 0; p < particleCount; p++) {
 
-            let pX = Math.random() * 500 - 250,
+            let pX = Math.random() * 1000 - 500,
                 pY = Math.random() * 50 ,
-                pZ = Math.random() * 500 - 250,
+                pZ = Math.random() * 1000 - 500,
                 particle = new THREE.Vector3(pX, pY, pZ);
 
             this.particles.vertices.push(particle);
