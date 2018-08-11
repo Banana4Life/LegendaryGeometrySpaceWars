@@ -43,6 +43,8 @@
 		this.raycaster = new THREE.Raycaster();
 		this.mouse = new THREE.Vector2();
 
+		this.lastDeltaVector = new THREE.Vector3(0,0,0);
+
 		scene.add(this.object);
 
 		this.object.name = "Player";
@@ -81,11 +83,10 @@
 				this.lastFire = now;
 			}
 
-
 			let direction = new THREE.Vector3(dX, 0, dZ).normalize();
+			let deltaVector = direction.multiplyScalar(this.speed * delta);
 
-			this.object.position.x += direction.x * this.speed * delta;
-			this.object.position.z += direction.z * this.speed * delta;
+			this.object.position.add(deltaVector);
 
 			this.raycaster.setFromCamera(this.mouse, this.camera);
 
@@ -97,8 +98,17 @@
 
 			});
 
-			this.object.lookAt(this.target);
-			this.object.rotateY(THREE.Math.degToRad(180))
+			if (deltaVector.lengthSq() === 0) {
+				deltaVector = this.lastDeltaVector;
+			}
+			this.lastDeltaVector = deltaVector;
+
+			let newPos = this.object.position.clone().add(deltaVector);
+
+			this.object.lookAt(newPos);
+
+			this.object.rotateY(THREE.Math.degToRad(180));
+
 
 		},
 
