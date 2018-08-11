@@ -1,8 +1,10 @@
 
 (function (global) {
 
-    const Particles = function (scene) {
-        let particleCount = 1800,
+    const Particles = function (scene, wormhole) {
+
+    	this.wormhole = wormhole;
+        let particleCount = 5000,
             pMaterial = new THREE.PointsMaterial({
                 color: 0xFFFFFF,
                 size: 20,
@@ -47,9 +49,15 @@
                 nV.x += dV.x / 5;
                 nV.y += dV.y / 5;
                 nV.z += dV.z / 5;
+                nV = this.wormhole.attract(nV);
                 this.particles.vertices[i] = nV;
-            });
+
+
+
+			});
             this.particles.verticesNeedUpdate = true;
+
+
         },
 
         render: function () {

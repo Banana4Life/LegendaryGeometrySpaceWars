@@ -4,6 +4,9 @@
 	const Wormhole = function(data, scene, camera, renderer) {
 
 		let states = Object.assign({}, data);
+
+		this.pos = new THREE.Vector3(states.position.x, states.position.y, states.position.z);
+
 		let clock = new THREE.Clock();
 		console.log('new Wormhole!', states);
 
@@ -64,6 +67,15 @@
 		},
 
 		update: function() {
+		},
+
+		attract: function(point) {
+			let dir = new THREE.Vector3(this.pos.x, this.pos.y, this.pos.z).sub(point).normalize();
+			let distance = this.pos.distanceToSquared(point) / 10000;
+			dir.x = -dir.x / distance;
+			dir.y = -dir.y / distance;
+			dir.z = -dir.z / distance;
+			return point.sub(dir);
 		}
 	};
 

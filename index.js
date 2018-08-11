@@ -57,15 +57,15 @@
 
 		// TESTING CODE AREA
 
-		new Particles(_SCENE);
-
-		new Wormhole({
+		let wormhole = new Wormhole({
 			position: {
 				x: -150,
 				y: 0,
 				z: -150
 			}
 		}, _SCENE, _CAMERA, _RENDERER);
+
+		new Particles(_SCENE, wormhole);
 
 		// TESTING CODE AREA
 
