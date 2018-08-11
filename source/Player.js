@@ -6,25 +6,32 @@
 		this.camera = camera;
 		this.plane = plane;
 
-		this.weaponParticle = new WeaponParticle(scene, wormhole);
+		let listener = new THREE.AudioListener();
+		camera.add( listener );
+
+		let soundSource = new THREE.Audio( listener );
+
+		this.weaponParticle = new WeaponParticle(scene, wormhole, soundSource);
 
 		let geometry = new THREE.BoxGeometry(20, 20, 20);
 		let material = new THREE.MeshBasicMaterial({color: 0x00ffff});
 
 		this.object = new THREE.Mesh(geometry, material);
 
-		this.input = {left: false, right: false, up: false, down: false};
+		this.input = {left: false, right: false, up: false, down: false, fire: false};
 		this.speed = 100;
 
 		document.addEventListener('keydown', (ev) => this.onKey(ev, ev.key, true));
 		document.addEventListener('keyup', (ev) => this.onKey(ev, ev.key, false));
 
-		document.addEventListener('click', (ev) => this.onClick(ev, false), false);
+		document.addEventListener('mousedown', (ev) => this.onClick(ev, false, true), false);
+		document.addEventListener('mouseup', (ev) => this.onClick(ev, false, false), false);
 		document.addEventListener('contextmenu', (ev) => this.onClick(ev, true), false);
 
 		document.addEventListener('mousemove', (ev) => this.onMove(ev), false);
 
 		this.lastUpdate = Date.now();
+		this.lastFire = this.lastUpdate;
 
 		this.object.userData = {entity: this}
 
@@ -47,6 +54,7 @@
 			let delta = (now - this.lastUpdate) / 1000;
 			this.lastUpdate = now;
 
+
 			let dX = 0;
 			let dZ = 0;
 
@@ -62,6 +70,12 @@
 			if (this.input.down) {
 				dX += 1;
 			}
+
+			if (this.input.fire && (now - this.lastFire) > 80) {
+				this.weaponParticle.fire(this, this.target);
+				this.lastFire = now;
+			}
+
 
 			let direction = new THREE.Vector3(dX, 0, dZ).normalize();
 
@@ -105,11 +119,15 @@
 			}
 		},
 
-		onClick: function (event, isContextMenu) {
+		onClick: function (event, isContextMenu, isDown) {
 			event.preventDefault();
 
 			if (event.button === 0) {
-				this.weaponParticle.fire(this, this.target);
+				if (isDown) {
+					this.input.fire = true;
+				} else {
+					this.input.fire = false;
+				}
 			}
 
 			return false;

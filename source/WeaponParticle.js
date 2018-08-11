@@ -1,6 +1,10 @@
 (function (global) {
 
-	const WeaponParticle = function (scene, wormhole) {
+	const WeaponParticle = function (scene, wormhole, soundSource) {
+
+		this.audioLoader = new THREE.AudioLoader();
+
+		this.soundSource = soundSource;
 
 		this.wormhole = wormhole;
 		let pMaterial = new THREE.PointsMaterial({
@@ -76,6 +80,19 @@
 
 			this.object.geometry.vertices[this.lastParticle] = new THREE.Vector3(playerPos.x, playerPos.y, playerPos.z);
 			this.object.geometry.verticesNeedUpdate = true;
+
+			this.audioLoader.load( 'sounds/laser_middle.wav', (buffer) => {
+				if (this.soundSource.isPlaying) {
+					this.soundSource.stop();
+				} else {
+
+				}
+				this.soundSource.setBuffer( buffer );
+				this.soundSource.setLoop( false );
+				this.soundSource.setVolume( 0.5 );
+				this.soundSource.play();
+
+			});
 
 		}
 
