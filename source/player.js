@@ -11,13 +11,15 @@
         this.object = new THREE.Mesh(geometry, material);
 
         this.input = {left: false, right: false, up: false, down: false};
-        this.speed = 1;
+        this.speed = 100;
 
         document.addEventListener('keydown', (ev) => this.onKey(ev, ev.key, true));
         document.addEventListener('keyup', (ev) => this.onKey(ev, ev.key, false));
 
         document.addEventListener('click', (ev) => this.onClick(ev, false), false);
         document.addEventListener('contextmenu', (ev) => this.onClick(ev, true), false);
+
+        this.lastUpdate = Date.now();
 
     };
 
@@ -27,17 +29,21 @@
         },
 
         update: function () {
+            let now = Date.now();
+            let delta = (now - this.lastUpdate) / 1000;
+            this.lastUpdate = now;
+
             if (this.input.left) {
-                this.object.position.z += this.speed;
+                this.object.position.z += this.speed * delta;
             }
             if (this.input.right) {
-                this.object.position.z -= this.speed;
+                this.object.position.z -= this.speed * delta;
             }
             if (this.input.up) {
-                this.object.position.x -= this.speed;
+                this.object.position.x -= this.speed * delta;
             }
             if (this.input.down) {
-                this.object.position.x += this.speed;
+                this.object.position.x += this.speed * delta;
             }
         },
 
