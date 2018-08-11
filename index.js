@@ -62,13 +62,25 @@
 		_SCENE.add(ambient_light);
 		_SCENE.add(_CAMERA);
 
+		// TESTING CODE AREA
+
+        new Particles(_SCENE);
+
+		// TESTING CODE AREA
+
 	};
 
 
 	const _render_loop = _ => {
 		global.render();
-		_PLAYER.update();
 		global.requestAnimationFrame(_render_loop);
+
+        _SCENE.traverse(object => {
+
+            if (object.userData.entity) {
+                object.userData.entity.update();
+            }
+        });
 
 	};
 

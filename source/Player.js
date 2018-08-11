@@ -21,6 +21,8 @@
 
         this.lastUpdate = Date.now();
 
+        this.object.userData = { entity: this}
+
     };
 
     Player.prototype = {
