@@ -78,6 +78,8 @@
 
 		new Player(_SCENE, _CAMERA, _STATIC_OBJECTS.plane, wormhole);
 
+		new Enemy(_SCENE);
+
 	};
 
 
