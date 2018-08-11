@@ -11,13 +11,8 @@
 	const _RENDERER  = new THREE.WebGLRenderer({
 		antialias: true
 	});
-
-	const _PLAYER = new Player();
-
 	const _STATIC_OBJECTS  = {};
 	const _DYNAMIC_OBJECTS = [];
-
-
 
 	/*
 	 * INITIALIZATION
@@ -31,7 +26,7 @@
 		global.document.body.appendChild(_RENDERER.domElement);
 
 
-		let ambient_light = new THREE.AmbientLight(0xffffff, 0.4);
+		let ambient_light = new THREE.AmbientLight(0xcccccc, 0.4);
 		let point_light   = new THREE.PointLight(0xffffff, 0.8);
 
 
@@ -40,22 +35,37 @@
 			divisions: 200
 		}, _SCENE, _CAMERA);
 
+
 		_STATIC_OBJECTS.grid = grid;
 		_SCENE.add(grid.object);
 
 		let ship = new Ship({}, _SCENE, _CAMERA);
 		_STATIC_OBJECTS.ship = ship;
 		_SCENE.add(ship.object);
-		_SCENE.add(_PLAYER.object);
+
+		let axesHelper = new THREE.AxesHelper(250);
+		axesHelper.position.y = 0.1;
+		_SCENE.add(axesHelper);
 
 		_CAMERA.position.x = 800;
 		_CAMERA.position.y = 200;
 		_CAMERA.add(point_light);
 		_CAMERA.lookAt(_SCENE.position);
 
-		// _SCENE.add(new THREE.GridHelper(1000, 100));
 		_SCENE.add(ambient_light);
 		_SCENE.add(_CAMERA);
+
+		let wormhole = new Wormhole({
+			position: {
+				x: -150,
+				y: 0,
+				z: -150
+			}
+		}, _SCENE, _CAMERA, _RENDERER);
+
+		new Particles(_SCENE, wormhole);
+
+		new Player(_SCENE, _CAMERA, _STATIC_OBJECTS.plane, wormhole);
 
 	};
 
@@ -64,14 +74,18 @@
 	const _render_loop = _ => {
 
 		global.render();
-		_PLAYER.update();
-
 		global.requestAnimationFrame(_render_loop);
+
+		_SCENE.traverse(object => {
+
+			if (object.userData.entity) {
+				object.userData.entity.update();
+			}
+		});
 
 	};
 
 	global.render = _ => {
-
 
 		_CONTROLS.update();
 		_STATIC_OBJECTS.grid.update();
@@ -105,7 +119,6 @@
 
 	}, false);
 
-
 	(function() {
 
 		_GAME_START = Date.now();
@@ -124,4 +137,3 @@
 	global._SCENE  = _SCENE;
 
 })(typeof window !== 'undefined' ? window : this);
-
