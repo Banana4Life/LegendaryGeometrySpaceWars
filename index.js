@@ -94,8 +94,7 @@
 		global.requestAnimationFrame(_render_loop);
 
 		_SCENE.traverse(object => {
-
-			if (object.userData.entity) {
+			if (object && object.userData.entity) {
 				object.userData.entity.update();
 			}
 		});

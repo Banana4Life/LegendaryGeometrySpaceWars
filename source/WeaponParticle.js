@@ -47,6 +47,8 @@
 		update: function () {
 			this.geometry.vertices.forEach((pos, i) => {
 
+				let velocity = this.velocities[i];
+
 				this.scene.children.forEach(c => {
 					if (c.geometry && c.name.startsWith("Enemy")) {
 						c.geometry.computeBoundingSphere();
@@ -57,11 +59,19 @@
 							this.scene.remove(c);
 						}
 					}
+					if (velocity && c.position && c.name === "Particles") {
+						c.geometry.vertices.forEach((pos2, i) => {
+							let distanceSq = pos2.distanceToSquared(pos);
+							let pVelocity = velocity.clone().multiplyScalar(0.05);
+							if (distanceSq < 2000) {
+								c.userData.entity.velocities[i].add(pVelocity);
+							}
+						});
 
+					}
 				});
 
 				let nPos = pos;
-				let velocity = this.velocities[i];
 				if (velocity) {
 
 					// TODO deltaTime

@@ -63,10 +63,20 @@
 				nPos.y += velocity.y;
 				nPos.z += velocity.z;
 
+				if (Math.abs(nPos.x) > 500
+                 || Math.abs(nPos.z) > 500) {
+				    nPos.x = Math.random() * 1000 - 500;
+                    nPos.z =Math.random() * 1000 - 500;
+                    velocity = new THREE.Vector3(0,0,0);
+                    // TODO wormhole too
+				}
+
                 this.particles.vertices[i] = nPos;
 				this.velocities[i] = velocity;
+
 			});
             this.particles.verticesNeedUpdate = true;
+
 
 
         },
