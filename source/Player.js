@@ -18,12 +18,11 @@
 			map: new THREE.TextureLoader().load("images/Ship.png"),
 			transparent: true,
 			alphaTest: 0.5
-
 		});
 
 		this.object = new THREE.Mesh(geometry, material);
 
-		this.input = {left: false, right: false, up: false, down: false, fire: false};
+		this.input = { left: false, right: false, up: false, down: false, fire: false };
 		this.speed = 100;
 
 		document.addEventListener('keydown', (ev) => this.onKey(ev, ev.key, true));
@@ -38,7 +37,7 @@
 		this.lastUpdate = Date.now();
 		this.lastFire = this.lastUpdate;
 
-		this.object.userData = {entity: this}
+		this.object.userData = { entity: this };
 
 		this.raycaster = new THREE.Raycaster();
 		this.mouse = new THREE.Vector2();
@@ -61,15 +60,14 @@
 			let delta = (now - this.lastUpdate) / 1000;
 			this.lastUpdate = now;
 
-
 			let dX = 0;
 			let dZ = 0;
 
 			if (this.input.left) {
-				dZ += 1
+				dZ += 1;
 			}
 			if (this.input.right) {
-				dZ -= 1
+				dZ -= 1;
 			}
 			if (this.input.up) {
 				dX -= 1;
@@ -165,5 +163,3 @@
 
 
 })(typeof window !== 'undefined' ? window : this);
-
-

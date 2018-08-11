@@ -15,7 +15,7 @@
 			color: 0x000000,
 			metalness: 1.0,
 			roughness: 1,
-			opacity: 0.5,
+			opacity: 0.95,
 			transparent: true,
 			envMapIntensity: 5,
 			premultipliedAlpha: true
@@ -73,7 +73,7 @@
 
 			let dir = new THREE.Vector3(this.pos.x, this.pos.y, this.pos.z).sub(point).normalize();
 			let distance = this.pos.distanceToSquared(point);
-			if (distance < 45*45) {
+			if (distance < 45 * 45) {
 				velocity.x = 0;
 				velocity.y = 0;
 				velocity.z = 0;
@@ -84,12 +84,8 @@
 				velocity.z -= -dir.z / distance;
 			}
 
-
-
-
 		}
 	};
-
 
 	global.Wormhole = Wormhole;
 

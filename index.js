@@ -48,7 +48,7 @@
 		_SCENE.add(axesHelper);
 
 		let plane = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000, 8, 8),
-			new THREE.MeshBasicMaterial( {
+			new THREE.MeshBasicMaterial({
 				color: 0x248f24, alphaTest: 0, visible: false
 			}));
 		plane.name = 'Plane';
@@ -73,7 +73,6 @@
 			}
 		}, _SCENE, _CAMERA, _RENDERER);
 
-
 		new Particles(_SCENE, wormhole);
 
 		let player = new Player(_SCENE, _CAMERA, _STATIC_OBJECTS.plane, wormhole);
@@ -83,6 +82,7 @@
 		new Enemy(_SCENE, player);
 		new Enemy(_SCENE, player);
 		new Enemy(_SCENE, player);
+		new Enemy2({ position: {x: 100, y: 0, z: 100 } }, _SCENE, _CAMERA, player);
 
 	};
 
