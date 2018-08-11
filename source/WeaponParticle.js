@@ -2,6 +2,7 @@
 
 	const WeaponParticle = function (scene, wormhole, soundSource) {
 
+		this.scene = scene;
 		this.audioLoader = new THREE.AudioLoader();
 
 		this.soundSource = soundSource;
@@ -45,6 +46,20 @@
 
 		update: function () {
 			this.geometry.vertices.forEach((pos, i) => {
+
+				this.scene.children.forEach(c => {
+					if (c.geometry && c.name.startsWith("Enemy")) {
+						c.geometry.computeBoundingSphere();
+						let bs = c.geometry.boundingSphere;
+						let distanceSq = c.position.distanceToSquared(pos);
+						if (distanceSq < bs.radius * bs.radius) {
+							console.log("COLLIDE with weapon!");
+							this.scene.remove(c);
+						}
+					}
+
+				});
+
 				let nPos = pos;
 				let velocity = this.velocities[i];
 				if (velocity) {
@@ -62,6 +77,9 @@
 
 			});
 			this.geometry.verticesNeedUpdate = true;
+
+
+
 		},
 
 		render: function () {

@@ -3,7 +3,8 @@
 	const Enemy = function (scene, player) {
 
 		this.player = player;
-		switch (Math.floor(Math.random() * 3)) {
+		let type = Math.floor(Math.random() * 3);
+		switch (type) {
 			case 0:
 				let material1 = new THREE.MeshBasicMaterial({
 					color: 0x4400ff,
@@ -85,6 +86,8 @@
 		this.object.userData = {entity: this}
 		this.object.position.x = Math.random() * 1000 - 500;
 		this.object.position.z = Math.random() * 1000 - 500;
+
+		this.object.name = "Enemy" + type;
 
 		this.direction = 1;
 

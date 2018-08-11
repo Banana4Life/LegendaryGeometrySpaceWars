@@ -107,6 +107,23 @@
 
 			this.object.rotateY(THREE.Math.degToRad(180));
 
+			this.object.geometry.computeBoundingSphere();
+
+			let playerBs = this.object.geometry.boundingSphere;
+			let playerBsRadiusSq = playerBs.radius * playerBs.radius;
+
+			this.scene.children.forEach(c => {
+				if (c.geometry && c.name.startsWith("Enemy")) {
+					c.geometry.computeBoundingSphere();
+					let bs = c.geometry.boundingSphere;
+					let distanceSq = c.position.distanceToSquared(this.object.position);
+					if (distanceSq < bs.radius * bs.radius || distanceSq < playerBsRadiusSq) {
+						console.log("COLLIDE with player!");
+						this.scene.remove(c);
+					}
+				}
+
+			});
 
 		},
 
