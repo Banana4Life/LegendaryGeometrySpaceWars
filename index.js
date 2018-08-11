@@ -38,7 +38,6 @@
 
 		let ship = new Ship({}, _SCENE, _CAMERA);
 		_SCENE.add(ship.object);
-		let player = new Player(_SCENE, _CAMERA, _STATIC_OBJECTS.plane);
 
 		let axesHelper = new THREE.AxesHelper(250);
 		axesHelper.position.y = 0.1;
@@ -55,8 +54,6 @@
 		_SCENE.add(ambient_light);
 		_SCENE.add(_CAMERA);
 
-		// TESTING CODE AREA
-
 		let wormhole = new Wormhole({
 			position: {
 				x: -150,
@@ -67,7 +64,7 @@
 
 		new Particles(_SCENE, wormhole);
 
-		// TESTING CODE AREA
+		new Player(_SCENE, _CAMERA, _STATIC_OBJECTS.plane, wormhole);
 
 	};
 

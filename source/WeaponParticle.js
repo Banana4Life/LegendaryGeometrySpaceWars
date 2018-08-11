@@ -1,79 +1,87 @@
 (function (global) {
 
-    const WeaponParticle = function (scene) {
-        let pMaterial = new THREE.PointsMaterial({
-            color: 0x00FF00,
-            size: 70,
-            map: new THREE.TextureLoader().load("images/particle.png"),
-            blending: THREE.AdditiveBlending,
-            transparent: true,
-            alphaTest: 0.5
-        });
+	const WeaponParticle = function (scene, wormhole) {
 
-        this.geometry = new THREE.Geometry();
-        let zero = new THREE.Vector3(0, 0, 0);
-        for (let i = 0; i < 500; i++) {
-            this.geometry.vertices.push(zero);
-        }
+		this.wormhole = wormhole;
+		let pMaterial = new THREE.PointsMaterial({
+			color: 0x00FF00,
+			size: 70,
+			map: new THREE.TextureLoader().load("images/particle.png"),
+			blending: THREE.AdditiveBlending,
+			transparent: true,
+			alphaTest: 0.5
+		});
 
-        this.object = new THREE.Points(this.geometry, pMaterial);
+		this.geometry = new THREE.Geometry();
+		let zero = new THREE.Vector3(0, 0, 0);
+		for (let i = 0; i < 500; i++) {
+			this.geometry.vertices.push(zero);
+		}
 
-        this.direction = [500];
+		this.object = new THREE.Points(this.geometry, pMaterial);
 
-        this.object.sortParticles = true;
+		this.velocities = [];
 
-        scene.add(this.object);
+		this.object.sortParticles = true;
 
-        this.object.userData = {entity: this}
+		scene.add(this.object);
 
-        this.lastParticle = 0;
-        this.speed = 5;
+		this.object.userData = {entity: this}
 
-    };
+		this.lastParticle = 0;
+		this.speed = 5
+		;
 
-    WeaponParticle.prototype = {
+	};
 
-        destroy: function () {
-        },
+	WeaponParticle.prototype = {
 
-        update: function () {
-            this.geometry.vertices.forEach((v, i) => {
-                let nV = v;
-                let dir = this.direction[i];
-                if (dir) {
-                    // TODO deltaTime
-                    nV.x += dir.x * this.speed;
-                    nV.y += dir.y * this.speed;
-                    nV.z += dir.z * this.speed;
-                    this.geometry.vertices[i] = nV;
-                }
+		destroy: function () {
+		},
 
-            });
-            this.geometry.verticesNeedUpdate = true;
-        },
+		update: function () {
+			this.geometry.vertices.forEach((pos, i) => {
+				let nPos = pos;
+				let velocity = this.velocities[i];
+				if (velocity) {
 
-        render: function () {
-        },
+					// TODO deltaTime
+					this.wormhole.attract(nPos, velocity);
 
-        fire: function (player, target) {
-            // console.log("Fire!");
-            this.lastParticle++;
-            if (this.lastParticle > 500) {
-                this.lastParticle = 0;
-            }
+					nPos.x += velocity.x;
+					nPos.y += velocity.y;
+					nPos.z += velocity.z;
+
+					this.geometry.vertices[i] = nPos;
+					this.velocities[i] = velocity;
+				}
+
+			});
+			this.geometry.verticesNeedUpdate = true;
+		},
+
+		render: function () {
+		},
+
+		fire: function (player, target) {
+			// console.log("Fire!");
+			this.lastParticle++;
+			if (this.lastParticle > 500) {
+				this.lastParticle = 0;
+			}
 
 			let playerPos = player.object.position;
 
-			this.direction[this.lastParticle] = new THREE.Vector3(target.x - playerPos.x, 0, target.z - playerPos.z).normalize(); // TODO directions based on player direction
+			this.velocities[this.lastParticle] = new THREE.Vector3((target.x - playerPos.x), 0, (target.z - playerPos.z)).normalize().multiplyScalar(this.speed);
 
 			this.object.geometry.vertices[this.lastParticle] = new THREE.Vector3(playerPos.x, playerPos.y, playerPos.z);
-            this.object.geometry.verticesNeedUpdate = true;
+			this.object.geometry.verticesNeedUpdate = true;
 
-        }
+		}
 
 
-    };
+	};
 
-    global.WeaponParticle = WeaponParticle;
+	global.WeaponParticle = WeaponParticle;
 
 })(typeof window !== 'undefined' ? window : this);

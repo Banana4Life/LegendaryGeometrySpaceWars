@@ -1,12 +1,12 @@
 (function (global) {
 
-	const Player = function (scene, camera, plane) {
+	const Player = function (scene, camera, plane, wormhole) {
 
 		this.scene = scene;
 		this.camera = camera;
 		this.plane = plane;
 
-		this.weaponParticle = new WeaponParticle(scene);
+		this.weaponParticle = new WeaponParticle(scene, wormhole);
 
 		let geometry = new THREE.BoxGeometry(20, 20, 20);
 		let material = new THREE.MeshBasicMaterial({color: 0x00ffff});
@@ -31,7 +31,7 @@
 		this.raycaster = new THREE.Raycaster();
 		this.mouse = new THREE.Vector2();
 
-		scene.add(this.object)
+		scene.add(this.object);
 
 		this.object.name = "Player";
 

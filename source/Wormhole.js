@@ -69,13 +69,24 @@
 		update: function() {
 		},
 
-		attract: function(point) {
+		attract: function(point, velocity) {
+
 			let dir = new THREE.Vector3(this.pos.x, this.pos.y, this.pos.z).sub(point).normalize();
-			let distance = this.pos.distanceToSquared(point) / 10000;
-			dir.x = -dir.x / distance;
-			dir.y = -dir.y / distance;
-			dir.z = -dir.z / distance;
-			return point.sub(dir);
+			let distance = this.pos.distanceToSquared(point);
+			if (distance < 45*45) {
+				velocity.x = 0;
+				velocity.y = 0;
+				velocity.z = 0;
+			} else {
+				distance /= 1000;
+				velocity.x -= -dir.x / distance;
+				velocity.y -= -dir.y / distance;
+				velocity.z -= -dir.z / distance;
+			}
+
+
+
+
 		}
 	};
 

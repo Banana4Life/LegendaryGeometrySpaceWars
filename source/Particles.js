@@ -16,6 +16,8 @@
 
         this.particles = new THREE.Geometry();
 
+		this.velocities = [];
+
         for (let p = 0; p < particleCount; p++) {
 
             let pX = Math.random() * 500 - 250,
@@ -43,17 +45,26 @@
         },
 
         update: function () {
-            this.particles.vertices.forEach((v, i) => {
-                let nV = v;
-                let dV = new THREE.Vector3((Math.random() * 2) - 1, (Math.random() * 2) - 1, (Math.random() * 2) - 1).normalize();
-                nV.x += dV.x / 5;
-                nV.y += dV.y / 5;
-                nV.z += dV.z / 5;
-                nV = this.wormhole.attract(nV);
-                this.particles.vertices[i] = nV;
 
+            this.particles.vertices.forEach((pos, i) => {
+                let nPos = pos;
 
+                let velocity = this.velocities[i];
+                if (!velocity) {
+					velocity = new THREE.Vector3((Math.random() * 2) - 1, (Math.random() * 2) - 1, (Math.random() * 2) - 1).normalize().multiplyScalar(1/5);
+                } else {
+                    velocity.sub(velocity.clone().normalize().multiplyScalar(1/15));
+                }
+                velocity.add(new THREE.Vector3((Math.random() * 2) - 1, (Math.random() * 2) - 1, (Math.random() * 2) - 1).normalize().multiplyScalar(1/10));
 
+                this.wormhole.attract(nPos, velocity);
+
+				nPos.x += velocity.x;
+				nPos.y += velocity.y;
+				nPos.z += velocity.z;
+
+                this.particles.vertices[i] = nPos;
+				this.velocities[i] = velocity;
 			});
             this.particles.verticesNeedUpdate = true;
 
