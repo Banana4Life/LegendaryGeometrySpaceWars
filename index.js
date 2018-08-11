@@ -8,6 +8,8 @@
 		antialias: true
 	});
 
+	const _PLAYER = new Player();
+
 	const _STATIC_OBJECTS  = {};
 	const _DYNAMIC_OBJECTS = [];
 
@@ -45,7 +47,7 @@
 
 		let ship = new Ship({}, _SCENE, _CAMERA);
 		_SCENE.add(ship.object);
-
+		_SCENE.add(_PLAYER.object);
 
 		_CAMERA.position.x = 800;
 		_CAMERA.position.y = 200;
@@ -61,7 +63,9 @@
 
 	const _render_loop = _ => {
 		global.render();
+		_PLAYER.update();
 		global.requestAnimationFrame(_render_loop);
+
 	};
 
 	global.render = _ => {
