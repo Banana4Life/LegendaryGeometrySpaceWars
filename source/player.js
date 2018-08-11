@@ -6,7 +6,7 @@
         console.log('new player!', states);
 
         let geometry = new THREE.BoxGeometry(20, 20, 20);
-        let material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+        let material = new THREE.MeshBasicMaterial({color: 0x00ffff});
 
         this.object = new THREE.Mesh(geometry, material);
 

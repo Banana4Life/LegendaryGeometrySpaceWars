@@ -49,6 +49,10 @@
 		_SCENE.add(ship.object);
 		_SCENE.add(_PLAYER.object);
 
+		let axesHelper = new THREE.AxesHelper(250);
+		axesHelper.position.y = 0.1;
+		_SCENE.add(axesHelper);
+
 		_CAMERA.position.x = 800;
 		_CAMERA.position.y = 200;
 		_CAMERA.add(point_light);
