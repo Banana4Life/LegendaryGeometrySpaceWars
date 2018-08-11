@@ -6,7 +6,7 @@
     	this.wormhole = wormhole;
         let particleCount = 2000,
             pMaterial = new THREE.PointsMaterial({
-                color: 0xFFFFFF,
+                color: 0x00FFFF,
                 size: 20,
                 map: new THREE.TextureLoader().load("images/particle.png"),
                 blending: THREE.AdditiveBlending,

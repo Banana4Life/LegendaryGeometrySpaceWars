@@ -8,7 +8,7 @@
 
 		this.wormhole = wormhole;
 		let pMaterial = new THREE.PointsMaterial({
-			color: 0x00FF00,
+			color: 0xFF0000,
 			size: 70,
 			map: new THREE.TextureLoader().load("images/particle.png"),
 			blending: THREE.AdditiveBlending,
@@ -89,7 +89,7 @@
 				}
 				this.soundSource.setBuffer( buffer );
 				this.soundSource.setLoop( false );
-				this.soundSource.setVolume( 0.5 );
+				this.soundSource.setVolume( 1 );
 				this.soundSource.play();
 
 			});

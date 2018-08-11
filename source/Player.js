@@ -71,7 +71,7 @@
 				dX += 1;
 			}
 
-			if (this.input.fire && (now - this.lastFire) > 80) {
+			if (this.input.fire && (now - this.lastFire) > 150) {
 				this.weaponParticle.fire(this, this.target);
 				this.lastFire = now;
 			}
