@@ -13,8 +13,13 @@
 
 		this.weaponParticle = new WeaponParticle(scene, wormhole, soundSource);
 
-		let geometry = new THREE.BoxGeometry(20, 20, 20);
-		let material = new THREE.MeshBasicMaterial({color: 0x00ffff});
+		let geometry = new THREE.BoxGeometry(20, 0, 20);
+		let material = new THREE.MeshBasicMaterial({
+			map: new THREE.TextureLoader().load("images/Ship.png"),
+			transparent: true,
+			alphaTest: 0.5
+
+		});
 
 		this.object = new THREE.Mesh(geometry, material);
 
@@ -93,6 +98,7 @@
 			});
 
 			this.object.lookAt(this.target);
+			this.object.rotateY(THREE.Math.degToRad(180))
 
 		},
 

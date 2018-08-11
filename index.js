@@ -32,7 +32,7 @@
 
 		let grid = new Grid({
 			size: 1000,
-			divisions: 100
+			divisions: 30
 		}, _SCENE, _CAMERA);
 
 
