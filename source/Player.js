@@ -92,6 +92,8 @@
 
 			});
 
+			this.object.lookAt(this.target);
+
 		},
 
 		render: function () {
