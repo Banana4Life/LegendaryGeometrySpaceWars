@@ -55,16 +55,18 @@
         render: function () {
         },
 
-        fire: function (player) {
+        fire: function (player, target) {
             // console.log("Fire!");
             this.lastParticle++;
             if (this.lastParticle > 500) {
                 this.lastParticle = 0;
             }
 
-            this.direction[this.lastParticle] = new THREE.Vector3(Math.random(), 0, Math.random()).normalize(); // TODO directions based on player direction
+			let playerPos = player.object.position;
 
-            this.object.geometry.vertices[this.lastParticle] = new THREE.Vector3(player.object.position.x, player.object.position.y, player.object.position.z);
+			this.direction[this.lastParticle] = new THREE.Vector3(target.x - playerPos.x, 0, target.z - playerPos.z).normalize(); // TODO directions based on player direction
+
+			this.object.geometry.vertices[this.lastParticle] = new THREE.Vector3(playerPos.x, playerPos.y, playerPos.z);
             this.object.geometry.verticesNeedUpdate = true;
 
         }

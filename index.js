@@ -38,7 +38,7 @@
 
 		let ship = new Ship({}, _SCENE, _CAMERA);
 		_SCENE.add(ship.object);
-		let player = new Player(_SCENE);
+		let player = new Player(_SCENE, _CAMERA, _STATIC_OBJECTS.plane);
 
 		let axesHelper = new THREE.AxesHelper(250);
 		axesHelper.position.y = 0.1;
@@ -49,7 +49,9 @@
 		_CAMERA.add(point_light);
 		_CAMERA.lookAt(_SCENE.position);
 
-		_SCENE.add(new THREE.GridHelper(1000, 100));
+		let plane = new THREE.GridHelper(1000, 100);
+		plane.name = "Plane";
+		_SCENE.add(plane);
 		_SCENE.add(ambient_light);
 		_SCENE.add(_CAMERA);
 

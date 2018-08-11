@@ -31,6 +31,8 @@
 
         this.object.userData = { entity: this}
 
+        this.object.name = "Particles"
+
     };
 
     Particles.prototype = {
