@@ -1,9 +1,9 @@
 (function (global) {
 
-    const Player = function (data, scene) {
+    const Player = function (scene) {
 
-        let states = Object.assign({}, data);
-        console.log('new player!', states);
+        this.scene = scene;
+        this.weaponParticle = new WeaponParticle(scene);
 
         let geometry = new THREE.BoxGeometry(20, 20, 20);
         let material = new THREE.MeshBasicMaterial({color: 0x00ffff});
@@ -22,6 +22,8 @@
         this.lastUpdate = Date.now();
 
         this.object.userData = { entity: this}
+
+        scene.add(this.object)
 
     };
 
@@ -63,7 +65,6 @@
 
         onKey: function (ev, key, pressed) {
 
-            console.log(key);
             switch (key) {
                 case 'w':
                     this.input.up = pressed;
@@ -85,8 +86,12 @@
         },
 
         onClick: function (event, isContextMenu) {
-            console.log(event);
             event.preventDefault();
+
+            if (event.button === 0) {
+                this.weaponParticle.fire(this);
+            }
+
             return false;
         }
 

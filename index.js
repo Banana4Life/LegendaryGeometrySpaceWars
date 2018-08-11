@@ -40,6 +40,15 @@
 		_STATIC_OBJECTS.plane = object;
 		_SCENE.add(object);
 
+
+		let ship = new Ship({}, _SCENE, _CAMERA);
+		_SCENE.add(ship.object);
+		let player = new Player(_SCENE);
+
+		let axesHelper = new THREE.AxesHelper(250);
+		axesHelper.position.y = 0.1;
+		_SCENE.add(axesHelper);
+
 		_CAMERA.position.x = 800;
 		_CAMERA.position.y = 200;
 		_CAMERA.add(point_light);
