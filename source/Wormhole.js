@@ -9,20 +9,20 @@
 
 		let material  = new THREE.MeshPhysicalMaterial({
 			map: null,
-			color: 0x0000ff,
+			color: 0x000000,
 			metalness: 1.0,
-			roughness: 0,
-			opacity: 0.95,
+			roughness: 1,
+			opacity: 0.5,
 			transparent: true,
 			envMapIntensity: 5,
 			premultipliedAlpha: true
 		});
 
-		let geometryHole  = new THREE.SphereGeometry(49, 20, 20);
-		let geometryWater = new THREE.SphereGeometry(50, 20, 20);
+		let geometryHole  = new THREE.SphereGeometry(50, 20, 20);
+		let geometryWater = new THREE.SphereGeometry(49, 20, 20);
 
 		let water = new THREE.Water(geometryWater, {
-			color: 0xffffff,
+			color: 0x888888,
 			scale: 4,
 			flowDirection: new THREE.Vector2(1, 1),
 			textureWidth: 2048,
@@ -48,7 +48,6 @@
 
 		let render = function() {
 			renderer.setSize(window.innerWidth, window.innerHeight);
-			renderer.setClearColor(0x20252f);
 			renderer.setPixelRatio(window.devicePixelRatio);
 			document.body.appendChild(renderer.domElement);
 
