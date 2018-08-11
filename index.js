@@ -58,7 +58,7 @@
 
 
 		_CAMERA.position.x = 800;
-		_CAMERA.position.y = 200;
+		_CAMERA.position.y = 1000;
 		_CAMERA.add(point_light);
 		_CAMERA.lookAt(_SCENE.position);
 
