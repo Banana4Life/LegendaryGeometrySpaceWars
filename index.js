@@ -47,8 +47,13 @@
 		axesHelper.position.y = 0.1;
 		_SCENE.add(axesHelper);
 
-		let plane = new THREE.GridHelper(1000, 100);
+		let plane = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000, 8, 8),
+			new THREE.MeshBasicMaterial( {
+				color: 0x248f24, alphaTest: 0, visible: false
+			}));
 		plane.name = 'Plane';
+		plane.rotateX(THREE.Math.degToRad(-90));
+		console.log(plane);
 		_SCENE.add(plane);
 
 
