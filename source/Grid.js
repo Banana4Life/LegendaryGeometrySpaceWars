@@ -41,12 +41,11 @@
 
 		this.object = new THREE.Points(this.geometry, pMaterial);
 
-
+		this.steps = (this.size / this.divisions);
 		this.geometry.vertices.forEach((pos, p) => {
 
-			let steps = (this.size / this.divisions);
-			let z = Math.ceil(-1 / 2 * this.size / steps) * steps + steps * (p % this.divisions);
-			let x = Math.ceil(-1 / 2 * this.size / steps) * steps + steps * Math.floor(p / this.divisions);
+			let z = Math.ceil(-1 / 2 * this.size / this.steps) * this.steps + this.steps * (p % this.divisions);
+			let x = Math.ceil(-1 / 2 * this.size / this.steps) * this.steps + this.steps * Math.floor(p / this.divisions);
 
 			pos._x = x;
 			pos._z = z;
@@ -80,9 +79,11 @@
 				console.log("DeathRing is: " + this.deathRing);
 				let color = new THREE.Color(0xff0000);
 				this.geometry.vertices.forEach((pos, i) => {
-					if (500 - Math.abs(pos._x) <= this.deathRing) {
+
+					console.log(pos._x + " " + (500-Math.abs(pos._x)));
+					if (500 - Math.abs(pos._x) <= this.deathRing * this.steps) {
 						this.geometry.colors[i] = color;
-					} else if (500 - Math.abs(pos._z) <= this.deathRing) {
+					} else if (500 - Math.abs(pos._z) <= this.deathRing * this.steps) {
 						this.geometry.colors[i] = color;
 					}
 				});
