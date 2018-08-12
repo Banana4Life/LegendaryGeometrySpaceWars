@@ -169,6 +169,10 @@
 
 		update: function (delta, tick) {
 
+			if (this.scene.grid.allowedRadius() <= 0) {
+				this.destroy(this);
+			}
+
 			this.particleSystem.update(tick);
 			let now = Date.now();
 			this.rewardTime -= delta;
