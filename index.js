@@ -28,8 +28,8 @@
 		global.document.body.appendChild(_RENDERER.domElement);
 
 		let background = new THREE.CubeTextureLoader()
-			.setPath('textures/MilkyWay/')
-			.load([ 'dark-s_px.jpg', 'dark-s_nx.jpg', 'dark-s_py.jpg', 'dark-s_ny.jpg', 'dark-s_pz.jpg', 'dark-s_nz.jpg' ]);
+			.setPath('textures/spacespace/')
+			.load([ 'px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png' ]);
 		background.format = THREE.RGBFormat;
 
 		_SCENE.background = background;
