@@ -46,10 +46,6 @@
 		_STATIC_OBJECTS.grid = grid;
 		_SCENE.add(grid.object);
 
-		let ship = new Ship({}, _SCENE, _CAMERA);
-		_STATIC_OBJECTS.ship = ship;
-		_SCENE.add(ship.object);
-
 		let axesHelper = new THREE.AxesHelper(250);
 		axesHelper.position.y = 0.1;
 		_SCENE.add(axesHelper);
