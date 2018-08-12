@@ -118,6 +118,7 @@
 			if (Math.abs(this.object.position.x + deltaVector.x) < 500 &&
 				Math.abs(this.object.position.z + deltaVector.z) < 500) {
 				this.object.position.add(deltaVector);
+				this.camera.position.add(deltaVector);
 			}
 
 

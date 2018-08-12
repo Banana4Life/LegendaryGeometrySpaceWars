@@ -13,7 +13,7 @@
 				let material = new THREE.MeshBasicMaterial({
 					color: 0x4400ff,
 					wireframe: true,
-					wireframeLinewidth: 2.5
+					wireframeLinewidth: 2.5,
 				});
 				let geometry = new THREE.PlaneGeometry(25, 25, 1, 1);
 				this.object = new THREE.Mesh(geometry, material);
@@ -214,8 +214,6 @@
 			}
 				break;
 		}
-
-
 
 		this.object.userData = {entity: this}
 
