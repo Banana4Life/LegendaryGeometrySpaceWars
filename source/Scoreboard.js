@@ -1,10 +1,12 @@
 
 (function(global) {
 
-	const Scoreboard = function(data, scene, points) {
+	const Scoreboard = function(data, scene) {
 		this.scene = scene;
 		this.pointsChanged = true;
-		this.points = points;
+		this.points = 0;
+		this.livesChanged = true;
+		this.lives = 5;
 		this.states = Object.assign({}, data);
 		this.createText();
 	};
@@ -14,7 +16,7 @@
 			let loader = new THREE.FontLoader();
 
 			loader.load('external/three/fonts/helvetiker_regular.typeface.json', (font) => {
-				let geometry = new THREE.TextGeometry('Points: ' + this.points, {
+				let geometry = new THREE.TextGeometry('Score: ' + this.points + " | Lifes: " + this.lives, {
 					font: font,
 					size: 30,
 					height: 5,
@@ -25,7 +27,6 @@
 					bevelSegments: 1
 				});
 
-				let oldObject = this.object;
 				let material = new THREE.MeshBasicMaterial({ color: 0x990000 });
 				this.object = new THREE.Mesh(geometry, material);
 				this.object.geometry.computeBoundingBox();
@@ -37,17 +38,18 @@
 				this.object.rotation.z = Math.PI / 2;
 				this.object.userData = { entity: this };
 				this.scene.add(this.object);
-				this.scene.remove(oldObject);
 				this.pointsChanged = false;
+				this.livesChanged = false;
 			});
 		},
 
 		updateText: function() {
+			this.scene.remove(this.object);
 			this.createText(this.points);
 		},
 
 		update: function() {
-			if (this.pointsChanged) {
+			if (this.pointsChanged || this.livesChanged) {
 				this.updateText(this.points);
 			}
 		}

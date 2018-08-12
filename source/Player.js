@@ -2,7 +2,6 @@
 
 	const Player = function (scene, camera, plane, wormhole, scoreboard) {
 
-		this.lives = 5;
 		this.scene = scene;
 		this.camera = camera;
 		this.plane = plane;
@@ -87,10 +86,11 @@
 	Player.prototype = {
 
 		destroy: function (by) {
-			this.lives--;
-			console.log("Player killed by: " + by.object.name + " Remaining Lives: " + this.lives);
+			by.scoreboard.lives--;
+			by.scoreboard.livesChanged = true;
+			console.log("Player killed by: " + by.object.name + " Remaining Lives: " + by.scoreboard.lives);
 
-			if (this.lives > 0) {
+			if (by.scoreboard.lives > 0) {
 				this.scene.children.forEach(child => {
 					if (child.name.startsWith("Enemy")) {
 						child.userData.entity.destroy(this);

@@ -61,15 +61,13 @@
 		_SCENE.add(ambient_light);
 		_SCENE.add(_CAMERA);
 
-		let scorepoints = 0;
-
-		let scoreboard = new Scoreboard({
+		_STATIC_OBJECTS.scoreboard = new Scoreboard({
 			position: {
 				x: -500,
 				y: 0,
 				z: 0
 			}
-		}, _SCENE, scorepoints);
+		}, _SCENE);
 
 		let wormhole = new Wormhole({
 			position: {
@@ -81,7 +79,7 @@
 
 		new Particles(_SCENE, wormhole);
 
-		_STATIC_OBJECTS.player = new Player(_SCENE, _CAMERA, _STATIC_OBJECTS.plane, wormhole, scoreboard);
+		_STATIC_OBJECTS.player = new Player(_SCENE, _CAMERA, _STATIC_OBJECTS.plane, wormhole, _STATIC_OBJECTS.scoreboard);
 
 		for (let i = 0; i < 20; i++) {
 			new Enemy(_SCENE, _STATIC_OBJECTS.player);
@@ -116,7 +114,7 @@
 			new Enemy(_SCENE, _STATIC_OBJECTS.player);
 		}
 
-		if (_STATIC_OBJECTS.player.lives > 0) {
+		if (_STATIC_OBJECTS.scoreboard.lives > 0) {
 			_SCENE.children.forEach(object => {
 				if (object && object.userData.entity) {
 					object.userData.entity.update(delta, _TICK);
