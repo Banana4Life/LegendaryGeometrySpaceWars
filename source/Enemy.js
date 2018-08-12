@@ -15,6 +15,8 @@
 			case 0: {
 				this.pointValue = 23;
 
+				this.desirePos = Math.random() * 500;
+
 				let material = new THREE.MeshBasicMaterial({
 					color: 0x4400ff,
 					wireframe: true,
@@ -27,20 +29,22 @@
 
 				this.movementType = () => {
 
-					this.destroyIfFar();
 					this.object.rotation.y += 0.15;
 					this.object.position.add(this.vDirection);
 
 					let nPos = this.object.position;
 
 					if (Math.abs(nPos.x) > 500) {
-						this.vDirection.x = Math.abs(this.vDirection.x) * -Math.sign(nPos.x);
-						this.object.lookAt(nPos.clone().add(this.vDirection));
-						this.object.rotateX(THREE.Math.degToRad(-90));
+						let oldDir = this.vDirection.x;
+						this.vDirection.x = Math.abs(this.vDirection.x) * -Math.sign(nPos.x);;
+						if (oldDir !== this.vDirection.x) {
+							this.object.lookAt(nPos.clone().add(this.vDirection));
+							this.object.rotateX(THREE.Math.degToRad(-90));
+						}
 					}
 
-					if (Math.abs(nPos.x) > 490) {
-						nPos.x += -Math.sign(nPos.x);
+					if (Math.abs(nPos.z) > this.desirePos) {
+						nPos.z += -Math.sign(nPos.z) * 3;
 					}
 
 				};
@@ -68,9 +72,7 @@
 				this.object.position.x = Math.random() * 1000 - 500;
 				this.object.position.z = Math.random() * 1000 - 500;
 
-				if (this.player.object.position.distanceToSquared(this.object.position) < 1000) {
-					this.object.position.add(this.player.object.position.clone().sub(this.object.position).normalize().multiplyScalar(1000));
-				}
+				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
 
 
 				this.object.rotateX(THREE.Math.degToRad(-90));
@@ -80,6 +82,8 @@
 				break;
 			case 1: {
 				this.pointValue = 22;
+
+				this.desirePos = Math.random() * 500;
 
 				let material = new THREE.MeshBasicMaterial({
 					color: 0x33ff00,
@@ -99,19 +103,22 @@
 
 				this.movementType = () => {
 
-					this.destroyIfFar();
-					//this.object.rotation.y += 0.07 * Math.sign(this.vDirection.z);
+					this.object.rotation.z += 0.07 * Math.sign(this.vDirection.z);
 					this.object.position.add(this.vDirection);
 
 					let nPos = this.object.position;
 
-					if (Math.abs(nPos.x) > 490) {
-						nPos.x += -Math.sign(nPos.x);
+					if (Math.abs(nPos.x) > this.desirePos) {
+						nPos.x += -Math.sign(nPos.x) * 3;
 					}
 
 					if (Math.abs(nPos.z) > 500) {
+
+						let oldDir = this.vDirection.z;
 						this.vDirection.z = Math.abs(this.vDirection.z) * -Math.sign(nPos.z);
-						this.object.lookAt(nPos.clone().add(this.vDirection));
+						if (oldDir !== this.vDirection.z) {
+							this.object.lookAt(nPos.clone().add(this.vDirection));
+						}
 					}
 
 
@@ -119,10 +126,7 @@
 
 				this.object.position.x = Math.random() * 1000 - 500;
 				this.object.position.z = Math.random() * 1000 - 500;
-
-				if (this.player.object.position.distanceToSquared(this.object.position) < 1000) {
-					this.object.position.add(this.player.object.position.clone().sub(this.object.position).normalize().multiplyScalar(1000));
-				}
+				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
 
 
 			}
@@ -271,7 +275,6 @@
 						this.object.lookAt(nPos.clone().add(this.vDirection));
 					}
 
-					this.destroyIfFar();
 				};
 
 			}
@@ -299,7 +302,6 @@
 
 				this.movementType = () => {
 
-					this.destroyIfFar();
 
 					this.object.rotation.z += 0.07;
 					this.object.position.add(this.vDirection);
@@ -353,13 +355,6 @@
 	};
 
 	Enemy.prototype = {
-
-		destroyIfFar: function() {
-			if (Math.abs(this.object.position.x) > 1000 ||
-				Math.abs(this.object.position.z) > 1000) {
-				this.destroy(this);
-			}
-		},
 
 		destroy: function (by) {
 
@@ -438,13 +433,7 @@
 					this.object.position.x = Math.random() * 1000 - 500;
 					this.object.position.z = Math.random() * 1000 - 500;
 
-					if (this.type === 2 || this.type === 3) {
-						this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
-					} else {
-						if (this.player.object.position.distanceToSquared(this.object.position) < 1000) {
-							this.object.position.add(this.player.object.position.clone().sub(this.object.position).normalize().multiplyScalar(1000));
-						}
-					}
+					this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
 				}
 
 			}
