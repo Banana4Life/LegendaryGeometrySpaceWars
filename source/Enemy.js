@@ -250,7 +250,7 @@
 
 	Enemy.prototype = {
 
-		destroy: function () {
+		destroy: function (by) {
 
 			if ((!this.death || this.death < 0) && !this.invincibleTime) {
 				this.psOptions.position.x = this.object.position.x;
@@ -264,6 +264,8 @@
 
 				this.object.visible = false;
 				this.death = 5;
+
+				by.scoreboard.points += 1;
 
 				if (this.destroyType) {
 					this.destroyType();

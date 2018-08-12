@@ -63,7 +63,7 @@
 
 		let scorepoints = 0;
 
-		new Scoreboard({
+		let scoreboard = new Scoreboard({
 			position: {
 				x: -500,
 				y: 0,
@@ -81,7 +81,7 @@
 
 		new Particles(_SCENE, wormhole);
 
-		_STATIC_OBJECTS.player = new Player(_SCENE, _CAMERA, _STATIC_OBJECTS.plane, wormhole);
+		_STATIC_OBJECTS.player = new Player(_SCENE, _CAMERA, _STATIC_OBJECTS.plane, wormhole, scoreboard);
 
 		for (let i = 0; i < 20; i++) {
 			new Enemy(_SCENE, _STATIC_OBJECTS.player);

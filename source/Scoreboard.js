@@ -3,12 +3,13 @@
 
 	const Scoreboard = function(data, scene, points) {
 
+		this.points = points;
 		let states = Object.assign({}, data);
 		let geometry;
 		let loader = new THREE.FontLoader();
 
-		loader.load('external/three/fonts/helvetiker_regular.typeface.json', function (font) {
-			geometry = new THREE.TextGeometry('Punktestatus: ' + points, {
+		loader.load('external/three/fonts/helvetiker_regular.typeface.json', (font) => {
+			geometry = new THREE.TextGeometry('Punktestatus: ' + this.points, {
 				font: font,
 				size: 30,
 				height: 5,

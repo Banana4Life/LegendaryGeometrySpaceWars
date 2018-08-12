@@ -1,6 +1,6 @@
 (function (global) {
 
-	const Player = function (scene, camera, plane, wormhole) {
+	const Player = function (scene, camera, plane, wormhole, scoreboard) {
 
 		this.scene = scene;
 		this.camera = camera;
@@ -11,7 +11,7 @@
 
 		let soundSource = new THREE.Audio(listener);
 
-		this.weaponParticle = new WeaponParticle(scene, wormhole, soundSource);
+		this.weaponParticle = new WeaponParticle(scene, wormhole, soundSource, scoreboard);
 
 		// let geometry = new THREE.BoxGeometry(20, 0, 20);
 		// let material = new THREE.MeshBasicMaterial({

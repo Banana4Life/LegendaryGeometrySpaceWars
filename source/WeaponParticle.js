@@ -1,7 +1,8 @@
 (function (global) {
 
-	const WeaponParticle = function (scene, wormhole, soundSource) {
+	const WeaponParticle = function (scene, wormhole, soundSource, scoreboard) {
 
+		this.scoreboard = scoreboard;
 		this.scene = scene;
 		this.audioLoader = new THREE.AudioLoader();
 
@@ -78,7 +79,7 @@
 						let bs = c.geometry.boundingSphere;
 						let distanceSq = c.position.distanceToSquared(pos);
 						if (distanceSq < bs.radius * bs.radius) {
-							c.userData.entity.destroy();
+							c.userData.entity.destroy(this);
 							this.velocities[i] = null;
 						}
 					}
