@@ -106,12 +106,14 @@
 			_TICK = 0;
 		}
 
-		if (_TICK > _NEXTSPAWN) {
-			_NEXTSPAWN += 20;
-			new Enemy(_SCENE, _STATIC_OBJECTS.player);
-		}
+
 
 		if (_STATIC_OBJECTS.scoreboard.lives > 0) {
+			if (_TICK > _NEXTSPAWN) {
+				_NEXTSPAWN += 20;
+				new Enemy(_SCENE, _STATIC_OBJECTS.player);
+			}
+
 			document.body.className = "running";
 			_CONTROLS.enabled = false;
 			_SCENE.children.forEach(object => {

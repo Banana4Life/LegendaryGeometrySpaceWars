@@ -2,6 +2,9 @@
 
 	const Enemy = function (scene, player, type) {
 
+		this.audioLoader = new THREE.AudioLoader();
+		this.soundSource = new THREE.Audio(player.listener);
+
 		this.scene = scene;
 		this.player = player;
 		if (typeof type === "undefined") {
@@ -20,13 +23,26 @@
 				let geometry = new THREE.PlaneGeometry(25, 25, 1, 1);
 				this.object = new THREE.Mesh(geometry, material);
 
-				this.movementType = () => {
-					this.object.rotation.y += 0.15 * this.direction;
-					this.object.position.x += 2.5 * this.direction;
+				this.vDirection = new THREE.Vector3(2.5,0,0);
 
-					if (Math.abs(this.object.position.x) > 500) {
-						this.direction = -this.direction;
+				this.movementType = () => {
+
+					this.destroyIfFar();
+					this.object.rotation.y += 0.15;
+					this.object.position.add(this.vDirection);
+
+					let nPos = this.object.position;
+
+					if (Math.abs(nPos.x) > 500) {
+						this.vDirection.x = Math.abs(this.vDirection.x) * -Math.sign(nPos.x);
+						this.object.lookAt(nPos.clone().add(this.vDirection));
+						this.object.rotateX(THREE.Math.degToRad(-90));
 					}
+
+					if (Math.abs(nPos.x) > 490) {
+						nPos.x += -Math.sign(nPos.x);
+					}
+
 				};
 
 				this.destroyType = () => {
@@ -72,24 +88,34 @@
 				});
 				let geometry = new THREE.Geometry();
 				geometry.vertices.push(
-					new THREE.Vector3(0, -10, 0),
-					new THREE.Vector3(30, 0, 0),
-					new THREE.Vector3(0, 10, 0)
+					new THREE.Vector3(0, 0, 30),
+					new THREE.Vector3(-10, 0, 0),
+					new THREE.Vector3(10, 0, 0)
 				);
 				geometry.faces.push(new THREE.Face3(0, 1, 2));
 				this.object = new THREE.Mesh(geometry, material);
 
+				this.vDirection = new THREE.Vector3(0,0,2);
+
 				this.movementType = () => {
-					this.object.rotation.y += 0.07 * this.direction;
-					this.object.position.z += 1.5 * this.direction;
 
-					if (Math.abs(this.object.position.z) > 500) {
-						this.direction = -this.direction;
-						this.object.rotateY(THREE.Math.degToRad(180));
+					this.destroyIfFar();
+					//this.object.rotation.y += 0.07 * Math.sign(this.vDirection.z);
+					this.object.position.add(this.vDirection);
+
+					let nPos = this.object.position;
+
+					if (Math.abs(nPos.x) > 490) {
+						nPos.x += -Math.sign(nPos.x);
 					}
-				};
 
-				this.object.rotateY(THREE.Math.degToRad(-90));
+					if (Math.abs(nPos.z) > 500) {
+						this.vDirection.z = Math.abs(this.vDirection.z) * -Math.sign(nPos.z);
+						this.object.lookAt(nPos.clone().add(this.vDirection));
+					}
+
+
+				};
 
 				this.object.position.x = Math.random() * 1000 - 500;
 				this.object.position.z = Math.random() * 1000 - 500;
@@ -98,8 +124,6 @@
 					this.object.position.add(this.player.object.position.clone().sub(this.object.position).normalize().multiplyScalar(1000));
 				}
 
-
-				this.object.rotateX(THREE.Math.degToRad(-90));
 
 			}
 				break;
@@ -121,7 +145,7 @@
 					let distance = delta.lengthSq();
 					delta.normalize();
 
-					this.object.rotation.z += Math.max(0.2, Math.min(0.01, 5000000 / (distance * distance))) * this.direction;
+					this.object.rotation.z += Math.max(0.2, Math.min(0.01, 5000000 / (distance * distance)));
 
 					this.object.position.add(delta.multiplyScalar(Math.max(Math.min(distance / 15000, 5), 0.7)));
 				};
@@ -191,13 +215,11 @@
 
 				this.destroyType = () => {
 					let part = new Enemy(this.scene, this.player, 0);
-					console.log(part.type);
 					part.object.position.x = this.object.position.x + Math.random() * 10 - 5;
 					part.object.position.y = this.object.position.y;
 					part.object.position.z = this.object.position.z + Math.random() * 10 - 5;
 					part.invincibleTime = 0.25;
 					let part2 = new Enemy(this.scene, this.player, 1);
-					console.log(part.type);
 					part2.object.position.x = this.object.position.x + Math.random() * 10 - 5;
 					part2.object.position.y = this.object.position.y;
 					part2.object.position.z = this.object.position.z + Math.random() * 10 - 5;
@@ -237,18 +259,19 @@
 				this.vDirection = new THREE.Vector3();
 
 				this.movementType = () => {
-					// this.object.rotation.x += 0.07 * this.direction;
 					this.object.position.add(this.vDirection);
 
 					let nPos = this.object.position;
 					if (Math.abs(nPos.x) > 500) {
-						this.vDirection.x = -this.vDirection.x;
-						this.object.lookAt(this.object.position.clone().add(this.vDirection));
+						this.vDirection.x = Math.abs(this.vDirection.x) * -Math.sign(nPos.x);
+						this.object.lookAt(nPos.clone().add(this.vDirection));
 					}
 					if (Math.abs(nPos.z) > 500) {
-						this.vDirection.z = -this.vDirection.z;
-						this.object.lookAt(this.object.position.clone().add(this.vDirection));
+						this.vDirection.z = Math.abs(this.vDirection.z) * -Math.sign(nPos.z);
+						this.object.lookAt(nPos.clone().add(this.vDirection));
 					}
+
+					this.destroyIfFar();
 				};
 
 			}
@@ -275,23 +298,22 @@
 				this.vDirection = new THREE.Vector3(Math.floor(Math.random() * 100 - 50), 0, Math.floor(Math.random() * 100 - 50)).normalize().multiplyScalar(5);
 
 				this.movementType = () => {
-					this.object.rotation.z += 0.07 * this.direction;
+
+					this.destroyIfFar();
+
+					this.object.rotation.z += 0.07;
 					this.object.position.add(this.vDirection);
 
 					let nPos = this.object.position;
+
+
 					if (Math.abs(nPos.x) > 500) {
-
-						this.vDirection.x = -this.vDirection.x;
-
+						this.vDirection.x = Math.abs(this.vDirection.x) * -Math.sign(nPos.x);
 					}
 					if (Math.abs(nPos.z) > 500) {
-						this.vDirection.z = -this.vDirection.z;
+						this.vDirection.z = Math.abs(this.vDirection.z) * -Math.sign(nPos.z);
 					}
 
-					if (Math.abs(this.object.position.z) > 500) {
-						this.direction = -this.direction;
-						this.object.rotateY(THREE.Math.degToRad(180));
-					}
 				};
 
 				this.object.rotateY(THREE.Math.degToRad(-90));
@@ -305,8 +327,6 @@
 
 
 		this.object.name = "Enemy" + type;
-
-		this.direction = 1;
 
 		scene.add(this.object);
 
@@ -334,9 +354,19 @@
 
 	Enemy.prototype = {
 
+		destroyIfFar: function() {
+			if (Math.abs(this.object.position.x) > 1000 ||
+				Math.abs(this.object.position.z) > 1000) {
+				this.destroy(this);
+			}
+		},
+
 		destroy: function (by) {
 
 			if ((!this.death || this.death < 0) && !this.invincibleTime) {
+
+
+
 				this.psOptions.position.x = this.object.position.x;
 				this.psOptions.position.y = 5;
 				this.psOptions.position.z = this.object.position.z;
@@ -351,6 +381,20 @@
 
 				if (by.award) {
 					by.award(this.pointValue);
+
+					this.audioLoader.load('sounds/explosion1_2.wav', (buffer) => {
+						if (this.soundSource.isPlaying) {
+							this.soundSource.stop();
+						} else {
+
+						}
+						this.soundSource.setBuffer(buffer);
+						this.soundSource.setLoop(false);
+						this.soundSource.setVolume(0.7);
+						this.soundSource.play();
+
+					});
+
 				}
 
 				if (by.object.name !== "Player") {

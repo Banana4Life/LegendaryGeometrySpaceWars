@@ -2,6 +2,8 @@
 
 	const Player = function (scene, camera, plane, wormhole, scoreboard) {
 
+		this.immune = true;
+
 		this.defaultFireRate = 200;
 		this.fireRate = this.defaultFireRate;
 		this.scoreboard = scoreboard;
@@ -9,10 +11,10 @@
 		this.camera = camera;
 		this.plane = plane;
 
-		let listener = new THREE.AudioListener();
-		camera.add(listener);
+		this.listener = new THREE.AudioListener();
+		camera.add(this.listener);
 
-		let soundSource = new THREE.Audio(listener);
+		let soundSource = new THREE.Audio(this.listener);
 
 		this.weaponParticle = new WeaponParticle(scene, wormhole, soundSource, scoreboard, this);
 
@@ -113,6 +115,11 @@
 	Player.prototype = {
 
 		destroy: function (by) {
+
+			if (this.immune) {
+				return;
+			}
+
 			this.scoreboard.lives--;
 			this.scoreboard.needsUpdate = true;
 			console.log("Player killed by: " + by.object.name + " Remaining Lives: " + this.scoreboard.lives);

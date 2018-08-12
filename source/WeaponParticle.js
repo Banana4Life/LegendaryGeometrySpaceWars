@@ -206,7 +206,7 @@
 			this.object.geometry.vertices[this.lastParticle] = new THREE.Vector3(playerPos.x, playerPos.y, playerPos.z);
 			this.object.geometry.verticesNeedUpdate = true;
 
-			this.audioLoader.load('sounds/laser_middle.wav', (buffer) => {
+			this.audioLoader.load('sounds/laser_short.wav', (buffer) => {
 				if (this.soundSource.isPlaying) {
 					this.soundSource.stop();
 				} else {
@@ -214,7 +214,7 @@
 				}
 				this.soundSource.setBuffer(buffer);
 				this.soundSource.setLoop(false);
-				this.soundSource.setVolume(1);
+				this.soundSource.setVolume(0.5);
 				this.soundSource.play();
 
 			});
