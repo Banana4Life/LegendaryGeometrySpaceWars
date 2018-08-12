@@ -10,6 +10,8 @@
 		this.type = type;
 		switch (type) {
 			case 0: {
+				this.pointValue = 23;
+
 				let material = new THREE.MeshBasicMaterial({
 					color: 0x4400ff,
 					wireframe: true,
@@ -61,6 +63,8 @@
 
 				break;
 			case 1: {
+				this.pointValue = 22;
+
 				let material = new THREE.MeshBasicMaterial({
 					color: 0x33ff00,
 					wireframe: true,
@@ -101,6 +105,9 @@
 			}
 				break;
 			case 2: {
+
+				this.pointValue = 31;
+
 				let material = new THREE.MeshBasicMaterial({
 					color: 0xaaaa00,
 					wireframe: true,
@@ -141,6 +148,8 @@
 				break;
 			case 100: {
 
+				this.pointValue = 24;
+
 				let material = new THREE.MeshBasicMaterial({
 					color: 0x4400ff,
 					wireframe: true,
@@ -177,6 +186,8 @@
 				break;
 
 			case 102: {
+				this.pointValue = 13;
+
 				let material = new THREE.MeshBasicMaterial({
 					color: 0xaaaa00,
 					wireframe: true,
@@ -272,7 +283,7 @@
 				this.death = 5;
 
 				if (by.scoreboard) {
-					by.scoreboard.points += 1;
+					by.scoreboard.points += this.pointValue;
 					by.scoreboard.pointsChanged = true;
 				}
 

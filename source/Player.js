@@ -157,7 +157,7 @@
 			}
 			this.lastDeltaVector = deltaVector;
 
-			let newPos = this.object.position.clone().add(deltaVector);
+			let newPos = this.target; // this.object.position.clone().add(deltaVector);
 
 			this.object.lookAt(newPos);
 

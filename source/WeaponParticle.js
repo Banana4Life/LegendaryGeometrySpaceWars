@@ -37,7 +37,7 @@
 		this.object.userData = {entity: this}
 
 		this.lastParticle = 0;
-		this.speed = 5
+		this.speed = 7
 		;
 
 		this.particleSystem = new THREE.GPUParticleSystem({
