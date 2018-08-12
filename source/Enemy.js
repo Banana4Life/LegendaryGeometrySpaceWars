@@ -72,7 +72,7 @@
 				this.object.position.x = this.scene.grid.randomPos();
 				this.object.position.z = this.scene.grid.randomPos();
 
-				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
+				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(this.scene.grid.allowedRadius() / 1.5));
 
 
 				this.object.rotateX(THREE.Math.degToRad(-90));
@@ -126,7 +126,7 @@
 
 				this.object.position.x = this.scene.grid.randomPos();
 				this.object.position.z = this.scene.grid.randomPos();
-				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
+				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(this.scene.grid.allowedRadius() / 1.5));
 
 
 			}
@@ -168,7 +168,7 @@
 
 				this.object.position.x = this.scene.grid.randomPos();
 				this.object.position.z = this.scene.grid.randomPos();
-				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(this.scene.grid.allowedRadius() / 2));
+				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(this.scene.grid.allowedRadius() / 1.5));
 
 				this.object.rotateX(THREE.Math.degToRad(-90));
 			}
@@ -237,7 +237,7 @@
 				this.object.position.x = this.scene.grid.randomPos();
 				this.object.position.z = this.scene.grid.randomPos();
 
-				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
+				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(this.scene.grid.allowedRadius() / 1.5));
 
 			}
 				break;
@@ -433,7 +433,8 @@
 					this.object.position.x = this.scene.grid.randomPos();
 					this.object.position.z = this.scene.grid.randomPos();
 
-					this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
+					console.log(this.scene.grid.allowedRadius());
+					this.object.position.add(this.object.position.clone().normalize().multiplyScalar(this.scene.grid.allowedRadius() / 1.5));
 				}
 
 			}
