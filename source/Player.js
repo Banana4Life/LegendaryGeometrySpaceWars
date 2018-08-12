@@ -2,7 +2,7 @@
 
 	const Player = function (scene, camera, plane, wormhole, scoreboard) {
 
-		this.immune = true;
+		//this.immune = true;
 
 		this.defaultFireRate = 200;
 		this.fireRate = this.defaultFireRate;
