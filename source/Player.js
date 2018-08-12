@@ -154,7 +154,7 @@
 					let bs = c.geometry.boundingSphere;
 					let distanceSq = c.position.distanceToSquared(this.object.position);
 					if (distanceSq < bs.radius * bs.radius || distanceSq < playerBsRadiusSq) {
-						c.userData.entity.destroy();
+						c.userData.entity.destroy(this);
 					}
 				}
 

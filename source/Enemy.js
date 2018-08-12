@@ -265,7 +265,9 @@
 				this.object.visible = false;
 				this.death = 5;
 
-				by.scoreboard.points += 1;
+				if (by.scoreboard) {
+					by.scoreboard.points += 1;
+				}
 
 				if (this.destroyType) {
 					this.destroyType();
