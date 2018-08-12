@@ -120,9 +120,11 @@
 				return;
 			}
 
+			this.scene.grid.deathTimerMax /= 2;
+			this.scene.grid.deathTimer = Math.min(this.scene.grid.deathTimer, this.scene.grid.deathTimerMax);
+
 			this.scoreboard.lives--;
 			this.scoreboard.needsUpdate = true;
-			console.log("Player killed by: " + by.object.name + " Remaining Lives: " + this.scoreboard.lives);
 
 			this.psOptions.position = this.object.position;
 			this.psOptions.velocity = this.lastDeltaVector.clone().normalize();
@@ -200,8 +202,8 @@
 			let direction = new THREE.Vector3(dX, 0, dZ).normalize();
 			let deltaVector = direction.multiplyScalar(this.speed * delta);
 
-			if (Math.abs(this.object.position.x + deltaVector.x) < 500 &&
-				Math.abs(this.object.position.z + deltaVector.z) < 500) {
+			if (Math.abs(this.object.position.x + deltaVector.x) < this.scene.grid.allowedRadius() &&
+				Math.abs(this.object.position.z + deltaVector.z) < this.scene.grid.allowedRadius()) {
 				this.object.position.add(deltaVector);
 				this.camera.position.add(deltaVector);
 			}

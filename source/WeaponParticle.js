@@ -24,7 +24,6 @@
 		for (let i = 0; i < 500; i++) {
 			this.geometry.vertices.push(zero);
 		}
-
 		this.object = new THREE.Points(this.geometry, pMaterial);
 
 		this.velocities = [];
@@ -127,7 +126,7 @@
 					this.geometry.vertices[i] = nPos;
 
 
-					if (Math.abs(nPos.x) > 500) {
+					if (Math.abs(nPos.x) > this.scene.grid.allowedRadius()) {
 						this.psOptions.position.x = nPos.x;
 						this.psOptions.position.y = nPos.y;
 						this.psOptions.position.z = nPos.z;
@@ -142,7 +141,7 @@
 						this.bounces[i] = this.bounces[i] + 1;
 
 					}
-					if (Math.abs(nPos.z) > 500) {
+					if (Math.abs(nPos.z) > this.scene.grid.allowedRadius()) {
 
 						this.psOptions.position.x = nPos.x;
 						this.psOptions.position.y = nPos.y;

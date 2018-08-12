@@ -3,6 +3,7 @@
 
     const Particles = function (scene, wormhole) {
 
+    	this.scene = scene;
     	this.wormhole = wormhole;
         let particleCount = 3000,
             pMaterial = new THREE.PointsMaterial({
@@ -21,9 +22,9 @@
 
         for (let p = 0; p < particleCount; p++) {
 
-            let pX = Math.random() * 1000 - 500,
+            let pX = Math.random() * this.scene.grid.allowedRadius()*2 - this.scene.grid.allowedRadius(),
                 pY = Math.random() * 50 ,
-                pZ = Math.random() * 1000 - 500,
+                pZ = Math.random() * this.scene.grid.allowedRadius()*2 - this.scene.grid.allowedRadius(),
                 particle = new THREE.Vector3(pX, pY, pZ);
 
             this.particles.vertices.push(particle);
@@ -92,8 +93,8 @@
 				nPos.y += velocity.y;
 				nPos.z += velocity.z;
 
-				if (Math.abs(nPos.x) > 500
-                 || Math.abs(nPos.z) > 500
+				if (Math.abs(nPos.x) > this.scene.grid.allowedRadius()
+                 || Math.abs(nPos.z) > this.scene.grid.allowedRadius()
 				 || velocity.lengthSq() === 0) {
 
 					this.psOptions.position.x = nPos.x;
@@ -104,8 +105,8 @@
 						this.particleSystem.spawnParticle(this.psOptions);
 					}
 
-					nPos.x = Math.random() * 1000 - 500;
-                    nPos.z = Math.random() * 1000 - 500;
+					nPos.x = Math.random() * this.scene.grid.allowedRadius() *2 - this.scene.grid.allowedRadius();
+                    nPos.z = Math.random() * this.scene.grid.allowedRadius() *2 - this.scene.grid.allowedRadius();
                     velocity = new THREE.Vector3(0,0,0);
 				}
 

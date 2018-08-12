@@ -74,19 +74,20 @@
 			}
 		}, _SCENE, _CAMERA, _RENDERER);
 
-		new Particles(_SCENE, wormhole);
-
 		_STATIC_OBJECTS.player = new Player(_SCENE, _CAMERA, _STATIC_OBJECTS.plane, wormhole, _STATIC_OBJECTS.scoreboard);
-
-		for (let i = 0; i < 4; i++) {
-			new Enemy(_SCENE, _STATIC_OBJECTS.player);
-		}
-		new Enemy(_SCENE, _STATIC_OBJECTS.player, 3);
 
 		_STATIC_OBJECTS.grid = new Grid({
 			size: 1000,
 			divisions: 100
 		}, _SCENE, _CAMERA, _STATIC_OBJECTS.player);
+
+		new Particles(_SCENE, wormhole);
+
+		for (let i = 0; i < 4; i++) {
+
+			new Enemy(_SCENE, _STATIC_OBJECTS.player);
+		}
+		new Enemy(_SCENE, _STATIC_OBJECTS.player, 3);
 
 	};
 
@@ -131,7 +132,6 @@
 	global.render = _ => {
 
 		_CONTROLS.update();
-		_STATIC_OBJECTS.grid.update();
 
 		// _CAMERA.position.x = Math.cos(timer) * 800;
 		// _CAMERA.position.y = Math.sin(timer) * 800;

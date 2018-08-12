@@ -5,7 +5,7 @@
 		this.scene = scene;
 		this.points = 0;
 		this.needsUpdate = true;
-		this.lives = 3;
+		this.lives = 9;
 		this.states = Object.assign({}, data);
 		this.rewardActive = false;
 		this.nextReward = 2000;

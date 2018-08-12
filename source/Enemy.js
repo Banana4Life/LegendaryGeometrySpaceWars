@@ -15,7 +15,7 @@
 			case 0: {
 				this.pointValue = 23;
 
-				this.desirePos = Math.random() * 500;
+				this.desirePos = Math.random() * this.scene.grid.allowedRadius();
 
 				let material = new THREE.MeshBasicMaterial({
 					color: 0x4400ff,
@@ -34,7 +34,7 @@
 
 					let nPos = this.object.position;
 
-					if (Math.abs(nPos.x) > 500) {
+					if (Math.abs(nPos.x) > this.scene.grid.allowedRadius()) {
 						let oldDir = this.vDirection.x;
 						this.vDirection.x = Math.abs(this.vDirection.x) * -Math.sign(nPos.x);;
 						if (oldDir !== this.vDirection.x) {
@@ -69,8 +69,8 @@
 
 				};
 
-				this.object.position.x = Math.random() * 1000 - 500;
-				this.object.position.z = Math.random() * 1000 - 500;
+				this.object.position.x = Math.random() * this.scene.grid.allowedRadius()*2 - this.scene.grid.allowedRadius();
+				this.object.position.z = Math.random() * this.scene.grid.allowedRadius()*2 - this.scene.grid.allowedRadius();
 
 				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
 
@@ -83,7 +83,7 @@
 			case 1: {
 				this.pointValue = 22;
 
-				this.desirePos = Math.random() * 500;
+				this.desirePos = Math.random() * this.scene.grid.allowedRadius();
 
 				let material = new THREE.MeshBasicMaterial({
 					color: 0x33ff00,
@@ -112,7 +112,7 @@
 						nPos.x += -Math.sign(nPos.x) * 3;
 					}
 
-					if (Math.abs(nPos.z) > 500) {
+					if (Math.abs(nPos.z) > this.scene.grid.allowedRadius()) {
 
 						let oldDir = this.vDirection.z;
 						this.vDirection.z = Math.abs(this.vDirection.z) * -Math.sign(nPos.z);
@@ -124,8 +124,8 @@
 
 				};
 
-				this.object.position.x = Math.random() * 1000 - 500;
-				this.object.position.z = Math.random() * 1000 - 500;
+				this.object.position.x = Math.random() * this.scene.grid.allowedRadius()*2 - this.scene.grid.allowedRadius();
+				this.object.position.z = Math.random() * this.scene.grid.allowedRadius()*2 - this.scene.grid.allowedRadius();
 				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
 
 
@@ -166,8 +166,8 @@
 					}
 				};
 
-				this.object.position.x = Math.random() * 1000 - 500;
-				this.object.position.z = Math.random() * 1000 - 500;
+				this.object.position.x = Math.random() * this.scene.grid.allowedRadius()*2 - this.scene.grid.allowedRadius();
+				this.object.position.z = Math.random() * this.scene.grid.allowedRadius()*2 - this.scene.grid.allowedRadius();
 				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
 
 				this.object.rotateX(THREE.Math.degToRad(-90));
@@ -234,8 +234,8 @@
 
 
 
-				this.object.position.x = Math.random() * 1000 - 500;
-				this.object.position.z = Math.random() * 1000 - 500;
+				this.object.position.x = Math.random() * this.scene.grid.allowedRadius()*2 - this.scene.grid.allowedRadius();
+				this.object.position.z = Math.random() * this.scene.grid.allowedRadius()*2 - this.scene.grid.allowedRadius();
 
 				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
 
@@ -266,11 +266,11 @@
 					this.object.position.add(this.vDirection);
 
 					let nPos = this.object.position;
-					if (Math.abs(nPos.x) > 500) {
+					if (Math.abs(nPos.x) > this.scene.grid.allowedRadius()) {
 						this.vDirection.x = Math.abs(this.vDirection.x) * -Math.sign(nPos.x);
 						this.object.lookAt(nPos.clone().add(this.vDirection));
 					}
-					if (Math.abs(nPos.z) > 500) {
+					if (Math.abs(nPos.z) > this.scene.grid.allowedRadius()) {
 						this.vDirection.z = Math.abs(this.vDirection.z) * -Math.sign(nPos.z);
 						this.object.lookAt(nPos.clone().add(this.vDirection));
 					}
@@ -309,10 +309,10 @@
 					let nPos = this.object.position;
 
 
-					if (Math.abs(nPos.x) > 500) {
+					if (Math.abs(nPos.x) > this.scene.grid.allowedRadius()) {
 						this.vDirection.x = Math.abs(this.vDirection.x) * -Math.sign(nPos.x);
 					}
-					if (Math.abs(nPos.z) > 500) {
+					if (Math.abs(nPos.z) > this.scene.grid.allowedRadius()) {
 						this.vDirection.z = Math.abs(this.vDirection.z) * -Math.sign(nPos.z);
 					}
 
@@ -430,8 +430,8 @@
 					this.scene.remove(this.object);
 				} else {
 					this.object.visible = true;
-					this.object.position.x = Math.random() * 1000 - 500;
-					this.object.position.z = Math.random() * 1000 - 500;
+					this.object.position.x = Math.random() * this.scene.grid.allowedRadius()*2 - this.scene.grid.allowedRadius();
+					this.object.position.z = Math.random() * this.scene.grid.allowedRadius()*2 - this.scene.grid.allowedRadius();
 
 					this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
 				}

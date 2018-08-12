@@ -5,7 +5,12 @@
 
 		let states = Object.assign({}, data);
 
+		scene.grid = this;
+
 		this.deathRing = 1;
+		this.deathTimer = 60;
+		this.deathTimerMax = 60;
+
 		this.updateDeath = true;
 
 
@@ -15,6 +20,8 @@
 
 		this.divisions = states.divisions || 100;
 		this.size      = states.size || 1000;
+
+		this.mapRadius = this.size / 2;
 
 		this.player = player || null;
 
@@ -72,18 +79,23 @@
 
 	Grid.prototype = {
 
-		update: function() {
+		update: function(delta) {
+
+			this.deathTimer -= delta;
+
+			if (this.deathTimer < 0) {
+				this.deathTimer = this.deathTimerMax;
+				this.updateDeath = true;
+				this.deathRing++;
+			}
 
 			if (this.updateDeath) {
 				this.updateDeath = false;
-				console.log("DeathRing is: " + this.deathRing);
-				let color = new THREE.Color(0xff0000);
+				let color = new THREE.Color(0x880000);
 				this.geometry.vertices.forEach((pos, i) => {
-
-					console.log(pos._x + " " + (500-Math.abs(pos._x)));
-					if (500 - Math.abs(pos._x) <= this.deathRing * this.steps) {
+					if (500 - Math.abs(pos._x) < this.deathRing * this.steps) {
 						this.geometry.colors[i] = color;
-					} else if (500 - Math.abs(pos._z) <= this.deathRing * this.steps) {
+					} else if (500 - Math.abs(pos._z) < this.deathRing * this.steps) {
 						this.geometry.colors[i] = color;
 					}
 				});
@@ -111,6 +123,10 @@
 			this._last = clock;
 			this._frames++;
 
+		},
+
+		allowedRadius: function() {
+			return this.mapRadius - this.deathRing * this.steps;
 		}
 
 	};
