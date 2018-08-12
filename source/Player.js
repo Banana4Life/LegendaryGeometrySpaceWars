@@ -86,7 +86,7 @@
 
 		this.object.name = "Player";
 
-		this.lastReward = 0;
+		this.lastReward = 1000;
 		this.rewardTime = 0;
 
 		this.particleSystem = new THREE.GPUParticleSystem({
@@ -137,6 +137,9 @@
 				this.camera.position.x = 800;
 				this.camera.position.y = 1000;
 				this.camera.position.z = 0;
+			} else {
+				this.scoreboard.gameOver = true;
+				this.scoreboard.update();
 			}
 
 
@@ -145,10 +148,11 @@
 		},
 
 		activateReward: function () {
-			if (this.scoreboard.points - this.lastReward > 5000) {
-				this.lastReward = Math.floor(this.scoreboard.points / 5000) * 5000;
+			if (this.scoreboard.points > this.lastReward * 2) {
+				this.lastReward = Math.floor(this.scoreboard.points / 1000) * 1000;
 				this.fireRate = 50;
 				this.scoreboard.rewardActive = true;
+				this.scoreboard.nextReward = this.lastReward * 2;
 				this.scoreboard.needsUpdate = true;
 				this.rewardTime = 5;
 			}

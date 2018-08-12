@@ -5,9 +5,11 @@
 		this.scene = scene;
 		this.points = 0;
 		this.needsUpdate = true;
-		this.lives = 5;
+		this.lives = 3;
 		this.states = Object.assign({}, data);
 		this.rewardActive = false;
+		this.nextReward = 2000;
+		this.gameOver = false;
 		this.createText();
 	};
 
@@ -16,7 +18,9 @@
 			let loader = new THREE.FontLoader();
 
 			loader.load('external/three/fonts/helvetiker_regular.typeface.json', (font) => {
-				let geometry = new THREE.TextGeometry('Score: ' + this.points + " | Lives: " + this.lives + (this.rewardActive ? " | HYPER MODE" : ""), {
+				let geometry = new THREE.TextGeometry('Score: ' + this.points +
+					(this.gameOver ? " | GAME OVER" : " | Lives: " + this.lives +
+					(this.rewardActive ? " | HYPER MODE ACTIVE" : " | HYPER MODE IN " + (this.nextReward - this.points))), {
 					font: font,
 					size: 30,
 					height: 5,

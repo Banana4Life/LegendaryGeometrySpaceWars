@@ -78,10 +78,10 @@
 
 		_STATIC_OBJECTS.player = new Player(_SCENE, _CAMERA, _STATIC_OBJECTS.plane, wormhole, _STATIC_OBJECTS.scoreboard);
 
-		for (let i = 0; i < 20; i++) {
+		for (let i = 0; i < 4; i++) {
 			new Enemy(_SCENE, _STATIC_OBJECTS.player);
 		}
-
+		new Enemy(_SCENE, _STATIC_OBJECTS.player, 3);
 
 		_STATIC_OBJECTS.grid = new Grid({
 			size: 1000,

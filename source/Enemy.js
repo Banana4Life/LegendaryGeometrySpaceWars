@@ -4,7 +4,7 @@
 
 		this.scene = scene;
 		this.player = player;
-		if (!type) {
+		if (typeof type === "undefined") {
 			type = Math.floor(Math.random() * 3);
 		}
 		this.type = type;
@@ -77,7 +77,6 @@
 					new THREE.Vector3(0, 10, 0)
 				);
 				geometry.faces.push(new THREE.Face3(0, 1, 2));
-				geometry.computeBoundingBox();
 				this.object = new THREE.Mesh(geometry, material);
 
 				this.movementType = () => {
@@ -146,12 +145,82 @@
 				this.object.rotateX(THREE.Math.degToRad(-90));
 			}
 				break;
+			case 3: {
+				this.pointValue = 111;
+
+				let material = new THREE.MeshBasicMaterial({
+					color: 0xff0022,
+					wireframe: true,
+					wireframeLinewidth: 2.5
+				});
+				let geometry = new THREE.Geometry();
+				geometry.vertices.push(
+					// Square
+					new THREE.Vector3(-10, 0, -10),
+					new THREE.Vector3(-10, 0,  10),
+					new THREE.Vector3( 10, 0,  10),
+					new THREE.Vector3( 10, 0, -10),
+					// Triangle Front
+					new THREE.Vector3(  0, 0, 40),
+					// Triangle Left
+					new THREE.Vector3(-10, 0, 0),
+					new THREE.Vector3(-10, 0, -20),
+					new THREE.Vector3(-30, 0, -20),
+					// Triangle Right
+					new THREE.Vector3(10, 0, 0),
+					new THREE.Vector3(10, 0, -20),
+					new THREE.Vector3(30, 0, -20),
+				);
+				geometry.faces.push(new THREE.Face3(0, 1, 2));
+				geometry.faces.push(new THREE.Face3(0, 2, 3));
+
+				geometry.faces.push(new THREE.Face3(1, 2, 4));
+
+				geometry.faces.push(new THREE.Face3(5, 6, 7));
+				geometry.faces.push(new THREE.Face3(8, 9, 10));
+				this.object = new THREE.Mesh(geometry, material);
+
+				this.movementType = () => {
+					let delta = this.player.object.position.clone().sub(this.object.position);
+					delta.normalize();
+
+					this.object.lookAt(this.player.object.position);
+
+					this.object.position.add(delta.multiplyScalar(3));
+				};
+
+				this.destroyType = () => {
+					let part = new Enemy(this.scene, this.player, 0);
+					console.log(part.type);
+					part.object.position.x = this.object.position.x + Math.random() * 10 - 5;
+					part.object.position.y = this.object.position.y;
+					part.object.position.z = this.object.position.z + Math.random() * 10 - 5;
+					part.invincibleTime = 0.25;
+					let part2 = new Enemy(this.scene, this.player, 1);
+					console.log(part.type);
+					part2.object.position.x = this.object.position.x + Math.random() * 10 - 5;
+					part2.object.position.y = this.object.position.y;
+					part2.object.position.z = this.object.position.z + Math.random() * 10 - 5;
+					part2.invincibleTime = 0.25;
+
+ 					part.destroyType();
+				};
+
+
+
+				this.object.position.x = Math.random() * 1000 - 500;
+				this.object.position.z = Math.random() * 1000 - 500;
+
+				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
+
+			}
+				break;
 			case 100: {
 
 				this.pointValue = 24;
 
 				let material = new THREE.MeshBasicMaterial({
-					color: 0x4400ff,
+					color: 0x2200dd,
 					wireframe: true,
 					wireframeLinewidth: 2.5
 				});
@@ -189,7 +258,7 @@
 				this.pointValue = 13;
 
 				let material = new THREE.MeshBasicMaterial({
-					color: 0xaaaa00,
+					color: 0x999900,
 					wireframe: true,
 					wireframeLinewidth: 2.5
 				});
@@ -325,8 +394,12 @@
 					this.object.position.x = Math.random() * 1000 - 500;
 					this.object.position.z = Math.random() * 1000 - 500;
 
-					if (this.type === 2) {
+					if (this.type === 2 || this.type === 3) {
 						this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
+					} else {
+						if (this.player.object.position.distanceToSquared(this.object.position) < 1000) {
+							this.object.position.add(this.player.object.position.clone().sub(this.object.position).normalize().multiplyScalar(1000));
+						}
 					}
 				}
 
