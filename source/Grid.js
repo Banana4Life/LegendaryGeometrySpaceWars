@@ -10,13 +10,12 @@
 		this.deathRing = 1;
 		this.deathTimer = 60;
 		this.deathTimerMax = 60;
-
+		this.ripples = [];
+		this.velocities = [];
 		this.updateDeath = true;
 
 
-		this._frames = 0;
-		this._last   = null;
-		this._start  = null;
+		this._scene = scene;
 
 		this.divisions = states.divisions || 100;
 		this.size      = states.size || 1000;
@@ -34,6 +33,8 @@
 			alphaTest: 0.5
 		});
 
+		this._distance = new THREE.Vector3(0, 0, 0);
+
 		this.geometry = new THREE.Geometry();
 		let zero = new THREE.Vector3(0, 0, 0);
 		let defColor = new THREE.Color(0x000055);
@@ -44,6 +45,7 @@
 		for (let i = 0; i < this.divisions * this.divisions; i++) {
 			this.geometry.vertices.push(zero.clone());
 			this.geometry.colors.push(defColor);
+			this.velocities.push(zero.clone());
 		}
 
 		this.object = new THREE.Points(this.geometry, pMaterial);
@@ -66,20 +68,34 @@
 		this.geometry.colorsNeedUpdate = true;
 
 
-		this.object.userData = { entity: this};
-
+		this.object.name = 'Grid';
+		this.object.userData = { entity: this };
 
 		scene.add(this.object);
-
-
-		this.object.name = 'Grid';
 
 	};
 
 
 	Grid.prototype = {
 
-		update: function(delta) {
+		rip: function(position) {
+
+			if (position === undefined) {
+				position = {
+					x: -1 / 2 * this.size + Math.random() * this.size,
+					z: -1 / 2 * this.size + Math.random() * this.size
+				};
+			}
+
+			this.ripples.push(new Ripple({
+				x: position.x,
+				y: -0.2,
+				z: position.z
+			}, this._scene));
+
+		},
+
+		update: function(delta, tick) {
 
 			this.deathTimer -= delta;
 
@@ -103,25 +119,62 @@
 				this.geometry.colorsNeedUpdate = true;
 			}
 
-			let clock = Date.now();
 
-			if (this._last === null) {
-				this._last  = Date.now();
-				this._start = Date.now();
-				return;
+			let particles = this.geometry.vertices;
+			let ripples   = this.ripples;
+
+			for (let r = 0, rl = ripples.length; r < rl; r++) {
+
+				let ripple = ripples[r];
+
+				ripple.update(delta, tick);
+
+				if (ripple.life <= 0) {
+					ripple.destroy();
+					ripples.splice(r, 1);
+					rl--;
+					r--;
+				}
+
 			}
 
 
-			let t = (clock - this._start) / 5000;
-			if (t <= 1) {
+			if (ripples.length > 0) {
 
-			} else {
-				this._start = Date.now();
+				let distance = this._distance;
+
+				for (let p = 0, pl = particles.length; p < pl; p++) {
+
+					let particle = particles[p];
+					let velocity = this.velocities[p];
+
+					distance.x = particle._x;
+					distance.y = 0;
+					distance.z = particle._z;
+
+
+					for (let r = 0, rl = ripples.length; r < rl; r++) {
+
+						let ripple    = ripples[r];
+						let influence = ripple.getInfluence(distance);
+
+						influence.setX(0);
+						influence.setZ(0);
+						velocity.add(influence);
+
+					}
+
+
+					velocity.y += (0 - particle.y) * 0.3;
+
+					velocity.multiplyScalar(0.3);
+					particle.add(velocity);
+
+				}
+
+				this.geometry.verticesNeedUpdate = true;
+
 			}
-
-
-			this._last = clock;
-			this._frames++;
 
 		},
 
