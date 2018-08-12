@@ -2,48 +2,53 @@
 (function(global) {
 
 	const Scoreboard = function(data, scene, points) {
-
+		this.scene = scene;
+		this.pointsChanged = true;
 		this.points = points;
-		let states = Object.assign({}, data);
-		let geometry;
-		let loader = new THREE.FontLoader();
-
-		loader.load('external/three/fonts/helvetiker_regular.typeface.json', (font) => {
-			geometry = new THREE.TextGeometry('Punktestatus: ' + this.points, {
-				font: font,
-				size: 30,
-				height: 5,
-				curveSegments: 12,
-				bevelEnabled: true,
-				bevelThickness: 1,
-				bevelSize: 1,
-				bevelSegments: 2
-			});
-			let material = new THREE.MeshBasicMaterial({ color: 0x990000/*, envMap: scene.background*/ });
-			let mesh = new THREE.Mesh(geometry, material);
-			mesh.geometry.computeBoundingBox();
-
-			console.log(mesh.geometry.boundingBox);
-
-			let zDelta = (mesh.geometry.boundingBox.max.x - mesh.geometry.boundingBox.min.x) / 2;
-			mesh.position.set(states.position.x, states.position.y, states.position.z + zDelta);
-			mesh.rotation.x = -Math.PI / 2;
-			mesh.rotation.y = Math.PI / 2.25;
-			mesh.rotation.z = Math.PI / 2;
-			scene.add(mesh);
-		});
-
-
+		this.states = Object.assign({}, data);
+		this.createText();
 	};
 
-
-
 	Scoreboard.prototype = {
+		createText: function() {
+			let loader = new THREE.FontLoader();
 
-		destroy: function() {
+			loader.load('external/three/fonts/helvetiker_regular.typeface.json', (font) => {
+				let geometry = new THREE.TextGeometry('Punktestatus: ' + this.points, {
+					font: font,
+					size: 30,
+					height: 5,
+					curveSegments: 12,
+					bevelEnabled: true,
+					bevelThickness: 1,
+					bevelSize: 1,
+					bevelSegments: 2
+				});
+
+				let material = new THREE.MeshBasicMaterial({ color: 0x990000 });
+				this.object = new THREE.Mesh(geometry, material);
+				this.object.geometry.computeBoundingBox();
+
+				let zDelta = (this.object.geometry.boundingBox.max.x - this.object.geometry.boundingBox.min.x) / 2;
+				this.object.position.set(this.states.position.x, this.states.position.y, this.states.position.z + zDelta);
+				this.object.rotation.x = -Math.PI / 2;
+				this.object.rotation.y = Math.PI / 2.25;
+				this.object.rotation.z = Math.PI / 2;
+				this.object.userData = { entity: this };
+				this.scene.add(this.object);
+				this.pointsChanged = false;
+			});
+		},
+
+		updateText: function() {
+			this.scene.remove(this.object);
+			this.createText(this.points);
 		},
 
 		update: function() {
+			if (this.pointsChanged) {
+				this.updateText(this.points);
+			}
 		}
 	};
 

@@ -271,6 +271,7 @@
 
 				if (by.scoreboard) {
 					by.scoreboard.points += 1;
+					by.scoreboard.pointsChanged = true;
 				}
 
 				if (this.destroyType) {
@@ -336,5 +337,3 @@
 
 
 })(typeof window !== 'undefined' ? window : this);
-
-
