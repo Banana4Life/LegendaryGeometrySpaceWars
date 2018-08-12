@@ -115,11 +115,14 @@
 		}
 
 		if (_STATIC_OBJECTS.scoreboard.lives > 0) {
+			document.body.className = "running";
 			_SCENE.children.forEach(object => {
 				if (object && object.userData.entity) {
 					object.userData.entity.update(delta, _TICK);
 				}
 			});
+		} else {
+			document.body.className = "";
 		}
 
 	};

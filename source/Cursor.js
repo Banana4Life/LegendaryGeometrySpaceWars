@@ -30,7 +30,7 @@
 
 		update: function () {
 			this.object.position.x = this.position.x;
-			this.object.position.y = 0;
+			this.object.position.dy = 0;
 			this.object.position.z = this.position.z;
 		}
 
