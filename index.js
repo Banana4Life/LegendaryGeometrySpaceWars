@@ -27,10 +27,15 @@
 
 		global.document.body.appendChild(_RENDERER.domElement);
 
+		let background = new THREE.CubeTextureLoader()
+			.setPath('textures/MilkyWay/')
+			.load([ 'dark-s_px.jpg', 'dark-s_nx.jpg', 'dark-s_py.jpg', 'dark-s_ny.jpg', 'dark-s_pz.jpg', 'dark-s_nz.jpg' ]);
+		background.format = THREE.RGBFormat;
+
+		_SCENE.background = background;
 
 		let ambient_light = new THREE.AmbientLight(0xcccccc, 0.4);
 		let point_light   = new THREE.PointLight(0xffffff, 0.8);
-
 
 		let grid = new Grid({
 			size: 1000,
@@ -83,7 +88,7 @@
 		new Enemy(_SCENE, player);
 		new Enemy(_SCENE, player);
 		new Enemy(_SCENE, player);
-		new Enemy2({ position: {x: 100, y: 0, z: 100 } }, _SCENE, _CAMERA, player);
+		new Enemy2({ position: { x: 100, y: 0, z: 100 }, speed: 80 }, _SCENE, _CAMERA, player);
 
 	};
 
