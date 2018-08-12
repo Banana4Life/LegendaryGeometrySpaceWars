@@ -83,11 +83,9 @@
 
 		let player = new Player(_SCENE, _CAMERA, _STATIC_OBJECTS.plane, wormhole);
 
-		new Enemy(_SCENE, player);
-		new Enemy(_SCENE, player);
-		new Enemy(_SCENE, player);
-		new Enemy(_SCENE, player);
-		new Enemy(_SCENE, player);
+		for (var i = 0; i < 20; i++) {
+			new Enemy(_SCENE, player);
+		}
 		new Enemy2({ position: { x: 100, y: 0, z: 100 }, speed: 80 }, _SCENE, _CAMERA, player);
 
 	};

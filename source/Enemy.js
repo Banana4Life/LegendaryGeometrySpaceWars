@@ -32,11 +32,11 @@
 				});
 				let geometry2 = new THREE.Geometry();
 				geometry2.vertices.push(
-					new THREE.Vector3( 0,  -10, 0 ),
-					new THREE.Vector3( 30, 0, 0 ),
-					new THREE.Vector3(  0, 10, 0 )
+					new THREE.Vector3(0, -10, 0),
+					new THREE.Vector3(30, 0, 0),
+					new THREE.Vector3(0, 10, 0)
 				);
-				geometry2.faces.push(new THREE.Face3(0,1,2));
+				geometry2.faces.push(new THREE.Face3(0, 1, 2));
 				geometry2.computeBoundingBox();
 				this.object = new THREE.Mesh(geometry2, material2);
 
@@ -93,15 +93,77 @@
 
 		scene.add(this.object);
 
+
+		this.particleSystem = new THREE.GPUParticleSystem({
+			maxParticles: 5000
+		});
+
+		scene.add(this.particleSystem);
+
+		this.psOptions = {
+			position: new THREE.Vector3(),
+			positionRandomness: 25,
+			velocity: new THREE.Vector3(),
+			velocityRandomness: .5,
+			color: 0xffaaaa,
+			colorRandomness: .10,
+			turbulence: .5,
+			lifetime: 1,
+			size: 15,
+			sizeRandomness: 1
+		};
+
+		this.tick = 0;
+
 	};
 
 	Enemy.prototype = {
 
 		destroy: function () {
+
+			if (this.object.visible) {
+				this.psOptions.position.x = this.object.position.x;
+				this.psOptions.position.y = this.object.position.y;
+				this.psOptions.position.z = this.object.position.z;
+
+				for (let j = 0; j < 50; j++) {
+					this.particleSystem.spawnParticle(this.psOptions);
+				}
+				this.particleSystem.update(this.tick)
+				console.log(this.tick);
+
+				this.object.visible = false;
+				this.death = 5;
+
+			}
+
 		},
 
-		update: function () {
-			this.movementType();
+		update: function (delta) {
+
+			if (this.object.visible) {
+				this.movementType();
+
+
+			}
+
+			this.death -= delta;
+
+			if (this.death < 0) {
+				this.death = undefined;
+				this.object.visible = true;
+				this.object.position.x = Math.random() * 1000 - 500;
+				this.object.position.z = Math.random() * 1000 - 500;
+
+			}
+
+			this.tick += delta;
+			if (this.tick < 0) {
+				this.tick = 0;
+			}
+
+			this.particleSystem.update(this.tick)
+
 
 		},
 

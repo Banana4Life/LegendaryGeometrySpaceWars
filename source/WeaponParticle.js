@@ -39,7 +39,7 @@
 		;
 
 		this.particleSystem = new THREE.GPUParticleSystem({
-			maxParticles: 250000
+			maxParticles: 500
 		});
 
 		scene.add(this.particleSystem);
@@ -86,7 +86,7 @@
 						let distanceSq = c.position.distanceToSquared(pos);
 						if (distanceSq < bs.radius * bs.radius) {
 							console.log("COLLIDE with weapon!");
-							this.scene.remove(c);
+							c.userData.entity.destroy();
 							this.velocities[i] = null;
 						}
 					}
