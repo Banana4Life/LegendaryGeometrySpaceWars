@@ -18,11 +18,11 @@
 					font: font,
 					size: 30,
 					height: 5,
-					curveSegments: 12,
-					bevelEnabled: true,
+					curveSegments: 1,
+					bevelEnabled: false,
 					bevelThickness: 1,
 					bevelSize: 1,
-					bevelSegments: 2
+					bevelSegments: 1
 				});
 
 				let material = new THREE.MeshBasicMaterial({ color: 0x990000 });
