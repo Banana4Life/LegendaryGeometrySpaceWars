@@ -39,7 +39,7 @@
         this.object.name = "Particles"
 
 		this.particleSystem = new THREE.GPUParticleSystem({
-			maxParticles: 250000
+			maxParticles: 12000
 		});
 
 		scene.add(this.particleSystem);
@@ -106,7 +106,7 @@
 					this.psOptions.position.y = nPos.y;
 					this.psOptions.position.z = nPos.z;
 
-					for (let j = 0; j < 50; j++) {
+					for (let j = 0; j < 5; j++) {
 						this.particleSystem.spawnParticle(this.psOptions);
 					}
 

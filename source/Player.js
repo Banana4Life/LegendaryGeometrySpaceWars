@@ -22,8 +22,8 @@
 
 		this.object = new THREE.Mesh(geometry, material);
 
-		this.input = { left: false, right: false, up: false, down: false, fire: false };
-		this.speed = 100;
+		this.input = {left: false, right: false, up: false, down: false, fire: false};
+		this.speed = 250;
 
 		document.addEventListener('keydown', (ev) => this.onKey(ev, ev.key, true));
 		document.addEventListener('keyup', (ev) => this.onKey(ev, ev.key, false));
@@ -37,7 +37,7 @@
 		this.lastUpdate = Date.now();
 		this.lastFire = this.lastUpdate;
 
-		this.object.userData = { entity: this };
+		this.object.userData = {entity: this};
 
 		this.raycaster = new THREE.Raycaster();
 		this.mouse = new THREE.Vector2();
@@ -82,7 +82,11 @@
 			let direction = new THREE.Vector3(dX, 0, dZ).normalize();
 			let deltaVector = direction.multiplyScalar(this.speed * delta);
 
-			this.object.position.add(deltaVector);
+			if (Math.abs(this.object.position.x + deltaVector.x) < 500 &&
+				Math.abs(this.object.position.z + deltaVector.z) < 500) {
+				this.object.position.add(deltaVector);
+			}
+
 
 			this.raycaster.setFromCamera(this.mouse, this.camera);
 
