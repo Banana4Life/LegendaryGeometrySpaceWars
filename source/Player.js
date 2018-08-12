@@ -122,6 +122,8 @@
 
 			this.scene.grid.deathTimerMax /= 2;
 			this.scene.grid.deathTimer = Math.min(this.scene.grid.deathTimer, this.scene.grid.deathTimerMax);
+			this.scene.grid.deathRing++;
+			this.scene.grid.updateDeath = true;
 
 			this.scoreboard.lives--;
 			this.scoreboard.needsUpdate = true;
