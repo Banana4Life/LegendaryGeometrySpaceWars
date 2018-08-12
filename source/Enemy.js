@@ -238,11 +238,11 @@
 			positionRandomness: 25,
 			velocity: new THREE.Vector3(),
 			velocityRandomness: .5,
-			color: 0xffaaaa,
-			colorRandomness: .10,
-			turbulence: .5,
-			lifetime: 1,
-			size: 15,
+			color: 0xff11ff,
+			colorRandomness: 20,
+			turbulence: 2,
+			lifetime: 2,
+			size: 25,
 			sizeRandomness: 1
 		};
 
@@ -256,7 +256,7 @@
 
 			if ((!this.death || this.death < 0) && !this.invincibleTime) {
 				this.psOptions.position.x = this.object.position.x;
-				this.psOptions.position.y = this.object.position.y;
+				this.psOptions.position.y = 5;
 				this.psOptions.position.z = this.object.position.z;
 
 				for (let j = 0; j < 50; j++) {
