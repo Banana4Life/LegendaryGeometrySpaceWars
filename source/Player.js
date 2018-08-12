@@ -86,7 +86,8 @@
 
 	Player.prototype = {
 
-		destroy: function () {
+		destroy: function (by) {
+			console.log("Player killed by: " + by.object.name);
 		},
 
 		update: function (delta) {

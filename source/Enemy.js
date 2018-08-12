@@ -285,6 +285,9 @@
 			if (to.hp) {
 				to.hp -= this.damage;
 				console.log(to.object.name + " hit for " + this.damage + " remaining HP: " + to.hp);
+				if (to.hp === 0) {
+					to.destroy(this);
+				}
 			}
 		},
 
