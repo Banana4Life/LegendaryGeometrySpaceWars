@@ -261,8 +261,6 @@
 			sizeRandomness: 1
 		};
 
-		this.tick = 0;
-
 	};
 
 	Enemy.prototype = {
@@ -280,7 +278,7 @@
 				this.particleSystem.update(this.tick)
 
 				this.object.visible = false;
-				this.death = 5;
+				this.death = 3;
 
 				if (by.award) {
 					by.award(this.pointValue);

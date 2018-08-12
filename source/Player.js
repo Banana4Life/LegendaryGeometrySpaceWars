@@ -89,6 +89,25 @@
 		this.lastReward = 0;
 		this.rewardTime = 0;
 
+		this.particleSystem = new THREE.GPUParticleSystem({
+			maxParticles: 5000
+		});
+
+		scene.add(this.particleSystem);
+
+		this.psOptions = {
+			position: new THREE.Vector3(),
+			positionRandomness: 25,
+			velocity: new THREE.Vector3(),
+			velocityRandomness: .5,
+			color: 0xffffff,
+			colorRandomness: 0,
+			turbulence: 20,
+			lifetime: 2,
+			size: 20,
+			sizeRandomness: 1
+		};
+
 	};
 
 	Player.prototype = {
@@ -98,11 +117,18 @@
 			this.scoreboard.needsUpdate = true;
 			console.log("Player killed by: " + by.object.name + " Remaining Lives: " + this.scoreboard.lives);
 
+			this.psOptions.position = this.object.position;
+			this.psOptions.velocity = this.lastDeltaVector.clone().normalize();
+			console.log(this.psOptions);
+			for (let i = 0; i < 5000; i++) {
+				this.particleSystem.spawnParticle(this.psOptions)
+			}
+
 			if (this.scoreboard.lives > 0) {
 				this.scene.children.forEach(child => {
 					if (child.name.startsWith("Enemy")) {
 						child.userData.entity.destroy(this);
-						// TODO giant particle bomb
+						child.userData.entity.death = 3;
 					}
 				});
 
@@ -112,6 +138,8 @@
 				this.camera.position.y = 1000;
 				this.camera.position.z = 0;
 			}
+
+
 
 
 		},
@@ -126,7 +154,9 @@
 			}
 		},
 
-		update: function (delta) {
+		update: function (delta, tick) {
+
+			this.particleSystem.update(tick);
 			let now = Date.now();
 			this.rewardTime -= delta;
 			if (this.scoreboard.rewardActive && this.rewardTime < 0) {
