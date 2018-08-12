@@ -105,8 +105,8 @@
 						this.particleSystem.spawnParticle(this.psOptions);
 					}
 
-					nPos.x = Math.random() * this.scene.grid.allowedRadius() *2 - this.scene.grid.allowedRadius();
-                    nPos.z = Math.random() * this.scene.grid.allowedRadius() *2 - this.scene.grid.allowedRadius();
+					nPos.x = this.scene.grid.randomPos();
+                    nPos.z = this.scene.grid.randomPos();
                     velocity = new THREE.Vector3(0,0,0);
 				}
 
