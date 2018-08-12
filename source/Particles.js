@@ -5,7 +5,7 @@
 
     	this.scene = scene;
     	this.wormhole = wormhole;
-        let particleCount = 3000,
+        let particleCount = 1200,
             pMaterial = new THREE.PointsMaterial({
                 color: 0x00FFFF,
                 size: 20,
@@ -40,7 +40,7 @@
         this.object.name = "Particles"
 
 		this.particleSystem = new THREE.GPUParticleSystem({
-			maxParticles: 12000
+			maxParticles: 5000
 		});
 
 		scene.add(this.particleSystem);

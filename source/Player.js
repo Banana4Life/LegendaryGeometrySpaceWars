@@ -128,7 +128,6 @@
 
 			this.psOptions.position = this.object.position;
 			this.psOptions.velocity = this.lastDeltaVector.clone().normalize();
-			console.log(this.psOptions);
 			for (let i = 0; i < 5000; i++) {
 				this.particleSystem.spawnParticle(this.psOptions)
 			}
