@@ -9,7 +9,7 @@
 
 		this.deathRing = 1;
 		this.deathTimer = 60;
-		this.deathTimerMax = 60;
+		this.deathTimerMax = 30;
 
 		this.updateDeath = true;
 

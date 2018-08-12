@@ -165,7 +165,7 @@
 				}
 
 				if (this.bounces[i] > 1) {
-					if (this.bounced[i] < -2 || this.bounces[i] > 2) {
+					if (this.bounced[i] < -2 || this.bounces[i] >= 2) {
 						this.velocities[i] = undefined;
 						this.geometry.vertices[i].x = 1000000;
 					}
