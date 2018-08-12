@@ -22,9 +22,9 @@
 
         for (let p = 0; p < particleCount; p++) {
 
-            let pX = Math.random() * this.scene.grid.allowedRadius()*2 - this.scene.grid.allowedRadius(),
+            let pX = this.scene.grid.randomPos(),
                 pY = Math.random() * 50 ,
-                pZ = Math.random() * this.scene.grid.allowedRadius()*2 - this.scene.grid.allowedRadius(),
+                pZ = this.scene.grid.randomPos(),
                 particle = new THREE.Vector3(pX, pY, pZ);
 
             this.particles.vertices.push(particle);

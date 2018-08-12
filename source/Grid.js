@@ -129,6 +129,11 @@
 			return this.mapRadius - this.deathRing * this.steps;
 		}
 
+		,
+		randomPos: function() {
+			return Math.random() * this.allowedRadius() * 2 - this.allowedRadius()
+		}
+
 	};
 
 
