@@ -61,13 +61,15 @@
 		_SCENE.add(ambient_light);
 		_SCENE.add(_CAMERA);
 
+		let scorepoints = 0;
+
 		new Scoreboard({
 			position: {
-				x: 510,
+				x: -500,
 				y: 0,
 				z: 0
 			}
-		}, _SCENE);
+		}, _SCENE, scorepoints);
 
 		let wormhole = new Wormhole({
 			position: {
@@ -84,8 +86,6 @@
 		for (let i = 0; i < 20; i++) {
 			new Enemy(_SCENE, _STATIC_OBJECTS.player);
 		}
-
-		new Enemy2({ position: { x: 100, y: 0, z: 100 }, speed: 80 }, _SCENE, _CAMERA, _STATIC_OBJECTS.player);
 
 
 		_STATIC_OBJECTS.grid = new Grid({
