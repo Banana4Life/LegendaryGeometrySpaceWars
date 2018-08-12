@@ -112,6 +112,11 @@
 					// TODO deltaTime
 					this.wormhole.attract(nPos, velocity);
 
+					if (velocity.lengthSq() === 0) {
+						nPos.x = 100000;
+						this.velocities[i] = undefined;
+					}
+
 					nPos.x += velocity.x;
 					nPos.y += velocity.y;
 					nPos.z += velocity.z;
@@ -154,7 +159,6 @@
 				}
 
 
-
 			});
 			this.geometry.verticesNeedUpdate = true;
 
@@ -181,15 +185,15 @@
 			this.object.geometry.vertices[this.lastParticle] = new THREE.Vector3(playerPos.x, playerPos.y, playerPos.z);
 			this.object.geometry.verticesNeedUpdate = true;
 
-			this.audioLoader.load( 'sounds/laser_middle.wav', (buffer) => {
+			this.audioLoader.load('sounds/laser_middle.wav', (buffer) => {
 				if (this.soundSource.isPlaying) {
 					this.soundSource.stop();
 				} else {
 
 				}
-				this.soundSource.setBuffer( buffer );
-				this.soundSource.setLoop( false );
-				this.soundSource.setVolume( 1 );
+				this.soundSource.setBuffer(buffer);
+				this.soundSource.setLoop(false);
+				this.soundSource.setVolume(1);
 				this.soundSource.play();
 
 			});
