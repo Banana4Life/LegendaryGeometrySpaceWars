@@ -122,13 +122,14 @@
 
 			this.scene.grid.deathTimerMax /= 2;
 			this.scene.grid.deathTimer = Math.min(this.scene.grid.deathTimer, this.scene.grid.deathTimerMax);
+			this.scene.grid.deathRing++;
+			this.scene.grid.updateDeath = true;
 
 			this.scoreboard.lives--;
 			this.scoreboard.needsUpdate = true;
 
 			this.psOptions.position = this.object.position;
 			this.psOptions.velocity = this.lastDeltaVector.clone().normalize();
-			console.log(this.psOptions);
 			for (let i = 0; i < 5000; i++) {
 				this.particleSystem.spawnParticle(this.psOptions)
 			}

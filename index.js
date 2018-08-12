@@ -109,14 +109,14 @@
 
 
 
-		if (_STATIC_OBJECTS.scoreboard.lives > 0) {
+		if (_STATIC_OBJECTS.scoreboard.lives > 0 || true) {
 			if (_TICK > _NEXTSPAWN) {
 				_NEXTSPAWN += 20;
 				new Enemy(_SCENE, _STATIC_OBJECTS.player);
 			}
 
 			document.body.className = "running";
-			_CONTROLS.enabled = false;
+			// _CONTROLS.enabled = false;
 			_SCENE.children.forEach(object => {
 				if (object && object.userData.entity) {
 					object.userData.entity.update(delta, _TICK);
@@ -176,7 +176,8 @@
 	})();
 
 
-	global._CAMERA = _CAMERA;
-	global._SCENE  = _SCENE;
+	global._CAMERA         = _CAMERA;
+	global._SCENE          = _SCENE;
+	global._STATIC_OBJECTS = _STATIC_OBJECTS;
 
 })(typeof window !== 'undefined' ? window : this);

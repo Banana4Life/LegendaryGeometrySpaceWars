@@ -9,9 +9,10 @@
 
 		this.deathRing = 1;
 		this.deathTimer = 60;
-		this.deathTimerMax = 60;
+		this.deathTimerMax = 30;
 		this.ripples = [];
 		this.velocities = [];
+
 		this.updateDeath = true;
 
 
@@ -180,6 +181,11 @@
 
 		allowedRadius: function() {
 			return this.mapRadius - this.deathRing * this.steps;
+		}
+
+		,
+		randomPos: function() {
+			return Math.random() * this.allowedRadius() * 2 - this.allowedRadius()
 		}
 
 	};
