@@ -18,12 +18,12 @@
 		this.player = player || null;
 
 		let pMaterial = new THREE.PointsMaterial({
-			color: 0xFF0000,
+			color: 0x000055,
 			size: 70,
 			map: new THREE.TextureLoader().load("images/particle.png"),
 			blending: THREE.AdditiveBlending,
 			transparent: true,
-			alphaTest: 1
+			alphaTest: 0.5
 		});
 
 		this.geometry = new THREE.Geometry();
