@@ -17,6 +17,7 @@
         this.particles = new THREE.Geometry();
 
 		this.velocities = [];
+		this.lastAffected = [];
 
         for (let p = 0; p < particleCount; p++) {
 
@@ -58,6 +59,11 @@
 
 		this.tick = 0;
 
+		this.particles.vertices.forEach((pos, i) => {
+
+			this.lastAffected[i] = 0;
+		});
+
     };
 
     Particles.prototype = {
@@ -73,6 +79,9 @@
 			}
 
             this.particles.vertices.forEach((pos, i) => {
+
+				this.lastAffected[i] = this.lastAffected[i] - delta;
+
                 let nPos = pos;
 
                 let velocity = this.velocities[i];

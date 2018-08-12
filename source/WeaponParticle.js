@@ -93,16 +93,22 @@
 					if (velocity && c.position && c.name === "Particles") {
 						if (this.bounced[i] < 0) {
 							c.geometry.vertices.forEach((pos2, i) => {
-								let velocity2 = velocity.clone().normalize().multiplyScalar(30);
-								let pos3 = pos2.clone().add(velocity2);
-								let distanceSq = pos3.distanceToSquared(pos);
-								if (distanceSq < 1500) {
-									velocity2 = velocity.clone().multiplyScalar(0.8);
-									let pVelocity = c.userData.entity.velocities[i];
-									pVelocity.x = (velocity2.x + pVelocity.x * 10) / 11;
-									pVelocity.y = (velocity2.y + pVelocity.y * 10) / 11;
-									pVelocity.z = (velocity2.z + pVelocity.z * 10) / 11;
+
+								if (c.userData.entity.lastAffected[i] <= 0) {
+									let velocity2 = velocity.clone().normalize().multiplyScalar(30);
+									let pos3 = pos2.clone().add(velocity2);
+									let distanceSq = pos3.distanceToSquared(pos);
+									if (distanceSq < 1500) {
+										velocity2 = velocity.clone().multiplyScalar(1.2);
+										let pVelocity = c.userData.entity.velocities[i];
+										pVelocity.x = (velocity2.x + pVelocity.x) / 2;
+										pVelocity.y = (velocity2.y + pVelocity.y) / 2;
+										pVelocity.z = (velocity2.z + pVelocity.z) / 2;
+										c.userData.entity.lastAffected[i] = 0.1;
+
+									}
 								}
+
 							});
 						}
 					}
