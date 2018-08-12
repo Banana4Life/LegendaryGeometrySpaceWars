@@ -15,6 +15,8 @@
 	const _DYNAMIC_OBJECTS = [];
 
 	let _LAST_UPDATE = Date.now();
+	let _TICK = 0;
+	let _NEXTSPAWN = 5;
 
 	/*
 	 * INITIALIZATION
@@ -96,9 +98,19 @@
 		let delta = (now - _LAST_UPDATE) / 1000;
 		_LAST_UPDATE = now;
 
+		_TICK += delta;
+		if (_TICK < 0) {
+			_TICK = 0;
+		}
+
+		if (_TICK > _NEXTSPAWN) {
+			_NEXTSPAWN += 20;
+			new Enemy(_SCENE, _STATIC_OBJECTS.player);
+		}
+
 		_SCENE.children.forEach(object => {
 			if (object && object.userData.entity) {
-				object.userData.entity.update(delta);
+				object.userData.entity.update(delta, _TICK);
 			}
 		});
 

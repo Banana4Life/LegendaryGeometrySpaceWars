@@ -23,7 +23,7 @@
 			map: new THREE.TextureLoader().load("images/particle.png"),
 			blending: THREE.AdditiveBlending,
 			transparent: true,
-			alphaTest: 0.5
+			alphaTest: 1
 		});
 
 		this.geometry = new THREE.Geometry();

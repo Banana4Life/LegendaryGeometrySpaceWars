@@ -57,8 +57,6 @@
 			sizeRandomness: 1
 		};
 
-		this.tick = 0;
-
 	};
 
 	WeaponParticle.prototype = {
@@ -66,12 +64,7 @@
 		destroy: function () {
 		},
 
-		update: function (delta) {
-
-			this.tick += delta;
-			if (this.tick < 0) {
-				this.tick = 0;
-			}
+		update: function (delta, tick) {
 
 			this.geometry.vertices.forEach((pos, i) => {
 
@@ -166,7 +159,7 @@
 			this.geometry.verticesNeedUpdate = true;
 
 
-			this.particleSystem.update(this.tick)
+			this.particleSystem.update(tick)
 
 		},
 

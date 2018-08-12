@@ -57,8 +57,6 @@
 			sizeRandomness: 1
 		};
 
-		this.tick = 0;
-
 		this.particles.vertices.forEach((pos, i) => {
 
 			this.lastAffected[i] = 0;
@@ -71,12 +69,8 @@
         destroy: function () {
         },
 
-        update: function (delta) {
+        update: function (delta, tick) {
 
-        	this.tick += delta;
-        	if (this.tick < 0) {
-        		this.tick = 0;
-			}
 
             this.particles.vertices.forEach((pos, i) => {
 
@@ -121,7 +115,7 @@
 			});
             this.particles.verticesNeedUpdate = true;
 
-            this.particleSystem.update(this.tick)
+            this.particleSystem.update(tick)
 
 
         },

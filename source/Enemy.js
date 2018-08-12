@@ -9,42 +9,67 @@
 		}
 		this.type = type;
 		switch (type) {
-			case 0:
-				let material1 = new THREE.MeshBasicMaterial({
+			case 0: {
+				let material = new THREE.MeshBasicMaterial({
 					color: 0x4400ff,
 					wireframe: true,
 					wireframeLinewidth: 2.5
 				});
-				let geometry1 = new THREE.PlaneGeometry(25, 25, 1, 1);
-				this.object = new THREE.Mesh(geometry1, material1);
+				let geometry = new THREE.PlaneGeometry(25, 25, 1, 1);
+				this.object = new THREE.Mesh(geometry, material);
 
 				this.movementType = () => {
-					this.object.rotation.y += 0.07 * this.direction;
-					this.object.position.x += 1.2 * this.direction;
+					this.object.rotation.y += 0.15 * this.direction;
+					this.object.position.x += 2.5 * this.direction;
 
 					if (Math.abs(this.object.position.x) > 500) {
 						this.direction = -this.direction;
 					}
 				};
 
+				this.destroyType = () => {
+					let part1 = new Enemy(this.scene, this.player, 100);
+					let part2 = new Enemy(this.scene, this.player, 100);
+					part1.object.position.x = this.object.position.x + Math.random() * 20 - 10;
+					part1.object.position.y = this.object.position.y;
+					part1.object.position.z = this.object.position.z + Math.random() * 20 - 10;
+					part1.invincibleTime = 0.25;
+					part2.object.position.x = this.object.position.x + Math.random() * 20 - 10;
+					part2.object.position.y = this.object.position.y;
+					part2.object.position.z = this.object.position.z + Math.random() * 20 - 10;
+					part2.invincibleTime = 0.25;
+
+					part1.vDirection = new THREE.Vector3(1, 0, 1).normalize().multiplyScalar(4);
+					part2.vDirection = new THREE.Vector3(1, 0, 1).normalize().multiplyScalar(-4);
+
+					part2.object.lookAt(part2.object.position.clone().sub(part1.vDirection));
+					part1.object.lookAt(part1.object.position.clone().sub(part2.vDirection));
+
+				};
+
 				this.object.position.x = Math.random() * 1000 - 500;
 				this.object.position.z = Math.random() * 1000 - 500;
+
+				this.object.rotateX(THREE.Math.degToRad(-90));
+
+			}
+
 				break;
-			case 1:
-				let material2 = new THREE.MeshBasicMaterial({
+			case 1: {
+				let material = new THREE.MeshBasicMaterial({
 					color: 0x33ff00,
 					wireframe: true,
 					wireframeLinewidth: 2.5
 				});
-				let geometry2 = new THREE.Geometry();
-				geometry2.vertices.push(
+				let geometry = new THREE.Geometry();
+				geometry.vertices.push(
 					new THREE.Vector3(0, -10, 0),
 					new THREE.Vector3(30, 0, 0),
 					new THREE.Vector3(0, 10, 0)
 				);
-				geometry2.faces.push(new THREE.Face3(0, 1, 2));
-				geometry2.computeBoundingBox();
-				this.object = new THREE.Mesh(geometry2, material2);
+				geometry.faces.push(new THREE.Face3(0, 1, 2));
+				geometry.computeBoundingBox();
+				this.object = new THREE.Mesh(geometry, material);
 
 				this.movementType = () => {
 					this.object.rotation.y += 0.07 * this.direction;
@@ -60,36 +85,36 @@
 
 				this.object.position.x = Math.random() * 1000 - 500;
 				this.object.position.z = Math.random() * 1000 - 500;
+
+				this.object.rotateX(THREE.Math.degToRad(-90));
+
+			}
 				break;
-			case 2:
-				let material3 = new THREE.MeshBasicMaterial({
+			case 2: {
+				let material = new THREE.MeshBasicMaterial({
 					color: 0xaaaa00,
 					wireframe: true,
 					wireframeLinewidth: 2.5
 				});
-				let geometry3 = new THREE.CircleGeometry(25, 5);
-				this.object = new THREE.Mesh(geometry3, material3);
+				let geometry = new THREE.CircleGeometry(25, 5);
+				this.object = new THREE.Mesh(geometry, material);
 
 				this.movementType = () => {
-					this.object.rotation.z += 0.07 * this.direction;
 
 					let delta = this.player.object.position.clone().sub(this.object.position);
 					let distance = delta.lengthSq();
 					delta.normalize();
 
-					this.object.position.add(delta.multiplyScalar(Math.max(Math.min(distance / 15000, 5), 0.7)));
+					this.object.rotation.z += Math.max(0.2, Math.min(0.01, 5000000 / (distance * distance))) * this.direction;
 
-					if (Math.abs(this.object.position.z) > 500) {
-						this.direction = -this.direction;
-						this.object.rotateY(THREE.Math.degToRad(180));
-					}
+					this.object.position.add(delta.multiplyScalar(Math.max(Math.min(distance / 15000, 5), 0.7)));
 				};
 
 				this.object.rotateY(THREE.Math.degToRad(-90));
 
 				this.destroyType = () => {
 					for (let i = 0; i < 5; i++) {
-						let part = new Enemy(this.scene, this.player, 99)
+						let part = new Enemy(this.scene, this.player, 102);
 						part.object.position.x = this.object.position.x + Math.random() * 10 - 5;
 						part.object.position.y = this.object.position.y;
 						part.object.position.z = this.object.position.z + Math.random() * 10 - 5;
@@ -101,25 +126,66 @@
 				this.object.position.z = Math.random() * 1000 - 500;
 				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
 
+				this.object.rotateX(THREE.Math.degToRad(-90));
+
+
+			}
+				break;
+			case 100: {
+
+				let material = new THREE.MeshBasicMaterial({
+					color: 0x4400ff,
+					wireframe: true,
+					wireframeLinewidth: 2.5
+				});
+				let geometry = new THREE.Geometry();
+				geometry.vertices.push(
+					new THREE.Vector3(-15, 0, -10),
+					new THREE.Vector3( 0, 0,  5),
+					new THREE.Vector3( 15, 0, -10)
+				);
+				geometry.faces.push(new THREE.Face3(0, 1, 2));
+				geometry.computeBoundingBox();
+				this.object = new THREE.Mesh(geometry, material);
+
+				this.vDirection = new THREE.Vector3();
+
+				this.movementType = () => {
+					// this.object.rotation.x += 0.07 * this.direction;
+					this.object.position.add(this.vDirection);
+
+					let nPos = this.object.position;
+					if (Math.abs(nPos.x) > 500) {
+						this.vDirection.x = -this.vDirection.x;
+						this.object.lookAt(this.object.position.clone().add(this.vDirection));
+					}
+					if (Math.abs(nPos.z) > 500) {
+						this.vDirection.z = -this.vDirection.z;
+						this.object.lookAt(this.object.position.clone().add(this.vDirection));
+					}
+				};
+
+
+			}
 				break;
 
-			case 99:
-				let material4 = new THREE.MeshBasicMaterial({
+			case 102: {
+				let material = new THREE.MeshBasicMaterial({
 					color: 0xaaaa00,
 					wireframe: true,
 					wireframeLinewidth: 2.5
 				});
-				let geometry4 = new THREE.Geometry();
-				geometry4.vertices.push(
+				let geometry = new THREE.Geometry();
+				geometry.vertices.push(
 					new THREE.Vector3(-5, -10, 0),
 					new THREE.Vector3(10, 0, 0),
 					new THREE.Vector3(-5, 10, 0)
 				);
-				geometry4.faces.push(new THREE.Face3(0, 1, 2));
-				geometry4.computeBoundingBox();
-				this.object = new THREE.Mesh(geometry4, material4);
+				geometry.faces.push(new THREE.Face3(0, 1, 2));
+				geometry.computeBoundingBox();
+				this.object = new THREE.Mesh(geometry, material);
 
-				this.vDirection = new THREE.Vector3(Math.floor(Math.random() * 100 - 50), 0, Math.floor(Math.random() * 100 - 50)).normalize().multiplyScalar(2.5);
+				this.vDirection = new THREE.Vector3(Math.floor(Math.random() * 100 - 50), 0, Math.floor(Math.random() * 100 - 50)).normalize().multiplyScalar(5);
 
 				this.movementType = () => {
 					this.object.rotation.z += 0.07 * this.direction;
@@ -142,11 +208,14 @@
 				};
 
 				this.object.rotateY(THREE.Math.degToRad(-90));
+
+				this.object.rotateX(THREE.Math.degToRad(-90));
+
+			}
 				break;
 		}
 
 
-		this.object.rotateX(THREE.Math.degToRad(-90));
 
 		this.object.userData = {entity: this}
 
@@ -206,7 +275,7 @@
 
 		},
 
-		update: function (delta) {
+		update: function (delta, tick) {
 
 			if (this.object.visible) {
 				this.movementType();
@@ -236,12 +305,7 @@
 
 			}
 
-			this.tick += delta;
-			if (this.tick < 0) {
-				this.tick = 0;
-			}
-
-			this.particleSystem.update(this.tick)
+			this.particleSystem.update(tick)
 
 
 		},
