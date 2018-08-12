@@ -26,6 +26,7 @@
 		this.object = new THREE.Points(this.geometry, pMaterial);
 
 		this.velocities = [];
+		this.bounced = [];
 
 		this.object.sortParticles = true;
 
@@ -74,6 +75,8 @@
 
 			this.geometry.vertices.forEach((pos, i) => {
 
+				this.bounced[i] = this.bounced[i] - delta;
+
 				let velocity = this.velocities[i];
 
 				this.scene.children.forEach(c => {
@@ -88,19 +91,20 @@
 						}
 					}
 					if (velocity && c.position && c.name === "Particles") {
-						c.geometry.vertices.forEach((pos2, i) => {
-							let velocity2 = velocity.clone().normalize().multiplyScalar(30);
-							let pos3 = pos2.clone().add(velocity2);
-							let distanceSq = pos3.distanceToSquared(pos);
-							if (distanceSq < 1500) {
-								velocity2 = velocity.clone().multiplyScalar(0.8);
-								let pVelocity = c.userData.entity.velocities[i];
-								pVelocity.x = (velocity2.x + pVelocity.x * 10) / 11;
-								pVelocity.y = (velocity2.y + pVelocity.y * 10) / 11;
-								pVelocity.z = (velocity2.z + pVelocity.z * 10) / 11;
-							}
-						});
-
+						if (this.bounced[i] < 0) {
+							c.geometry.vertices.forEach((pos2, i) => {
+								let velocity2 = velocity.clone().normalize().multiplyScalar(30);
+								let pos3 = pos2.clone().add(velocity2);
+								let distanceSq = pos3.distanceToSquared(pos);
+								if (distanceSq < 1500) {
+									velocity2 = velocity.clone().multiplyScalar(0.8);
+									let pVelocity = c.userData.entity.velocities[i];
+									pVelocity.x = (velocity2.x + pVelocity.x * 10) / 11;
+									pVelocity.y = (velocity2.y + pVelocity.y * 10) / 11;
+									pVelocity.z = (velocity2.z + pVelocity.z * 10) / 11;
+								}
+							});
+						}
 					}
 				});
 
@@ -116,6 +120,7 @@
 
 					this.geometry.vertices[i] = nPos;
 
+
 					if (Math.abs(nPos.x) > 500) {
 						this.psOptions.position.x = nPos.x;
 						this.psOptions.position.y = nPos.y;
@@ -126,6 +131,9 @@
 						}
 
 						velocity.x = -velocity.x;
+
+						this.bounced[i] = 0.3;
+
 					}
 					if (Math.abs(nPos.z) > 500) {
 
@@ -138,6 +146,8 @@
 						}
 
 						velocity.z = -velocity.z;
+
+						this.bounced[i] = 0.2;
 					}
 					// TODO wormhole stuck
 
@@ -168,6 +178,7 @@
 			let playerPos = player.object.position;
 
 			this.velocities[this.lastParticle] = new THREE.Vector3((target.x - playerPos.x), 0, (target.z - playerPos.z)).normalize().multiplyScalar(this.speed);
+			this.bounced[this.lastParticle] = 0;
 
 			this.object.geometry.vertices[this.lastParticle] = new THREE.Vector3(playerPos.x, playerPos.y, playerPos.z);
 			this.object.geometry.verticesNeedUpdate = true;
