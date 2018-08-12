@@ -2,7 +2,7 @@
 
 	const Player = function (scene, camera, plane, wormhole, scoreboard) {
 
-		this.hp = 100;
+		this.lives = 5;
 		this.scene = scene;
 		this.camera = camera;
 		this.plane = plane;
@@ -87,7 +87,7 @@
 	Player.prototype = {
 
 		destroy: function (by) {
-			console.log("Player killed by: " + by.object.name);
+			console.log("Player killed by: " + by.object.name + " Remaining Lives: " + this.lives);
 		},
 
 		update: function (delta) {

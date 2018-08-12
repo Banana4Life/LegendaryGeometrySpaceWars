@@ -52,7 +52,6 @@
 
 				this.object.rotateX(THREE.Math.degToRad(-90));
 
-				this.damage = 5;
 			}
 
 				break;
@@ -89,7 +88,6 @@
 
 				this.object.rotateX(THREE.Math.degToRad(-90));
 
-				this.damage = 5;
 			}
 				break;
 			case 2: {
@@ -129,8 +127,6 @@
 				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
 
 				this.object.rotateX(THREE.Math.degToRad(-90));
-
-				this.damage = 1;
 			}
 				break;
 			case 100: {
@@ -166,8 +162,6 @@
 						this.object.lookAt(this.object.position.clone().add(this.vDirection));
 					}
 				};
-
-				this.damage = 1;
 
 			}
 				break;
@@ -213,8 +207,6 @@
 				this.object.rotateY(THREE.Math.degToRad(-90));
 
 				this.object.rotateX(THREE.Math.degToRad(-90));
-
-				this.damage = 1;
 			}
 				break;
 		}
@@ -283,12 +275,9 @@
 		},
 
 		dealDamage: function (to) {
-			if (to.hp) {
-				to.hp -= this.damage;
-				console.log(to.object.name + " hit for " + this.damage + " remaining HP: " + to.hp);
-				if (to.hp === 0) {
-					to.destroy(this);
-				}
+			if (to.lives) {
+				to.lives--;
+				to.destroy(this);
 			}
 		},
 

@@ -28,6 +28,7 @@
 
 		this.velocities = [];
 		this.bounced = [];
+		this.bounces = [];
 
 		this.object.sortParticles = true;
 
@@ -137,6 +138,7 @@
 						velocity.x = -velocity.x;
 
 						this.bounced[i] = 0.3;
+						this.bounces[i] = this.bounces[i] + 1;
 
 					}
 					if (Math.abs(nPos.z) > 500) {
@@ -151,12 +153,20 @@
 
 						velocity.z = -velocity.z;
 
-						this.bounced[i] = 0.2;
+						this.bounced[i] = 0.3;
+						this.bounces[i] = this.bounces[i] + 1;
 					}
 					// TODO wormhole stuck
 
 					this.velocities[i] = velocity;
 
+				}
+
+				if (this.bounces[i] > 2) {
+					if (this.bounced[i] < -2) {
+						this.velocities[i] = undefined;
+						this.geometry.vertices[i].x = 1000000;
+					}
 				}
 
 
@@ -182,6 +192,7 @@
 
 			this.velocities[this.lastParticle] = new THREE.Vector3((target.x - playerPos.x), 0, (target.z - playerPos.z)).normalize().multiplyScalar(this.speed);
 			this.bounced[this.lastParticle] = 0;
+			this.bounces[this.lastParticle] = 0;
 
 			this.object.geometry.vertices[this.lastParticle] = new THREE.Vector3(playerPos.x, playerPos.y, playerPos.z);
 			this.object.geometry.verticesNeedUpdate = true;

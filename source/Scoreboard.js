@@ -25,6 +25,7 @@
 					bevelSegments: 1
 				});
 
+				let oldObject = this.object;
 				let material = new THREE.MeshBasicMaterial({ color: 0x990000 });
 				this.object = new THREE.Mesh(geometry, material);
 				this.object.geometry.computeBoundingBox();
@@ -36,12 +37,12 @@
 				this.object.rotation.z = Math.PI / 2;
 				this.object.userData = { entity: this };
 				this.scene.add(this.object);
+				this.scene.remove(oldObject);
 				this.pointsChanged = false;
 			});
 		},
 
 		updateText: function() {
-			this.scene.remove(this.object);
 			this.createText(this.points);
 		},
 
