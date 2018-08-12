@@ -275,8 +275,7 @@
 		},
 
 		dealDamage: function (to) {
-			if (to.lives) {
-				to.lives--;
+			if (to.destroy) {
 				to.destroy(this);
 			}
 		},

@@ -87,7 +87,16 @@
 	Player.prototype = {
 
 		destroy: function (by) {
+			this.lives--;
 			console.log("Player killed by: " + by.object.name + " Remaining Lives: " + this.lives);
+
+			this.scene.children.forEach(child => {
+				if (child.name.startsWith("Enemy")) {
+
+				}
+			})
+
+			// TODO giant particle bomb
 		},
 
 		update: function (delta) {

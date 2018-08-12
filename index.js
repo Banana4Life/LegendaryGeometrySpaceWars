@@ -116,11 +116,13 @@
 			new Enemy(_SCENE, _STATIC_OBJECTS.player);
 		}
 
-		_SCENE.children.forEach(object => {
-			if (object && object.userData.entity) {
-				object.userData.entity.update(delta, _TICK);
-			}
-		});
+		if (_STATIC_OBJECTS.player.lives > 0) {
+			_SCENE.children.forEach(object => {
+				if (object && object.userData.entity) {
+					object.userData.entity.update(delta, _TICK);
+				}
+			});
+		}
 
 	};
 

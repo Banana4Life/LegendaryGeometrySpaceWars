@@ -14,7 +14,7 @@
 			let loader = new THREE.FontLoader();
 
 			loader.load('external/three/fonts/helvetiker_regular.typeface.json', (font) => {
-				let geometry = new THREE.TextGeometry('Punktestatus: ' + this.points, {
+				let geometry = new THREE.TextGeometry('Points: ' + this.points, {
 					font: font,
 					size: 30,
 					height: 5,
