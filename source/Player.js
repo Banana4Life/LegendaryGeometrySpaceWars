@@ -120,8 +120,7 @@
 					let bs = c.geometry.boundingSphere;
 					let distanceSq = c.position.distanceToSquared(this.object.position);
 					if (distanceSq < bs.radius * bs.radius || distanceSq < playerBsRadiusSq) {
-						console.log("COLLIDE with player!");
-						this.scene.remove(c);
+						c.userData.entity.destroy();
 					}
 				}
 

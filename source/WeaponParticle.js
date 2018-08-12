@@ -85,7 +85,6 @@
 						let bs = c.geometry.boundingSphere;
 						let distanceSq = c.position.distanceToSquared(pos);
 						if (distanceSq < bs.radius * bs.radius) {
-							console.log("COLLIDE with weapon!");
 							c.userData.entity.destroy();
 							this.velocities[i] = null;
 						}
