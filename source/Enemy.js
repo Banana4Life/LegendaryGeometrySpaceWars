@@ -115,6 +115,17 @@
 					this.object.rotation.z += 0.07 * this.direction;
 					this.object.position.add(this.vDirection);
 
+					let nPos = this.object.position;
+					if (Math.abs(nPos.x) > 500) {
+
+						this.vDirection.x = -this.vDirection.x;
+
+					}
+					if (Math.abs(nPos.z) > 500) {
+						this.vDirection.z = -this.vDirection.z;
+					}
+
+
 					if (Math.abs(this.object.position.z) > 500) {
 						this.direction = -this.direction;
 						this.object.rotateY(THREE.Math.degToRad(180));
