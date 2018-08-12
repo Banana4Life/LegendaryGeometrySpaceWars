@@ -7,9 +7,6 @@
 
 		this.pos = new THREE.Vector3(states.position.x, states.position.y, states.position.z);
 
-		let clock = new THREE.Clock();
-		console.log('new Wormhole!', states);
-
 		let material  = new THREE.MeshPhysicalMaterial({
 			map: null,
 			color: 0x000000,
@@ -26,15 +23,11 @@
 
 		let water = new THREE.Water(geometryWater, {
 			color: 0x888888,
-			scale: 4,
+			scale: 2,
 			flowDirection: new THREE.Vector2(1, 1),
-			textureWidth: 2048,
-			textureHeight: 2048
+			textureWidth: 1024,
+			textureHeight: 1024
 		});
-
-		water.rotation.x = Math.PI * -0.5;
-		water.rotation.y = Math.PI * -0.5;
-		water.rotation.z = Math.PI * -0.5;
 
 		this.object = new THREE.Mesh(geometryHole, material);
 		this.object.position.set(states.position.x, states.position.y, states.position.z);
@@ -43,20 +36,6 @@
 		scene.add(water);
 
 		water.position.set(states.position.x, states.position.y, states.position.z);
-
-		let animate = function() {
-			requestAnimationFrame(animate);
-			render();
-		};
-
-		let render = function() {
-			renderer.setSize(window.innerWidth, window.innerHeight);
-			renderer.setPixelRatio(window.devicePixelRatio);
-			document.body.appendChild(renderer.domElement);
-
-			water.material.uniforms.time.value += clock.getDelta() * 2;
-			renderer.render(scene, camera);
-		};
 	};
 
 
