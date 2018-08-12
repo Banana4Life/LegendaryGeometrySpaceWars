@@ -37,6 +37,27 @@
 
         this.object.name = "Particles"
 
+		this.particleSystem = new THREE.GPUParticleSystem({
+			maxParticles: 250000
+		});
+
+		scene.add(this.particleSystem);
+
+		this.psOptions = {
+			position: new THREE.Vector3(),
+			positionRandomness: .3,
+			velocity: new THREE.Vector3(),
+			velocityRandomness: .5,
+			color: 0xaa88ff,
+			colorRandomness: .2,
+			turbulence: .5,
+			lifetime: 2,
+			size: 5,
+			sizeRandomness: 1
+		};
+
+		this.tick = 0;
+
     };
 
     Particles.prototype = {
@@ -44,7 +65,12 @@
         destroy: function () {
         },
 
-        update: function () {
+        update: function (delta) {
+
+        	this.tick += delta;
+        	if (this.tick < 0) {
+        		this.tick = 0;
+			}
 
             this.particles.vertices.forEach((pos, i) => {
                 let nPos = pos;
@@ -64,11 +90,20 @@
 				nPos.z += velocity.z;
 
 				if (Math.abs(nPos.x) > 500
-                 || Math.abs(nPos.z) > 500) {
-				    nPos.x = Math.random() * 1000 - 500;
-                    nPos.z =Math.random() * 1000 - 500;
+                 || Math.abs(nPos.z) > 500
+				 || velocity.lengthSq() === 0) {
+
+					this.psOptions.position.x = nPos.x;
+					this.psOptions.position.y = nPos.y;
+					this.psOptions.position.z = nPos.z;
+
+					for (let j = 0; j < 50; j++) {
+						this.particleSystem.spawnParticle(this.psOptions);
+					}
+
+					nPos.x = Math.random() * 1000 - 500;
+                    nPos.z = Math.random() * 1000 - 500;
                     velocity = new THREE.Vector3(0,0,0);
-                    // TODO wormhole too
 				}
 
                 this.particles.vertices[i] = nPos;
@@ -77,6 +112,7 @@
 			});
             this.particles.verticesNeedUpdate = true;
 
+            this.particleSystem.update(this.tick)
 
 
         },

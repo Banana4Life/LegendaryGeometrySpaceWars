@@ -55,10 +55,8 @@
 		destroy: function () {
 		},
 
-		update: function () {
+		update: function (delta) {
 			let now = Date.now();
-			let delta = (now - this.lastUpdate) / 1000;
-			this.lastUpdate = now;
 
 			let dX = 0;
 			let dZ = 0;

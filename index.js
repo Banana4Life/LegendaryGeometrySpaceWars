@@ -14,6 +14,8 @@
 	const _STATIC_OBJECTS  = {};
 	const _DYNAMIC_OBJECTS = [];
 
+	let _LAST_UPDATE = Date.now();
+
 	/*
 	 * INITIALIZATION
 	 */
@@ -56,7 +58,6 @@
 		console.log(plane);
 		_SCENE.add(plane);
 
-
 		_CAMERA.position.x = 800;
 		_CAMERA.position.y = 1000;
 		_CAMERA.add(point_light);
@@ -93,9 +94,13 @@
 		global.render();
 		global.requestAnimationFrame(_render_loop);
 
-		_SCENE.traverse(object => {
+		let now = Date.now();
+		let delta = (now - _LAST_UPDATE) / 1000;
+		_LAST_UPDATE = now;
+
+		_SCENE.children.forEach(object => {
 			if (object && object.userData.entity) {
-				object.userData.entity.update();
+				object.userData.entity.update(delta);
 			}
 		});
 
@@ -109,7 +114,7 @@
 		// _CAMERA.position.x = Math.cos(timer) * 800;
 		// _CAMERA.position.y = Math.sin(timer) * 800;
 
-		_SCENE.traverse(object => {
+		_SCENE.children.forEach(object => {
 			// if (object.isMesh === true) {
 			// 	object.rotation.x = timer * 5;
 			// 	object.rotation.y = timer * 2.5;

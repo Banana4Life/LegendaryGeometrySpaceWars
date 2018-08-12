@@ -37,6 +37,27 @@
 		this.speed = 5
 		;
 
+		this.particleSystem = new THREE.GPUParticleSystem({
+			maxParticles: 250000
+		});
+
+		scene.add(this.particleSystem);
+
+		this.psOptions = {
+			position: new THREE.Vector3(),
+			positionRandomness: .3,
+			velocity: new THREE.Vector3(),
+			velocityRandomness: .5,
+			color: 0xff0000,
+			colorRandomness: .2,
+			turbulence: .5,
+			lifetime: 0.5,
+			size: 35,
+			sizeRandomness: 1
+		};
+
+		this.tick = 0;
+
 	};
 
 	WeaponParticle.prototype = {
@@ -44,7 +65,13 @@
 		destroy: function () {
 		},
 
-		update: function () {
+		update: function (delta) {
+
+			this.tick += delta;
+			if (this.tick < 0) {
+				this.tick = 0;
+			}
+
 			this.geometry.vertices.forEach((pos, i) => {
 
 				let velocity = this.velocities[i];
@@ -57,14 +84,20 @@
 						if (distanceSq < bs.radius * bs.radius) {
 							console.log("COLLIDE with weapon!");
 							this.scene.remove(c);
+							this.velocities[i] = null;
 						}
 					}
 					if (velocity && c.position && c.name === "Particles") {
 						c.geometry.vertices.forEach((pos2, i) => {
-							let distanceSq = pos2.distanceToSquared(pos);
-							let pVelocity = velocity.clone().multiplyScalar(0.05);
-							if (distanceSq < 2000) {
-								c.userData.entity.velocities[i].add(pVelocity);
+							let velocity2 = velocity.clone().normalize().multiplyScalar(30);
+							let pos3 = pos2.clone().add(velocity2);
+							let distanceSq = pos3.distanceToSquared(pos);
+							if (distanceSq < 1500) {
+								velocity2 = velocity.clone().multiplyScalar(0.8);
+								let pVelocity = c.userData.entity.velocities[i];
+								pVelocity.x = (velocity2.x + pVelocity.x * 10) / 11;
+								pVelocity.y = (velocity2.y + pVelocity.y * 10) / 11;
+								pVelocity.z = (velocity2.z + pVelocity.z * 10) / 11;
 							}
 						});
 
@@ -82,13 +115,43 @@
 					nPos.z += velocity.z;
 
 					this.geometry.vertices[i] = nPos;
+
+					if (Math.abs(nPos.x) > 500) {
+						this.psOptions.position.x = nPos.x;
+						this.psOptions.position.y = nPos.y;
+						this.psOptions.position.z = nPos.z;
+
+						for (let j = 0; j < 50; j++) {
+							this.particleSystem.spawnParticle(this.psOptions);
+						}
+
+						velocity.x = -velocity.x;
+					}
+					if (Math.abs(nPos.z) > 500) {
+
+						this.psOptions.position.x = nPos.x;
+						this.psOptions.position.y = nPos.y;
+						this.psOptions.position.z = nPos.z;
+
+						for (let j = 0; j < 50; j++) {
+							this.particleSystem.spawnParticle(this.psOptions);
+						}
+
+						velocity.z = -velocity.z;
+					}
+					// TODO wormhole stuck
+
 					this.velocities[i] = velocity;
+
 				}
+
+
 
 			});
 			this.geometry.verticesNeedUpdate = true;
 
 
+			this.particleSystem.update(this.tick)
 
 		},
 
