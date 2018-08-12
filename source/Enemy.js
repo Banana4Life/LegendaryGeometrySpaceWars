@@ -168,7 +168,7 @@
 
 				this.object.position.x = Math.random() * this.scene.grid.allowedRadius()*2 - this.scene.grid.allowedRadius();
 				this.object.position.z = Math.random() * this.scene.grid.allowedRadius()*2 - this.scene.grid.allowedRadius();
-				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
+				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(this.scene.grid.allowedRadius()));
 
 				this.object.rotateX(THREE.Math.degToRad(-90));
 			}
