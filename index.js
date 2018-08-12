@@ -37,14 +37,6 @@
 		let ambient_light = new THREE.AmbientLight(0xcccccc, 0.4);
 		let point_light   = new THREE.PointLight(0xffffff, 0.8);
 
-		let grid = new Grid({
-			size: 1000,
-			divisions: 30
-		}, _SCENE, _CAMERA);
-
-
-		_STATIC_OBJECTS.grid = grid;
-		_SCENE.add(grid.object);
 
 		let axesHelper = new THREE.AxesHelper(250);
 		axesHelper.position.y = 0.1;
@@ -77,13 +69,19 @@
 
 		new Particles(_SCENE, wormhole);
 
-		let player = new Player(_SCENE, _CAMERA, _STATIC_OBJECTS.plane, wormhole);
+		_STATIC_OBJECTS.player = new Player(_SCENE, _CAMERA, _STATIC_OBJECTS.plane, wormhole);
 
 		for (let i = 0; i < 20; i++) {
-			new Enemy(_SCENE, player);
+			new Enemy(_SCENE, _STATIC_OBJECTS.player);
 		}
 
-		new Enemy2({ position: { x: 100, y: 0, z: 100 }, speed: 80 }, _SCENE, _CAMERA, player);
+		new Enemy2({ position: { x: 100, y: 0, z: 100 }, speed: 80 }, _SCENE, _CAMERA, _STATIC_OBJECTS.player);
+
+
+		_STATIC_OBJECTS.grid = new Grid({
+			size: 1000,
+			divisions: 30
+		}, _SCENE, _CAMERA, _STATIC_OBJECTS.player);
 
 	};
 

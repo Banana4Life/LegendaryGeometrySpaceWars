@@ -1,7 +1,7 @@
 
 (function(global) {
 
-	const Grid = function(data, scene, camera) {
+	const Grid = function(data, scene, camera, player) {
 
 		let states = Object.assign({}, data);
 
@@ -18,6 +18,7 @@
 
 
 		this.object = new THREE.Group();
+		this.player = player || null;
 
 
 		let geometry = new THREE.SphereGeometry(2, 16, 16);
@@ -72,6 +73,11 @@
 			}
 
 		}
+
+
+		scene.add(this.object);
+
+		this.object.name = 'Grid';
 
 	};
 
