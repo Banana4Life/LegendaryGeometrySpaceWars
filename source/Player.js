@@ -2,6 +2,7 @@
 
 	const Player = function (scene, camera, plane, wormhole, scoreboard) {
 
+		this.hp = 100;
 		this.scene = scene;
 		this.camera = camera;
 		this.plane = plane;
@@ -154,7 +155,7 @@
 					let bs = c.geometry.boundingSphere;
 					let distanceSq = c.position.distanceToSquared(this.object.position);
 					if (distanceSq < bs.radius * bs.radius || distanceSq < playerBsRadiusSq) {
-						c.userData.entity.destroy(this);
+						c.userData.entity.dealDamage(this);
 					}
 				}
 

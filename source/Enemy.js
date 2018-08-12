@@ -52,6 +52,7 @@
 
 				this.object.rotateX(THREE.Math.degToRad(-90));
 
+				this.damage = 5;
 			}
 
 				break;
@@ -88,6 +89,7 @@
 
 				this.object.rotateX(THREE.Math.degToRad(-90));
 
+				this.damage = 5;
 			}
 				break;
 			case 2: {
@@ -128,7 +130,7 @@
 
 				this.object.rotateX(THREE.Math.degToRad(-90));
 
-
+				this.damage = 1;
 			}
 				break;
 			case 100: {
@@ -141,8 +143,8 @@
 				let geometry = new THREE.Geometry();
 				geometry.vertices.push(
 					new THREE.Vector3(-15, 0, -10),
-					new THREE.Vector3( 0, 0,  5),
-					new THREE.Vector3( 15, 0, -10)
+					new THREE.Vector3(0, 0, 5),
+					new THREE.Vector3(15, 0, -10)
 				);
 				geometry.faces.push(new THREE.Face3(0, 1, 2));
 				geometry.computeBoundingBox();
@@ -165,6 +167,7 @@
 					}
 				};
 
+				this.damage = 1;
 
 			}
 				break;
@@ -211,6 +214,7 @@
 
 				this.object.rotateX(THREE.Math.degToRad(-90));
 
+				this.damage = 1;
 			}
 				break;
 		}
@@ -275,6 +279,13 @@
 
 			}
 
+		},
+
+		dealDamage: function (to) {
+			if (to.hp) {
+				to.hp -= this.damage;
+				console.log(to.object.name + " hit for " + this.damage + " remaining HP: " + to.hp);
+			}
 		},
 
 		update: function (delta, tick) {
