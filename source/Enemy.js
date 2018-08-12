@@ -50,6 +50,11 @@
 				this.object.position.x = Math.random() * 1000 - 500;
 				this.object.position.z = Math.random() * 1000 - 500;
 
+				if (this.player.object.position.distanceToSquared(this.object.position) < 1000) {
+					this.object.position.add(this.player.object.position.clone().sub(this.object.position).normalize().multiplyScalar(100));
+				}
+
+
 				this.object.rotateX(THREE.Math.degToRad(-90));
 
 			}
@@ -85,6 +90,11 @@
 
 				this.object.position.x = Math.random() * 1000 - 500;
 				this.object.position.z = Math.random() * 1000 - 500;
+
+				if (this.player.object.position.distanceToSquared(this.object.position) < 1000) {
+					this.object.position.add(this.player.object.position.clone().sub(this.object.position).normalize().multiplyScalar(100));
+				}
+
 
 				this.object.rotateX(THREE.Math.degToRad(-90));
 
