@@ -95,9 +95,9 @@
 
 				for (let p = 0, pl = particles.length; p < pl; p++) {
 
-					let particle = particles[p];
+					// let particle = particles[p];
 
-					particle.position.y = 2 * Math.sin(this._frames + particle.position.z) + 2 * Math.cos(this._frames + particle.position.x);
+					// particle.position.y = 2 * Math.sin(this._frames + particle.position.z) + 2 * Math.cos(this._frames + particle.position.x);
 
 				}
 

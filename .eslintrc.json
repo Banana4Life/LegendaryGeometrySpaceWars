@@ -14,7 +14,10 @@
 	"globals": {
 		"THREE": true,
 		"Beat": true,
+		"Enemy": true,
+		"Enemy2": true,
 		"Grid": true,
+		"Particles": true,
 		"Player": true,
 		"Ship": true,
 		"Wormhole": true,
