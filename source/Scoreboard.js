@@ -3,11 +3,11 @@
 
 	const Scoreboard = function(data, scene) {
 		this.scene = scene;
-		this.pointsChanged = true;
 		this.points = 0;
-		this.livesChanged = true;
+		this.needsUpdate = true;
 		this.lives = 5;
 		this.states = Object.assign({}, data);
+		this.rewardActive = false;
 		this.createText();
 	};
 
@@ -16,7 +16,7 @@
 			let loader = new THREE.FontLoader();
 
 			loader.load('external/three/fonts/helvetiker_regular.typeface.json', (font) => {
-				let geometry = new THREE.TextGeometry('Score: ' + this.points + " | Lives: " + this.lives, {
+				let geometry = new THREE.TextGeometry('Score: ' + this.points + " | Lives: " + this.lives + (this.rewardActive ? " | HYPER MODE" : ""), {
 					font: font,
 					size: 30,
 					height: 5,
@@ -38,8 +38,8 @@
 				this.object.rotation.z = Math.PI / 2;
 				this.object.userData = { entity: this };
 				this.scene.add(this.object);
-				this.pointsChanged = false;
-				this.livesChanged = false;
+				this.needsUpdate = false;
+				this.needsUpdate = false;
 			});
 		},
 
@@ -49,7 +49,7 @@
 		},
 
 		update: function() {
-			if (this.pointsChanged || this.livesChanged) {
+			if (this.needsUpdate) {
 				this.updateText(this.points);
 			}
 		}

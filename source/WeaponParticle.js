@@ -1,7 +1,8 @@
 (function (global) {
 
-	const WeaponParticle = function (scene, wormhole, soundSource, scoreboard) {
+	const WeaponParticle = function (scene, wormhole, soundSource, scoreboard, player) {
 
+		this.player = player;
 		this.scoreboard = scoreboard;
 		this.scene = scene;
 		this.audioLoader = new THREE.AudioLoader();
@@ -160,6 +161,8 @@
 
 					this.velocities[i] = velocity;
 
+				} else {
+					this.geometry.vertices[i].x = 100000;
 				}
 
 				if (this.bounces[i] > 2) {
@@ -181,6 +184,12 @@
 		render: function () {
 		},
 
+		award: function(points) {
+			this.scoreboard.needsUpdate = true;
+			this.scoreboard.points += points;
+			this.player.activateReward();
+		},
+
 		fire: function (player, target) {
 			// console.log("Fire!");
 			this.lastParticle++;
@@ -190,7 +199,7 @@
 
 			let playerPos = player.object.position;
 
-			this.velocities[this.lastParticle] = new THREE.Vector3((target.x - playerPos.x), 0, (target.z - playerPos.z)).normalize().multiplyScalar(this.speed);
+			this.velocities[this.lastParticle] = new THREE.Vector3((target.x - playerPos.x), 0, (target.z - playerPos.z)).normalize().multiplyScalar(this.speed).add(player.lastDeltaVector);
 			this.bounced[this.lastParticle] = 0;
 			this.bounces[this.lastParticle] = 0;
 

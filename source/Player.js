@@ -2,6 +2,8 @@
 
 	const Player = function (scene, camera, plane, wormhole, scoreboard) {
 
+		this.defaultFireRate = 200;
+		this.fireRate = this.defaultFireRate;
 		this.scoreboard = scoreboard;
 		this.scene = scene;
 		this.camera = camera;
@@ -12,7 +14,7 @@
 
 		let soundSource = new THREE.Audio(listener);
 
-		this.weaponParticle = new WeaponParticle(scene, wormhole, soundSource, scoreboard);
+		this.weaponParticle = new WeaponParticle(scene, wormhole, soundSource, scoreboard, this);
 
 		// let geometry = new THREE.BoxGeometry(20, 0, 20);
 		// let material = new THREE.MeshBasicMaterial({
@@ -45,6 +47,8 @@
 			new THREE.Face3(0, 3, 4)
 		];
 
+
+		this.cursor = new Cursor(scene);
 
 		let transform = new THREE.Matrix4();
 		transform.makeScale(20, 10, 30);
@@ -82,13 +86,16 @@
 
 		this.object.name = "Player";
 
+		this.lastReward = 0;
+		this.rewardTime = 0;
+
 	};
 
 	Player.prototype = {
 
 		destroy: function (by) {
 			this.scoreboard.lives--;
-			this.scoreboard.livesChanged = true;
+			this.scoreboard.needsUpdate = true;
 			console.log("Player killed by: " + by.object.name + " Remaining Lives: " + this.scoreboard.lives);
 
 			if (this.scoreboard.lives > 0) {
@@ -109,8 +116,24 @@
 
 		},
 
+		activateReward: function () {
+			if (this.scoreboard.points - this.lastReward > 5000) {
+				this.lastReward = Math.floor(this.scoreboard.points / 5000) * 5000;
+				this.fireRate = 50;
+				this.scoreboard.rewardActive = true;
+				this.scoreboard.needsUpdate = true;
+				this.rewardTime = 5;
+			}
+		},
+
 		update: function (delta) {
 			let now = Date.now();
+			this.rewardTime -= delta;
+			if (this.scoreboard.rewardActive && this.rewardTime < 0) {
+				this.fireRate = this.defaultFireRate;
+				this.scoreboard.rewardActive = false;
+				this.scoreboard.needsUpdate = true;
+			}
 
 			let dX = 0;
 			let dZ = 0;
@@ -128,7 +151,7 @@
 				dX += 1;
 			}
 
-			if (this.input.fire && (now - this.lastFire) > 150) {
+			if (this.input.fire && (now - this.lastFire) > this.fireRate) {
 				this.weaponParticle.fire(this, this.target);
 				this.lastFire = now;
 			}
@@ -153,9 +176,13 @@
 
 			});
 
+			this.cursor.pointAt(this.target);
+
+			/*
 			if (deltaVector.lengthSq() === 0) {
 				deltaVector = this.lastDeltaVector;
 			}
+			*/
 			this.lastDeltaVector = deltaVector;
 
 			let newPos = this.target; // this.object.position.clone().add(deltaVector);

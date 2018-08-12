@@ -53,7 +53,7 @@
 				this.object.position.z = Math.random() * 1000 - 500;
 
 				if (this.player.object.position.distanceToSquared(this.object.position) < 1000) {
-					this.object.position.add(this.player.object.position.clone().sub(this.object.position).normalize().multiplyScalar(100));
+					this.object.position.add(this.player.object.position.clone().sub(this.object.position).normalize().multiplyScalar(1000));
 				}
 
 
@@ -96,7 +96,7 @@
 				this.object.position.z = Math.random() * 1000 - 500;
 
 				if (this.player.object.position.distanceToSquared(this.object.position) < 1000) {
-					this.object.position.add(this.player.object.position.clone().sub(this.object.position).normalize().multiplyScalar(100));
+					this.object.position.add(this.player.object.position.clone().sub(this.object.position).normalize().multiplyScalar(1000));
 				}
 
 
@@ -282,19 +282,15 @@
 				this.object.visible = false;
 				this.death = 5;
 
-				if (by.scoreboard) {
-					by.scoreboard.points += this.pointValue;
-					by.scoreboard.pointsChanged = true;
+				if (by.award) {
+					by.award(this.pointValue);
 				}
 
-				console.log(by.object.name);
 				if (by.object.name !== "Player") {
 					if (this.destroyType) {
 						this.destroyType();
 					}
 				}
-
-
 
 			}
 

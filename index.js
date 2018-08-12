@@ -44,7 +44,7 @@
 		axesHelper.position.y = 0.1;
 		_SCENE.add(axesHelper);
 
-		let plane = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000, 8, 8),
+		let plane = new THREE.Mesh(new THREE.PlaneGeometry(5000, 5000, 8, 8),
 			new THREE.MeshBasicMaterial({
 				color: 0x248f24, alphaTest: 0, visible: false
 			}));
