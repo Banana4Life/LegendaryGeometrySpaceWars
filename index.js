@@ -80,7 +80,7 @@
 
 		_STATIC_OBJECTS.grid = new Grid({
 			size: 1000,
-			divisions: 30
+			divisions: 100
 		}, _SCENE, _CAMERA, _STATIC_OBJECTS.player);
 
 	};
