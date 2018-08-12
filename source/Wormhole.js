@@ -15,14 +15,14 @@
 			color: 0x000000,
 			metalness: 1.0,
 			roughness: 1,
-			opacity: 0.95,
+			opacity: 1,
 			transparent: true,
 			envMapIntensity: 5,
 			premultipliedAlpha: true
 		});
 
-		let geometryHole  = new THREE.SphereGeometry(50, 20, 20);
-		let geometryWater = new THREE.SphereGeometry(49, 20, 20);
+		let geometryHole  = new THREE.SphereGeometry(40, 20, 20);
+		let geometryWater = new THREE.SphereGeometry(60, 20, 20);
 
 		let water = new THREE.Water(geometryWater, {
 			color: 0x888888,

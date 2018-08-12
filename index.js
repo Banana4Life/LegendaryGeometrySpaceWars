@@ -61,6 +61,14 @@
 		_SCENE.add(ambient_light);
 		_SCENE.add(_CAMERA);
 
+		new Scoreboard({
+			position: {
+				x: 510,
+				y: 0,
+				z: 0
+			}
+		}, _SCENE);
+
 		let wormhole = new Wormhole({
 			position: {
 				x: -150,
