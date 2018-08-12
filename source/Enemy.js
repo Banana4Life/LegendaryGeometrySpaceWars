@@ -8,7 +8,7 @@
 			type = Math.floor(Math.random() * 3);
 		}
 		this.type = type;
- 		switch (type) {
+		switch (type) {
 			case 0:
 				let material1 = new THREE.MeshBasicMaterial({
 					color: 0x4400ff,
@@ -27,6 +27,8 @@
 					}
 				};
 
+				this.object.position.x = Math.random() * 1000 - 500;
+				this.object.position.z = Math.random() * 1000 - 500;
 				break;
 			case 1:
 				let material2 = new THREE.MeshBasicMaterial({
@@ -55,6 +57,9 @@
 				};
 
 				this.object.rotateY(THREE.Math.degToRad(-90));
+
+				this.object.position.x = Math.random() * 1000 - 500;
+				this.object.position.z = Math.random() * 1000 - 500;
 				break;
 			case 2:
 				let material3 = new THREE.MeshBasicMaterial({
@@ -85,12 +90,17 @@
 				this.destroyType = () => {
 					for (let i = 0; i < 5; i++) {
 						let part = new Enemy(this.scene, this.player, 99)
-						part.object.position.x = this.object.position.x + Math.random() * 10 -5;
+						part.object.position.x = this.object.position.x + Math.random() * 10 - 5;
 						part.object.position.y = this.object.position.y;
-						part.object.position.z = this.object.position.z + Math.random() * 10 -5;
+						part.object.position.z = this.object.position.z + Math.random() * 10 - 5;
 						part.invincibleTime = 0.25;
 					}
 				};
+
+				this.object.position.x = Math.random() * 1000 - 500;
+				this.object.position.z = Math.random() * 1000 - 500;
+				this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
+
 				break;
 
 			case 99:
@@ -109,7 +119,7 @@
 				geometry4.computeBoundingBox();
 				this.object = new THREE.Mesh(geometry4, material4);
 
-				this.vDirection = new THREE.Vector3(Math.floor(Math.random()*100 -50), 0, Math.floor(Math.random()*100 -50)).normalize().multiplyScalar(1.5);
+				this.vDirection = new THREE.Vector3(Math.floor(Math.random() * 100 - 50), 0, Math.floor(Math.random() * 100 - 50)).normalize().multiplyScalar(2.5);
 
 				this.movementType = () => {
 					this.object.rotation.z += 0.07 * this.direction;
@@ -125,7 +135,6 @@
 						this.vDirection.z = -this.vDirection.z;
 					}
 
-
 					if (Math.abs(this.object.position.z) > 500) {
 						this.direction = -this.direction;
 						this.object.rotateY(THREE.Math.degToRad(180));
@@ -140,8 +149,7 @@
 		this.object.rotateX(THREE.Math.degToRad(-90));
 
 		this.object.userData = {entity: this}
-		this.object.position.x = Math.random() * 1000 - 500;
-		this.object.position.z = Math.random() * 1000 - 500;
+
 
 		this.object.name = "Enemy" + type;
 
@@ -220,6 +228,10 @@
 					this.object.visible = true;
 					this.object.position.x = Math.random() * 1000 - 500;
 					this.object.position.z = Math.random() * 1000 - 500;
+
+					if (this.type === 2) {
+						this.object.position.add(this.object.position.clone().normalize().multiplyScalar(1000));
+					}
 				}
 
 			}
