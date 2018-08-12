@@ -13,12 +13,45 @@
 
 		this.weaponParticle = new WeaponParticle(scene, wormhole, soundSource);
 
-		let geometry = new THREE.BoxGeometry(20, 0, 20);
+		// let geometry = new THREE.BoxGeometry(20, 0, 20);
+		// let material = new THREE.MeshBasicMaterial({
+		// 	map: new THREE.TextureLoader().load("images/Ship.png"),
+		// 	transparent: true,
+		// 	alphaTest: 0.5
+		// });
+
+		let geometry = new THREE.Geometry();
 		let material = new THREE.MeshBasicMaterial({
-			map: new THREE.TextureLoader().load("images/Ship.png"),
-			transparent: true,
-			alphaTest: 0.5
+			color: 0xffffff,
+			wireframe: true,
+			wireframeLinewidth: 2
 		});
+
+		geometry.vertices = [
+			new THREE.Vector3(0, 0, 0),
+			new THREE.Vector3(0, 1, 0),
+			new THREE.Vector3(1, 1, 0),
+			new THREE.Vector3(1, 0, 0),
+			new THREE.Vector3(0.5, 0.5, 1)
+		];
+
+		geometry.faces = [
+			new THREE.Face3(0, 1, 2),
+			new THREE.Face3(0, 2, 3),
+			new THREE.Face3(1, 0, 4),
+			new THREE.Face3(2, 1, 4),
+			new THREE.Face3(3, 2, 4),
+			new THREE.Face3(0, 3, 4)
+		];
+
+
+		let transform = new THREE.Matrix4();
+		transform.makeScale(20, 10, 30);
+		geometry.applyMatrix(transform);
+		transform.makeTranslation(-10, 0, 0);
+		geometry.applyMatrix(transform);
+		transform.makeRotationX(THREE.Math.degToRad(180));
+		geometry.applyMatrix(transform);
 
 		this.object = new THREE.Mesh(geometry, material);
 
