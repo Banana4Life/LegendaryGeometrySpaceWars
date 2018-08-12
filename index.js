@@ -40,9 +40,6 @@
 		let point_light   = new THREE.PointLight(0xffffff, 0.8);
 
 
-		let axesHelper = new THREE.AxesHelper(250);
-		axesHelper.position.y = 0.1;
-		_SCENE.add(axesHelper);
 
 		let plane = new THREE.Mesh(new THREE.PlaneGeometry(5000, 5000, 8, 8),
 			new THREE.MeshBasicMaterial({
