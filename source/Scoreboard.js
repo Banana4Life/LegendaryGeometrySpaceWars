@@ -5,7 +5,7 @@
 		this.scene = scene;
 		this.points = 0;
 		this.needsUpdate = true;
-		this.lives = 20;
+		this.lives = 50;
 		this.states = Object.assign({}, data);
 		this.rewardActive = false;
 		this.nextReward = 2000;
@@ -20,7 +20,7 @@
 			loader.load('external/three/fonts/helvetiker_regular.typeface.json', (font) => {
 				let scoreValue = 'Score: ' + this.points;
 				let score = this.gameOver ? "You ran out of space! Total " + scoreValue : scoreValue + "/" + (this.nextReward);
-				let hype = this.rewardActive ? " | HYPER MODE ACTIVE" : "";
+				let hype = !this.gameOver && this.rewardActive ? " | HYPER MODE ACTIVE" : "";
 				let geometry = new THREE.TextGeometry(score + hype, {
 					font: font,
 					size: 30,
