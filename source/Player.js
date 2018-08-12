@@ -90,13 +90,20 @@
 			this.lives--;
 			console.log("Player killed by: " + by.object.name + " Remaining Lives: " + this.lives);
 
-			this.scene.children.forEach(child => {
-				if (child.name.startsWith("Enemy")) {
+			if (this.lives > 0) {
+				this.scene.children.forEach(child => {
+					if (child.name.startsWith("Enemy")) {
+						child.userData.entity.destroy(this);
+						// TODO giant particle bomb
+					}
+				});
+			}
 
-				}
-			})
-
-			// TODO giant particle bomb
+			this.object.position.x = 0;
+			this.object.position.z = 0;
+			this.camera.position.x = 800;
+			this.camera.position.y = 1000;
+			this.camera.position.z = 0;
 		},
 
 		update: function (delta) {

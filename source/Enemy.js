@@ -266,17 +266,24 @@
 					by.scoreboard.pointsChanged = true;
 				}
 
-				if (this.destroyType) {
-					this.destroyType();
+				console.log(by.object.name);
+				if (by.object.name !== "Player") {
+					if (this.destroyType) {
+						this.destroyType();
+					}
 				}
+
+
 
 			}
 
 		},
 
 		dealDamage: function (to) {
-			if (to.destroy) {
-				to.destroy(this);
+			if (this.object.visible) {
+				if (to.destroy) {
+					to.destroy(this);
+				}
 			}
 		},
 
