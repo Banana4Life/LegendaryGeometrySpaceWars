@@ -34,7 +34,16 @@
 			.load([ 'px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png' ]);
 		background.format = THREE.RGBFormat;
 
-		_SCENE.background = background;
+		let smallBackground = new THREE.CubeTextureLoader()
+			.setPath('textures/MilkyWay/')
+			.load([ 'dark-s_px.jpg', 'dark-s_nx.jpg', 'dark-s_py.jpg', 'dark-s_ny.jpg', 'dark-s_pz.jpg', 'dark-s_nz.jpg' ]);
+		background.format = THREE.RGBFormat;
+
+		if (window.devicePixelRatio < 2 || window.devicePixelRatio < 2) {
+			_SCENE.background = background;
+		} else {
+			_SCENE.background = smallBackground;
+		}
 
 		let ambient_light = new THREE.AmbientLight(0xcccccc, 0.4);
 		let point_light   = new THREE.PointLight(0xffffff, 0.8);
