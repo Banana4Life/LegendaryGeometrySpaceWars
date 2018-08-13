@@ -1,0 +1,13 @@
+{
+  "name": "Legendary Geometry Space Wars",
+  "description": "We need mooooore particles!",
+  "jam": {
+    "name": "Ludum Dare",
+    "number": 42,
+    "theme": "Running out of space",
+    "site": "https://ldjam.com/events/ludum-dare/42/legendary-geometry-space-wars",
+    "comments": []
+  },
+  "web": "https://banana4life.github.io/LegendaryGeometrySpaceWars",
+  "authors": []
+}
