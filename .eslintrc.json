@@ -19,6 +19,7 @@
 		"Grid": true,
 		"Particles": true,
 		"Player": true,
+		"Ripple": true,
 		"Ship": true,
 		"Wormhole": true,
 		"global": true,

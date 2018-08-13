@@ -18,25 +18,15 @@
 		this.geometry.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI / 2));
 
 		this.material = new THREE.LineBasicMaterial({
-			color: 0xffffff,
-			transparent: true,
-			opacity: 1
+			transparent: true
 		});
 
-		this.object = new THREE.LineLoop(this.geometry, this.material);
-		this.object.position.x = this.sphere.center.x;
-		this.object.position.y = 0;
-		this.object.position.z = this.sphere.center.z;
 
-
-		this.strength  =  10 + Math.random() *  10;
-		this.threshold = 100 + Math.random() *  50;
-		this.growth    = 0.1 + Math.random() * 0.3;
+		this.strength  = 100 + Math.random() *  75;
+		this.threshold = 100 + Math.random() *  75;
+		this.growth    = 0.2 + Math.random() * 0.5;
 
 		this.life = 1;
-
-
-		scene.add(this.object);
 
 	};
 
@@ -63,15 +53,10 @@
 
 		update: function(delta, tick) {
 
-			this.sphere.radius += (this.growth * this.life) * delta;
-			this.life -= 0.01 * delta;
+			let d = delta * 1000 / (1000 / 60);
 
-			this.object.position.y = (1 - this.life) * -2;
-
-			let scale = 0.001 + this.sphere.radius;
-
-			this.object.scale.set(scale, scale, scale);
-			this.object.material.opacity = this.life / 3;
+			this.sphere.radius += (this.growth * this.life) * d;
+			this.life -= 0.01 * d;
 
 		},
 

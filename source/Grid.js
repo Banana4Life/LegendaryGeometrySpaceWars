@@ -58,8 +58,11 @@
 			let x = Math.ceil(-1 / 2 * this.size / this.steps) * this.steps + this.steps * Math.floor(p / this.divisions);
 
 			pos._x = x;
+			pos._y = 0;
 			pos._z = z;
+
 			pos.x = x;
+			pos.y = 0;
 			pos.z = z;
 
 		});
@@ -121,8 +124,9 @@
 			}
 
 
-			let particles = this.geometry.vertices;
-			let ripples   = this.ripples;
+			let particles  = this.geometry.vertices;
+			let velocities = this.velocities;
+			let ripples    = this.ripples;
 
 			for (let r = 0, rl = ripples.length; r < rl; r++) {
 
@@ -131,6 +135,7 @@
 				ripple.update(delta, tick);
 
 				if (ripple.life <= 0) {
+					this._scene.remove(ripple.object);
 					ripple.destroy();
 					ripples.splice(r, 1);
 					rl--;
@@ -147,7 +152,7 @@
 				for (let p = 0, pl = particles.length; p < pl; p++) {
 
 					let particle = particles[p];
-					let velocity = this.velocities[p];
+					let velocity = velocities[p];
 
 					distance.x = particle._x;
 					distance.y = 0;
@@ -165,27 +170,33 @@
 
 					}
 
-
-					velocity.y += (0 - particle.y) * 0.3;
-
-					velocity.multiplyScalar(0.3);
-					particle.add(velocity);
-
 				}
 
-				this.geometry.verticesNeedUpdate = true;
 
 			}
+
+
+			for (let p = 0, pl = particles.length; p < pl; p++) {
+
+				let particle = particles[p];
+				let velocity = velocities[p];
+
+				velocity.y += (particle._y - particle.y) * 0.3;
+				velocity.multiplyScalar(0.3);
+				particle.add(velocity);
+
+			}
+
+			this.geometry.verticesNeedUpdate = true;
 
 		},
 
 		allowedRadius: function() {
 			return this.mapRadius - this.deathRing * this.steps;
-		}
+		},
 
-		,
 		randomPos: function() {
-			return Math.random() * this.allowedRadius() * 2 - this.allowedRadius()
+			return Math.random() * this.allowedRadius() * 2 - this.allowedRadius();
 		}
 
 	};
