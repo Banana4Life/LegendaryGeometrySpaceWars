@@ -47,7 +47,6 @@
 			}));
 		plane.name = 'Plane';
 		plane.rotateX(THREE.Math.degToRad(-90));
-		console.log(plane);
 		_SCENE.add(plane);
 
 		_CAMERA.position.x = 800;

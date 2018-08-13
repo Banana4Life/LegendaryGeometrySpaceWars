@@ -361,6 +361,12 @@
 			if ((!this.death || this.death < 0) && !this.invincibleTime) {
 
 
+				this.scene.grid.rip({
+					x: this.object.position.x,
+					y: 0,
+					z: this.object.position.z
+				});
+
 
 				this.psOptions.position.x = this.object.position.x;
 				this.psOptions.position.y = 5;
