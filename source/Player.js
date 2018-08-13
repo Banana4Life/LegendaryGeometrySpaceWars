@@ -77,6 +77,7 @@
 		document.addEventListener('contextmenu', (ev) => this.onClick(ev, true), false);
 
 		document.addEventListener('mousemove', (ev) => this.onMove(ev), false);
+		document.addEventListener('touchmove', (ev) => this.onMove(ev), false);
 
 		this.lastUpdate = Date.now();
 		this.lastFire = this.lastUpdate;
