@@ -70,6 +70,10 @@
 
 		document.addEventListener('mousedown', (ev) => this.onClick(ev, false, true), false);
 		document.addEventListener('mouseup', (ev) => this.onClick(ev, false, false), false);
+
+		document.addEventListener('touchstart', (ev) => this.onClick(ev, false, true), false);
+		document.addEventListener('touchend', (ev) => this.onClick(ev, false, false), false);
+
 		document.addEventListener('contextmenu', (ev) => this.onClick(ev, true), false);
 
 		document.addEventListener('mousemove', (ev) => this.onMove(ev), false);
