@@ -1,5 +1,64 @@
 (function (global) {
 
+	const _on_click = function(event, state) {
+
+		state = state === true;
+
+		if (event.button === 0) {
+			this.input.fire = state;
+		}
+
+		event.preventDefault();
+
+		return false;
+
+	};
+
+	const _on_mouse_move = function(event) {
+
+		this.mouse.x =  (event.clientX / window.innerWidth)  * 2 - 1;
+		this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+	};
+
+	const _on_touch_start = function(event) {
+
+		event.preventDefault();
+
+		this.input.fire = true;
+
+		return false;
+
+	};
+
+	const _on_touch_move = function(event) {
+
+		let touch = event.touches[0] || null;
+		if (touch !== null) {
+			this.mouse.x =  (touch.clientX / window.innerWidth)  * 2 - 1;
+			this.mouse.y = -(touch.clientY / window.innerHeight) * 2 + 1;
+		}
+
+		event.preventDefault();
+
+		this.input.fire = true;
+
+		return false;
+
+	};
+
+	const _on_touch_end = function(event) {
+
+		this.input.fire = false;
+
+		event.preventDefault();
+
+		return false;
+
+	};
+
+
+
 	const Player = function (scene, camera, plane, wormhole, scoreboard) {
 
 		//this.immune = true;
@@ -65,19 +124,28 @@
 		this.input = { left: false, right: false, up: false, down: false, fire: false };
 		this.speed = 250;
 
-		document.addEventListener('keydown', (ev) => this.onKey(ev, ev.key, true));
-		document.addEventListener('keyup', (ev) => this.onKey(ev, ev.key, false));
 
-		document.addEventListener('mousedown', (ev) => this.onClick(ev, false, true), false);
-		document.addEventListener('mouseup', (ev) => this.onClick(ev, false, false), false);
+		if ('ontouchstart' in window) {
+			window.addEventListener('touchstart', e => _on_touch_start.call(this, e), false);
+			window.addEventListener('touchmove',  e => _on_touch_move.call(this, e),  false);
+			window.addEventListener('touchend',   e => _on_touch_end.call(this, e),   false);
+		} else {
+			window.addEventListener('mousedown', e => _on_click.call(this, e, true),  false);
+			window.addEventListener('mousemove', e => _on_mouse_move.call(this, e),   false);
+			window.addEventListener('mouseup',   e => _on_click.call(this, e, false), false);
+		}
 
-		document.addEventListener('touchstart', (ev) => this.onClick(ev, false, true), false);
-		document.addEventListener('touchend', (ev) => this.onClick(ev, false, false), false);
+		if ('onkeydown' in window) {
+			window.addEventListener('keydown', e => this.onKey(e, e.key, true),  false);
+			window.addEventListener('keyup',   e => this.onKey(e, e.key, false), false);
+		}
 
-		document.addEventListener('contextmenu', (ev) => this.onClick(ev, true), false);
 
-		document.addEventListener('mousemove', (ev) => this.onMove(ev), false);
-		document.addEventListener('touchmove', (ev) => this.onMove(ev), false);
+		window.addEventListener('contextmenu', e => {
+			e.preventDefault();
+			return false;
+		}, false);
+
 
 		this.lastUpdate = Date.now();
 		this.lastFire = this.lastUpdate;
@@ -328,25 +396,6 @@
 					ev.preventDefault();
 					break;
 			}
-		},
-
-		onClick: function (event, isContextMenu, isDown) {
-			event.preventDefault();
-
-			if (event.button === 0) {
-				if (isDown) {
-					this.input.fire = true;
-				} else {
-					this.input.fire = false;
-				}
-			}
-
-			return false;
-		},
-
-		onMove: function (event) {
-			this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-			this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 		}
 
 	};
