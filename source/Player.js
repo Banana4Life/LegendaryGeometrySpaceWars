@@ -62,7 +62,7 @@
 
 		this.object = new THREE.Mesh(geometry, material);
 
-		this.input = {left: false, right: false, up: false, down: false, fire: false};
+		this.input = { left: false, right: false, up: false, down: false, fire: false };
 		this.speed = 250;
 
 		document.addEventListener('keydown', (ev) => this.onKey(ev, ev.key, true));
@@ -77,7 +77,7 @@
 		this.lastUpdate = Date.now();
 		this.lastFire = this.lastUpdate;
 
-		this.object.userData = {entity: this};
+		this.object.userData = { entity: this };
 
 		this.raycaster = new THREE.Raycaster();
 		this.mouse = new THREE.Vector2();
@@ -95,19 +95,37 @@
 			maxParticles: 5000
 		});
 
+		this.rocketParticles = new THREE.GPUParticleSystem({
+			maxParticles: 5000
+		});
+
 		scene.add(this.particleSystem);
+		scene.add(this.rocketParticles);
 
 		this.psOptions = {
 			position: new THREE.Vector3(),
 			positionRandomness: 25,
 			velocity: new THREE.Vector3(),
-			velocityRandomness: .5,
+			velocityRandomness: 0.5,
 			color: 0xffffff,
 			colorRandomness: 0,
 			turbulence: 20,
 			lifetime: 2,
 			size: 20,
 			sizeRandomness: 1
+		};
+
+		this.rocketParticlesOptions = {
+			position: new THREE.Vector3(),
+			positionRandomness: 1,
+			velocity: new THREE.Vector3(),
+			velocityRandomness: 1,
+			color: 0x990000,
+			colorRandomness: 0.2,
+			turbulence: 5,
+			lifetime: 2,
+			size: 10,
+			sizeRandomness: 2
 		};
 
 	};
@@ -135,7 +153,7 @@
 
 			if (this.scene.grid.deathRing <= 50) {
 				for (let i = 0; i < 5000; i++) {
-					this.particleSystem.spawnParticle(this.psOptions)
+					this.particleSystem.spawnParticle(this.psOptions);
 				}
 			}
 
@@ -182,6 +200,7 @@
 			}
 
 			this.particleSystem.update(tick);
+			this.rocketParticles.update(tick);
 			let now = Date.now();
 			this.rewardTime -= delta;
 			if (this.scoreboard.rewardActive && this.rewardTime < 0) {
@@ -192,18 +211,30 @@
 
 			let dX = 0;
 			let dZ = 0;
-
+			this.rocketParticlesOptions.position = this.object.position;
 			if (this.input.left) {
 				dZ += 1;
+				for (let i = 0; i < 50; i++) {
+					this.rocketParticles.spawnParticle(this.rocketParticlesOptions);
+				}
 			}
 			if (this.input.right) {
 				dZ -= 1;
+				for (let i = 0; i < 50; i++) {
+					this.rocketParticles.spawnParticle(this.rocketParticlesOptions);
+				}
 			}
 			if (this.input.up) {
 				dX -= 1;
+				for (let i = 0; i < 50; i++) {
+					this.rocketParticles.spawnParticle(this.rocketParticlesOptions);
+				}
 			}
 			if (this.input.down) {
 				dX += 1;
+				for (let i = 0; i < 50; i++) {
+					this.rocketParticles.spawnParticle(this.rocketParticlesOptions);
+				}
 			}
 
 			if (this.input.fire && (now - this.lastFire) > this.fireRate) {
@@ -238,6 +269,7 @@
 				deltaVector = this.lastDeltaVector;
 			}
 			*/
+
 			this.lastDeltaVector = deltaVector;
 
 			let newPos = this.target; // this.object.position.clone().add(deltaVector);
