@@ -433,7 +433,6 @@
 					this.object.position.x = this.scene.grid.randomPos();
 					this.object.position.z = this.scene.grid.randomPos();
 
-					console.log(this.scene.grid.allowedRadius());
 					this.object.position.add(this.object.position.clone().normalize().multiplyScalar(this.scene.grid.allowedRadius() / 1.5));
 				}
 

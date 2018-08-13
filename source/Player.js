@@ -116,9 +116,11 @@
 
 		destroy: function (by) {
 
-			if (this.immune) {
+			if (this.immune || (this.lastDeath > 0 && this.scene.grid.deathRing <= 50)) {
 				return;
 			}
+
+			this.lastDeath = 1;
 
 			this.scene.grid.deathTimerMax /= 2;
 			this.scene.grid.deathTimer = Math.min(this.scene.grid.deathTimer, this.scene.grid.deathTimerMax);
@@ -130,8 +132,11 @@
 
 			this.psOptions.position = this.object.position;
 			this.psOptions.velocity = this.lastDeltaVector.clone().normalize();
-			for (let i = 0; i < 5000; i++) {
-				this.particleSystem.spawnParticle(this.psOptions)
+
+			if (this.scene.grid.deathRing <= 50) {
+				for (let i = 0; i < 5000; i++) {
+					this.particleSystem.spawnParticle(this.psOptions)
+				}
 			}
 
 			if (this.scoreboard.lives > 0) {
@@ -169,6 +174,8 @@
 		},
 
 		update: function (delta, tick) {
+
+			this.lastDeath -= delta;
 
 			if (this.scene.grid.allowedRadius() <= 0) {
 				this.destroy(this);
