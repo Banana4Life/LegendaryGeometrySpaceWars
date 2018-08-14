@@ -374,20 +374,26 @@
 		},
 
 		onKey: function (ev, key, pressed) {
-			switch (key) {
+			console.log(key);
+
+				switch (key) {
 				case 'w':
+				case 'ArrowUp':
 					this.input.up = pressed;
 					ev.preventDefault();
 					break;
 				case 'a':
+				case 'ArrowLeft':
 					this.input.left = pressed;
 					ev.preventDefault();
 					break;
 				case 's':
+				case 'ArrowDown':
 					this.input.down = pressed;
 					ev.preventDefault();
 					break;
 				case 'd':
+				case 'ArrowRight':
 					this.input.right = pressed;
 					ev.preventDefault();
 					break;
